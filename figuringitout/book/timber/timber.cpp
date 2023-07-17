@@ -32,7 +32,7 @@ int main () {
     textureBee.loadFromFile("graphics/bee.png");
     Sprite spriteBee;
     spriteBee.setTexture(textureBee);
-    spriteBee.setPosition(0, 800);
+    spriteBee.setPosition(-200, 800);
     // Make be not moving
     bool beeActive = false;
     // Set bee speed
@@ -41,25 +41,21 @@ int main () {
     // Load up cloud texture
     Texture textureCloud;
     textureCloud.loadFromFile("graphics/cloud.png");
-    // Make 3 cloud sprites from the same texture
-    Sprite spriteCloud1;
-    Sprite spriteCloud2;
-    Sprite spriteCloud3;
-    spriteCloud1.setTexture(textureCloud);
-    spriteCloud2.setTexture(textureCloud);
-    spriteCloud3.setTexture(textureCloud);
-    // Set cloud position to be different heights
-    spriteCloud1.setPosition(0,0);
-    spriteCloud2.setPosition(0,250);
-    spriteCloud3.setPosition(0,500);
-    // Make cloud inactive
-    bool cloud1Active = false;
-    bool cloud2Active = false;
-    bool cloud3Active = false;
-    // Set cloud speed
-    float cloud1Speed = 0.0f;
-    float cloud2Speed = 0.0f;
-    float cloud3Speed = 0.0f;
+    int cloudCount = 3;
+    Sprite spriteCloud[cloudCount];
+    bool cloudActive[cloudCount];
+    float cloudSpeed[cloudCount];
+    for (int i = 0; i < cloudCount; i++) {
+        // Make 3 cloud sprites from the same texture
+        // Sprite spriteCloud[i];
+        spriteCloud[i].setTexture(textureCloud);
+        // Set cloud position to be different heights
+        spriteCloud[i].setPosition(0, 250 * i);
+        // Make cloud inactive
+        cloudActive[i] = false;
+        // Set cloud speed    
+        cloudSpeed[i] = 0.0f;
+    }
 
     // Controling time itself
     Clock clock;
@@ -190,69 +186,28 @@ int main () {
                 }
 
                 // Setup clouds
-                    // Cloud 1
-                    if (!cloud1Active) {
+                for (int i = 0; i < cloudCount; i++) {
+                    if (!cloudActive[i]) {
                         // How fast is the cloud
-                        srand((int)time(0) * 10);
-                        cloud1Speed = (rand() % 200);
+                        srand((int)time(0) * (10 * (i + 1)));
+                        cloudSpeed[i] = (rand() % 200);
                         // How high is the cloud
-                        srand((int)time(0) * 10);
-                        float(height) = (rand() % 150);
-                        spriteCloud1.setPosition(-300, height);
-                        cloud1Active = true;
+                        srand((int)time(0) * (10 * (i + 1)));
+                        float(height) = (rand() % (150 * (i + 1))) - (150 * i);
+                        spriteCloud[i].setPosition(-300, height);
+                        cloudActive[i] = true;
                     }
                     else {
-                        spriteCloud1.setPosition(
-                            spriteCloud1.getPosition().x + (cloud1Speed * dt.asSeconds()),
-                            spriteCloud1.getPosition().y
+                        spriteCloud[i].setPosition(
+                            spriteCloud[i].getPosition().x + (cloudSpeed[i] * dt.asSeconds()),
+                            spriteCloud[i].getPosition().y
                         );
                         // Is cloud exited screen
-                        if (spriteCloud1.getPosition().x > 2220) {
-                            cloud1Active = false;
+                        if (spriteCloud[i].getPosition().x > 2220) {
+                            cloudActive[i] = false;
                         }
                     }
-                    // Cloud 2
-                    if (!cloud2Active) {
-                        // How fast is the cloud
-                        srand((int)time(0) * 20);
-                        cloud2Speed = (rand() % 200);
-                        // How high is the cloud
-                        srand((int)time(0) * 20);
-                        float(height) = (rand() % 300) - 150;
-                        spriteCloud2.setPosition(-300, height);
-                        cloud2Active = true;
-                    }
-                    else {
-                        spriteCloud2.setPosition(
-                            spriteCloud2.getPosition().x + (cloud2Speed * dt.asSeconds()),
-                            spriteCloud2.getPosition().y
-                        );
-                        // Is cloud exited screen
-                        if (spriteCloud2.getPosition().x > 2220) {
-                            cloud2Active = false;
-                        }
-                    }
-                    // Cloud 3
-                    if (!cloud3Active) {
-                        // How fast is the cloud
-                        srand((int)time(0) * 30);
-                        cloud3Speed = (rand() % 200);
-                        // How high is the cloud
-                        srand((int)time(0) * 30);
-                        float(height) = (rand() % 450) - 150;
-                        spriteCloud3.setPosition(-300, height);
-                        cloud3Active = true;
-                    }
-                    else {
-                        spriteCloud3.setPosition(
-                            spriteCloud3.getPosition().x + (cloud3Speed * dt.asSeconds()),
-                            spriteCloud3.getPosition().y
-                        );
-                        // Is cloud exited screen
-                        if (spriteCloud3.getPosition().x > 2220) {
-                            cloud3Active = false;
-                        }
-                    }
+                }
 
                 // Update score text
                 score++;
@@ -269,9 +224,9 @@ int main () {
         // Draw new scene
             // Game Elements
             window.draw(spriteBackground);
-            window.draw(spriteCloud1);
-            window.draw(spriteCloud2);
-            window.draw(spriteCloud3);
+            for (int i = 0; i < cloudCount; i++) {
+                window.draw(spriteCloud[i]);
+            }
             window.draw(spriteTree);
             window.draw(spriteBee);
 

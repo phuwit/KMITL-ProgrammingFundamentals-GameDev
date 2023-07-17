@@ -61,8 +61,20 @@ int main () {
     float cloud2Speed = 0.0f;
     float cloud3Speed = 0.0f;
 
-    // Variable to control time
+    // Controling time itself
     Clock clock;
+
+    // TIme bar
+    RectangleShape timeBar;
+    float timeBarStartWidth = 400;
+    float timeBarStartHeight = 80;
+    timeBar.setSize(Vector2f(timeBarStartWidth, timeBarStartHeight));
+    timeBar.setFillColor(Color::Red);
+    timeBar.setPosition((1920 / 2) - timeBarStartWidth / 2,
+                        980);
+    Time gameTimeTotal;
+    float timeRemaining = 6.0f;
+    float timeBarWidthPerSecond = timeBarStartWidth / timeRemaining;
 
     // Track if the game is paused
     bool paused = true;
@@ -96,7 +108,9 @@ int main () {
     Text fpsCounter;
     fpsCounter.setFont(font);
     fpsCounter.setCharacterSize(40);
+    fpsCounter.setOutlineThickness(5);
     fpsCounter.setFillColor(Color::White);
+    fpsCounter.setOutlineColor(Color::Black);
     fpsCounter.setPosition(0, 10);
     RectangleShape fpsCounterBackground;
     fpsCounterBackground.setPosition(0, 20);
@@ -104,13 +118,21 @@ int main () {
     // Main game loop
     while (window.isOpen()) {
         // Handle input
-            if (Keyboard::isKeyPressed(Keyboard::Escape) || (Keyboard::isKeyPressed(Keyboard::LControl) && Keyboard::isKeyPressed(Keyboard::C))) {
-                window.close();
+            Event event;
+            while (window.pollEvent(event)) {
+                if (Keyboard::isKeyPressed(Keyboard::Escape) ||
+                (Keyboard::isKeyPressed(Keyboard::LControl) && Keyboard::isKeyPressed(Keyboard::C)) ||
+                event.type == Event::Closed) {
+                    window.close();
+                }
             }
-
+            
             // Start game
             if (Keyboard::isKeyPressed(Keyboard::Return)) {
                 paused = !paused;
+                // Reset time and score
+                score = 0;
+                timeRemaining = 6;
             }
 
         // Update scene
@@ -119,13 +141,29 @@ int main () {
                 Time dt = clock.restart();
                 float fps = 1.f / dt.asSeconds();
 
+                // Showing fps on screen
                 std::stringstream ssfps;
                 ssfps << "FPS: " << fps;
                 fpsCounter.setString(ssfps.str());
-                FloatRect fpsCounterRect = fpsCounter.getLocalBounds();
-                fpsCounterBackground.setSize(Vector2f(fpsCounterRect.width + 5, fpsCounterRect.height + 5));
-                fpsCounterBackground.setFillColor(Color::Black);
+                // FloatRect fpsCounterRect = fpsCounter.getLocalBounds();
+                // fpsCounterBackground.setSize(Vector2f(fpsCounterRect.width + 5, fpsCounterRect.height + 5));
+                // fpsCounterBackground.setFillColor(Color::Black);
 
+                // Subtract delta time from time remaining
+                timeRemaining -= dt.asSeconds();
+                // Update time bar size
+                timeBar.setSize(Vector2f(timeBarWidthPerSecond * timeRemaining,
+                                         timeBarStartHeight));
+                if (timeRemaining <= 0.0f) {
+                    paused = !paused;
+                    // Change pause text
+                    messageText.setString("You ran out of time!");
+                    // Recalculate positioning
+                    FloatRect textRect = messageText.getLocalBounds();
+                    messageText.setOrigin(textRect.left + textRect.width / 2.0f,
+                                          textRect.top + textRect.height / 2.0f);
+                    messageText.setPosition(1920 / 2.0f, 1080 / 2.0f);
+                }
                 
                 // Setup bee
                 if (!beeActive) {
@@ -229,23 +267,23 @@ int main () {
             window.clear();
 
         // Draw new scene
+            // Game Elements
             window.draw(spriteBackground);
-
             window.draw(spriteCloud1);
             window.draw(spriteCloud2);
             window.draw(spriteCloud3);
-
             window.draw(spriteTree);
-            
             window.draw(spriteBee);
 
+            // HUD
+
             window.draw(scoreText);
+            window.draw(timeBar);
+            window.draw(fpsCounterBackground);
+            window.draw(fpsCounter);
             if (paused) {
                 window.draw(messageText);
             }
-
-            window.draw(fpsCounterBackground);
-            window.draw(fpsCounter);
 
         // Show what we just drew
             window.display();

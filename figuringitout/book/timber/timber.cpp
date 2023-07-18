@@ -170,12 +170,12 @@ int main () {
     // Prepare sounds
     // Wood chopping sound
     SoundBuffer chopBuffer;
-    chopBuffer.loadFromFile("sound/chop.wav");
+    chopBuffer.loadFromFile("sound/minecraft_wood_dig.ogg");
     Sound chop;
     chop.setBuffer(chopBuffer);
     // player suqished
     SoundBuffer deathBuffer;
-    deathBuffer.loadFromFile("sound/death.wav");
+    deathBuffer.loadFromFile("sound/minecraft_villager_death.ogg");
     Sound death;
     death.setBuffer(deathBuffer);
     // out of time

@@ -1,5 +1,6 @@
 #include <sstream>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 using namespace sf;
 
@@ -76,6 +77,39 @@ int main () {
         branches[i].setOrigin(220, 20);
     }
 
+    // Prepare player
+    Texture texturePlayer;
+    texturePlayer.loadFromFile("graphics/player.png");
+    Sprite spritePlayer;
+    spritePlayer.setTexture(texturePlayer);
+    spritePlayer.setPosition(580, 720);
+    // Make player starts from the left
+    side playerSide = side::LEFT;
+    // Prepare gravestone 
+    Texture textureGrave;
+    textureGrave.loadFromFile("graphics/rip.png");
+    Sprite spriteGrave;
+    spriteGrave.setTexture(textureGrave);
+    spriteGrave.setPosition(600, 860);
+    // Prepare axe
+    Texture textureAxe;
+    textureAxe.loadFromFile("graphics/axe.png");
+    Sprite spriteAxe;
+    spriteAxe.setTexture(textureAxe);
+    spriteAxe.setPosition(700, 830);
+    // Set axe pos to use later
+    const float AXE_POSITION_LEFT = 700;
+    const float AXE_POSITION_RIGHT = 1075;
+    // Prepare Flying logs
+    Texture textureLog;
+    textureLog.loadFromFile("graphics/log.png");
+    Sprite spriteLog;
+    spriteLog.setTexture(textureLog);
+    spriteLog.setPosition(810, 720);
+    bool logActive = false;
+    float logSpeedX = 1000;
+    float logSpeedY = -1500;
+
     // Controling time itself
     Clock clock;
 
@@ -130,6 +164,26 @@ int main () {
     RectangleShape fpsCounterBackground;
     fpsCounterBackground.setPosition(0, 20);
 
+    // turn on and off player input to prevent repeated actions
+    bool acceptInput = false;
+
+    // Prepare sounds
+    // Wood chopping sound
+    SoundBuffer chopBuffer;
+    chopBuffer.loadFromFile("sound/chop.wav");
+    Sound chop;
+    chop.setBuffer(chopBuffer);
+    // player suqished
+    SoundBuffer deathBuffer;
+    deathBuffer.loadFromFile("sound/death.wav");
+    Sound death;
+    death.setBuffer(deathBuffer);
+    // out of time
+    SoundBuffer ootBuffer;
+    ootBuffer.loadFromFile("sound/out_of_time.wav");
+    Sound outOfTime;
+    outOfTime.setBuffer(ootBuffer);
+
     // Main game loop
     while (window.isOpen()) {
         // Handle input
@@ -140,14 +194,83 @@ int main () {
                 event.type == Event::Closed) {
                     window.close();
                 }
+
+                if (event.type == Event::KeyReleased && !paused) {
+                    // listen to inputs again
+                    acceptInput = true;
+                    // hide axe
+                    spriteAxe.setPosition(2000, spriteAxe.getPosition().y);
+                }
             }
             
             // Start game
             if (Keyboard::isKeyPressed(Keyboard::Return)) {
-                paused = !paused;
+                paused = false;
                 // Reset time and score
                 score = 0;
                 timeRemaining = 6;
+                // make branch 2 and over disappear
+                for (int i = 1; i < NUM_BRANCHES; i++) {
+                    branchPositions[i] = side::NONE;
+                }
+                // Hide gravestone
+                spriteGrave.setPosition(675, 2000);
+                // Move player into position
+                spritePlayer.setPosition(580, 720);
+                acceptInput = false;
+            }
+
+            if (acceptInput) {
+                // Handle right cursor pressed
+                if (Keyboard::isKeyPressed(Keyboard::Right)) {
+                    // make sure that player will be on the right
+                    playerSide = side::RIGHT;
+                    
+                    score++;
+
+                    // Add time to time remaining
+                    // more score = less time added
+                    timeRemaining += (2 / score) + .15;
+                    spriteAxe.setPosition(AXE_POSITION_RIGHT,
+                                          spriteAxe.getPosition().y);
+                    spritePlayer.setPosition(1200, 720);
+                    
+                    updateBranches(score);
+                    
+                    // Make log fly left
+                    spriteLog.setPosition(810, 720);
+                    logSpeedX = -5000;
+                    logActive = true;
+                    acceptInput = false;
+
+                    // play chop sound
+                    chop.play();
+                }
+                // Handle left cursor pressed
+                if (Keyboard::isKeyPressed(Keyboard::Left)) {
+                    // make sure that player will be on the right
+                    playerSide = side::LEFT;
+                    
+                    score++;
+
+                    // Add time to time remaining
+                    // more score = less time added
+                    timeRemaining += (2 / score) + .15;
+                    spriteAxe.setPosition(AXE_POSITION_LEFT,
+                                          spriteAxe.getPosition().y);
+                    spritePlayer.setPosition(580, 720);
+                    
+                    updateBranches(score);
+
+                    // Make log fly left
+                    spriteLog.setPosition(810, 720);
+                    logSpeedX = 5000;
+                    logActive = true;
+                    acceptInput = false;
+
+                    // play chop sound
+                    chop.play();
+                }
             }
 
         // Update scene
@@ -178,6 +301,8 @@ int main () {
                     messageText.setOrigin(textRect.left + textRect.width / 2.0f,
                                           textRect.top + textRect.height / 2.0f);
                     messageText.setPosition(1920 / 2.0f, 1080 / 2.0f);
+                    // play out of time sound
+                    outOfTime.play();
                 }
                 
                 // Setup bee
@@ -247,8 +372,42 @@ int main () {
                     }
                 }
 
+                // Handle flying logs
+                if (logActive) {
+                    spriteLog.setPosition(spriteLog.getPosition().x + (logSpeedX * dt.asSeconds()),
+                                          spriteLog.getPosition().y + (logSpeedY * dt.asSeconds()) );
+                    // reset log if it exited screen
+                    if (spriteLog.getPosition().x < -100 || spriteLog.getPosition().x > 2000 ) {
+                        logActive = false;
+                        spriteLog.setPosition(810, 720);
+                    }
+
+                    // check if player been squished by a branch
+                    if (branchPositions[5] == playerSide) {
+                        // death
+                        paused = true;
+                        acceptInput = false;
+                        // draw grave
+                        spriteGrave.setPosition(525, 760);
+                        // hide player
+                        spritePlayer.setPosition(2000, 660);
+                        // change message text
+                        messageText.setString("Squished!");
+                        // Recalculate positioning
+                        FloatRect textRect = messageText.getLocalBounds();
+                        messageText.setOrigin(textRect.left + textRect.width / 2.0f,
+                                            textRect.top + textRect.height / 2.0f);
+                        messageText.setPosition(1920 / 2.0f, 1080 / 2.0f);
+                        // play death sound
+                        death.play();
+                    }
+                    else {
+                        // remove last branch because confusing
+                        branchPositions[5] = side::NONE;
+                    }
+                }
+
                 // Update score text
-                score++;
                 std::stringstream ss;
                 ss << "Score = " << score;
                 scoreText.setString(ss.str());
@@ -268,7 +427,11 @@ int main () {
             for (int i = 0; i < NUM_BRANCHES; i++) {
                 window.draw(branches[i]);
             }
+            window.draw(spriteLog);
             window.draw(spriteTree);
+            window.draw(spritePlayer);
+            window.draw(spriteAxe);
+            window.draw(spriteGrave);
             window.draw(spriteBee);
 
             // HUD

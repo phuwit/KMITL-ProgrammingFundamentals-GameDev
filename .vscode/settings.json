@@ -1,7 +1,7 @@
 {
     "code-runner.executorMap": {
         "c": "cd $dir && clang -lm -lsfml-graphics -lsfml-window -lsfml-system $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
-        "cpp": "cd $dir && clang++ -lm -lsfml-graphics -lsfml-window -lsfml-system $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
+        "cpp": "cd $dir && clang++ -lm -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
     },
     "files.associations": {
         "sstream": "cpp"

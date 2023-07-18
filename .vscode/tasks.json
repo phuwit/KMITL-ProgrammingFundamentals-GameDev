@@ -7,6 +7,7 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-lm",
+                "-lsfml-audio",
                 "-lsfml-graphics",
                 "-lsfml-window",
                 "-lsfml-system",

@@ -169,10 +169,19 @@ int main () {
 
     // Prepare sounds
     // Wood chopping sound
-    SoundBuffer chopBuffer;
-    chopBuffer.loadFromFile("sound/minecraft_wood_dig.ogg");
-    Sound chop;
-    chop.setBuffer(chopBuffer);
+    // SoundBuffer chopBuffer;
+    // chopBuffer.loadFromFile("sound/minecraft_wood_dig.ogg");
+    // Sound chop;
+    // chop.setBuffer(chopBuffer);
+    const int CHOP_SOUND_NUM = 4;
+    SoundBuffer chopBuffer[CHOP_SOUND_NUM];
+    Sound chop[CHOP_SOUND_NUM];
+    for (int i = 0; i < CHOP_SOUND_NUM; i++) {
+        std::stringstream chopSoundFileName;
+        chopSoundFileName << "sound/minecraft_wood_dig" << (i + 1) << ".ogg";
+        chopBuffer[i].loadFromFile(chopSoundFileName.str());
+        chop[i].setBuffer(chopBuffer[i]);
+    }
     // player suqished
     SoundBuffer deathBuffer;
     deathBuffer.loadFromFile("sound/minecraft_villager_death.ogg");
@@ -244,7 +253,8 @@ int main () {
                     acceptInput = false;
 
                     // play chop sound
-                    chop.play();
+                    srand(score);
+                    chop[rand() % 3].play();
                 }
                 // Handle left cursor pressed
                 if (Keyboard::isKeyPressed(Keyboard::Left)) {
@@ -269,7 +279,8 @@ int main () {
                     acceptInput = false;
 
                     // play chop sound
-                    chop.play();
+                    srand(score);
+                    chop[rand() % 3].play();
                 }
             }
 

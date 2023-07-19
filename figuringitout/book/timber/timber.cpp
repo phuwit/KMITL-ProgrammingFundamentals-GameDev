@@ -1,4 +1,5 @@
 #include <sstream>
+#include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
@@ -254,7 +255,7 @@ int main () {
 
                     // play chop sound
                     srand(score);
-                    chop[rand() % 3].play();
+                    chop[rand() % (CHOP_SOUND_NUM)].play();
                 }
                 // Handle left cursor pressed
                 if (Keyboard::isKeyPressed(Keyboard::Left)) {
@@ -280,7 +281,7 @@ int main () {
 
                     // play chop sound
                     srand(score);
-                    chop[rand() % 3].play();
+                    chop[rand() % (CHOP_SOUND_NUM)].play();
                 }
             }
 

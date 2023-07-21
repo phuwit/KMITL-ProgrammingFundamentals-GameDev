@@ -1,11 +1,12 @@
 #include <sstream>
-#include "Bat.h"
-#include "Bat.cpp"
-
 #include <cstdlib>
 
 #include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
+
+#include "Bat.h"
+#include "Bat.cpp"
+#include "Ball.h"
+#include "Ball.cpp"
 
 const int WINDOW_WIDTH = 1920;
 const int WINDOW_HEIGHT = 1080;
@@ -19,8 +20,9 @@ int main () {
     int lives = 3;
 
     // Create a bat at center bottom
-    Bat bat(WINDOW_WIDTH / 2, WINDOW_HEIGHT - 20);
-    // TODO: Add a ball
+    Bat bat(WINDOW_WIDTH / 2, WINDOW_HEIGHT - 40);
+    // Create a ball
+    Ball ball(1920 / 2, 0);
 
     // Load a font
     Font font;
@@ -34,6 +36,8 @@ int main () {
 
     // controlling time itself
     Clock clock;
+
+    bool acceptScore = true;
 
     // Game loop
     while (window.isOpen())
@@ -72,6 +76,38 @@ int main () {
             Time dt = clock.restart();
             
             bat.update(dt);
+            ball.update(dt);
+
+            // bottom collision detection
+            if (ball.getPosition().top > window.getSize().y) {
+                acceptScore = false;
+                ball.reboundBottom();
+                lives--;
+
+                if (lives <= 0) {
+                    score = 0;
+                    lives = 3;
+                }
+            }
+
+            // top collision
+            if (ball.getPosition().top < 0) {
+                ball.reboundBatOrTop();
+                if (acceptScore) {
+                    score++;
+                }
+            }
+
+            // side collision
+            if (ball.getPosition().left < 0 || ball.getPosition().left + ball.getPosition().width > window.getSize().x) {
+                ball.reboundSides();
+            }
+
+            // ball and bat collision
+            if (ball.getPosition().intersects(bat.getPosition())) {
+                acceptScore = true;
+                ball.reboundBatOrTop();
+            }
 
             // Update hud
             std::stringstream ss;
@@ -83,6 +119,7 @@ int main () {
 
             window.draw(hud);
             window.draw(bat.getShape());
+            window.draw(ball.getShape());
 
             window.display();
     }

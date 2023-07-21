@@ -75,7 +75,7 @@ int main () {
             // Get delta time
             Time dt = clock.restart();
             
-            bat.update(dt);
+            bat.update(dt, WINDOW_WIDTH);
             ball.update(dt);
 
             // bottom collision detection

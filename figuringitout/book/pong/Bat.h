@@ -20,5 +20,5 @@ class Bat {
         void moveRight();
         void stopLeft();
         void stopRight();
-        void update(Time dt);
+        void update(Time dt, int windowWidth);
 };

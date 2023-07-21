@@ -34,12 +34,12 @@ void Bat::stopRight() {
     m_MovingRight = false;
 }
 
-void Bat::update(Time dt) {
-    if (m_MovingLeft) {
+void Bat::update(Time dt, int windowWidth) {
+    if (m_MovingLeft && m_Shape.getGlobalBounds().left > 0) {
         m_Position.x -= m_speed * dt.asSeconds();
     }
 
-    if (m_MovingRight) {
+    if (m_MovingRight && m_Shape.getGlobalBounds().left + 100 < windowWidth) {
         m_Position.x += m_speed * dt.asSeconds();
     }
 

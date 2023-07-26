@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Player.cpp"
+#include "CreateBackground.cpp"
 
 using namespace sf;
 
@@ -33,6 +34,11 @@ int main () {
 
     // arena boundaries
     IntRect arena;
+
+    // Create the background
+    VertexArray background;
+    Texture textureBackground;
+    textureBackground.loadFromFile("graphics/background_sheet.png");
 
     // game loop
     while (window.isOpen()) {
@@ -126,7 +132,9 @@ int main () {
                     arena.height = 500;
                     arena.left = 0;
                     arena.top = 0;
-                    int tileSize = 50;
+
+                    // Pass vertexarray by reference to createBackground function
+                    int tileSize = createBackground(background, arena);
 
                     player.spawn(arena, resolution, tileSize);
 
@@ -162,6 +170,7 @@ int main () {
                 window.clear();
                 // set mainView to be displayed then draw everying related
                 window.setView(mainView);
+                window.draw(background, &textureBackground);
                 window.draw(player.getSprite());
             }
             else if (state == State::LEVEL_UP) {

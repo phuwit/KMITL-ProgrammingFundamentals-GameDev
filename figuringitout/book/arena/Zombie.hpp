@@ -6,7 +6,6 @@ using namespace sf;
 
 class Zombie {
     private:
-        enum class ZombieType { Bloater, Chaser, Crawler};
         // speed of each zombie types
         const float BLOATER_SPEED = 40;
         const float CHASER_SPEED = 40;
@@ -26,8 +25,9 @@ class Zombie {
         bool m_Alive;
 
     public:
+        enum ZombieType { Bloater, Chaser, Crawler};
         // spawn a new zombie
-        void spawn(float startX, float startY, ZombieType type, int seed);
+        void spawn(Vector2f spawnLoaction, ZombieType type, int seed);
         // handle bullet hitting a zombie
         bool hit();
         

@@ -2,11 +2,12 @@
 #define _USE_MATH_DEFINES
 
 #include "Player.hpp"
+#include "TextureHolder.cpp"
 
 Player::Player () {
     resetPlayerStats();
 
-    m_Texture.loadFromFile("graphics/player.png");
+    m_Texture = TextureHolder::GetTexture("graphics/player.png");
     m_Sprite.setTexture(m_Texture);
 
     // Set origin to center of a sprite to get good rotation

@@ -1,13 +1,14 @@
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
+#include <SFML/Graphics.hpp>
 
 #include "Zombie.hpp"
 #include "TextureHolder.hpp"
 
 using namespace std;
 
-void Zombie::spawn(float startX, float startY, ZombieType type, int seed) {
+void Zombie::spawn(Vector2f spawnLoaction, ZombieType type, int seed) {
     switch (type) {
         case ZombieType::Bloater :
             m_Sprite = Sprite(TextureHolder::GetTexture("graphics/bloater.png"));
@@ -37,9 +38,7 @@ void Zombie::spawn(float startX, float startY, ZombieType type, int seed) {
     m_Speed *= modifier;
 
     // initialize location
-    m_Position.x = startX;
-    m_Position.y = startY;
-
+    m_Position = spawnLoaction;
     // set origin to center
     m_Sprite.setOrigin(25, 25);
     // set position
@@ -77,10 +76,10 @@ void Zombie::update(float elapsedTime, Vector2f playerLocation) {
     float playerY = playerLocation.y;
 
     // move zombie to player 
-    if (playerX > m_Position.x) m_Position.x + m_Speed * elapsedTime;
-    if (playerX < m_Position.x) m_Position.x - m_Speed * elapsedTime;
-    if (playerY > m_Position.y) m_Position.y + m_Speed * elapsedTime;
-    if (playerY < m_Position.y) m_Position.y - m_Speed * elapsedTime;
+    if (playerX > m_Position.x) m_Position.x += m_Speed * elapsedTime;
+    if (playerX < m_Position.x) m_Position.x -= m_Speed * elapsedTime;
+    if (playerY > m_Position.y) m_Position.y += m_Speed * elapsedTime;
+    if (playerY < m_Position.y) m_Position.y -= m_Speed * elapsedTime;
 
     // set new position
     m_Sprite.setPosition(m_Position);

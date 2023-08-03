@@ -1,7 +1,10 @@
 #include <SFML/Graphics.hpp>
 
-#include "Player.cpp"
 #include "CreateBackground.cpp"
+#include "Player.cpp"
+#include "TextureHolder.cpp"
+#include "Zombie.cpp"
+#include "CreateHorde.cpp"
 
 using namespace sf;
 
@@ -15,13 +18,15 @@ int main () {
     Vector2f resolution;
     resolution.x = VideoMode::getDesktopMode().width;
     resolution.y = VideoMode::getDesktopMode().height;
-    RenderWindow window(VideoMode(resolution.x, resolution.y), "Arena", Style::Fullscreen);
+    // RenderWindow window(VideoMode(resolution.x, resolution.y), "Arena", Style::Fullscreen);
+    RenderWindow window(VideoMode(resolution.x, resolution.y), "Arena");
 
     // Create a main view
     View mainView(FloatRect(0, 0, resolution.x, resolution.y));
 
     // controlling time
     Clock clock;
+
     // How long have it been in IN_GAME state
     Time gameTimeTotal;
     // mouse position relative to world coords
@@ -37,8 +42,15 @@ int main () {
 
     // Create the background
     VertexArray background;
-    Texture textureBackground;
-    textureBackground.loadFromFile("graphics/background_sheet.png");
+    Texture textureBackground = TextureHolder::GetTexture("graphics/background_sheet.png");
+
+    // instance THE singleton instance of texture holder
+    TextureHolder holder;
+
+    // Prepare zombie horde
+    int numZombies;
+    int numZombiesAlive;
+    Zombie* zombies = nullptr;
 
     // game loop
     while (window.isOpen()) {
@@ -138,6 +150,13 @@ int main () {
 
                     player.spawn(arena, resolution, tileSize);
 
+                    // set horde size
+                    numZombies = 100;
+                    // delete allocated memory in free store from CreateHorde function
+                    delete[] zombies;
+                    zombies = createHorde(numZombies, arena);
+                    numZombiesAlive = numZombies;
+
                     // prevent frame jumps
                     clock.restart();
                 }
@@ -150,7 +169,7 @@ int main () {
                 // update total game time
                 gameTimeTotal += dt;
                 // store dt second in a var
-                float dtAsSeconds = dt.asSeconds();
+                const float dtAsSeconds = dt.asSeconds();
 
                 // get mouse coords
                 mouseScreenPosition = Mouse::getPosition();
@@ -163,6 +182,13 @@ int main () {
                 Vector2f playerPosition(player.getCenter());
 
                 mainView.setCenter(playerPosition);
+
+                // update every zombie by looping
+                for (int i = 0; i < numZombies; i++) {
+                    if (zombies[i].isAlive()) {
+                        zombies[i].update(dtAsSeconds, playerPosition);
+                    }
+                }
             } //End updating frame
 
         // DRAW SCENE
@@ -170,8 +196,12 @@ int main () {
                 window.clear();
                 // set mainView to be displayed then draw everying related
                 window.setView(mainView);
-                window.draw(background, &textureBackground);
-                window.draw(player.getSprite());
+                    window.draw(background, &textureBackground);
+                    window.draw(player.getSprite());
+                    // draw zombies
+                    for (int i = 0; i < numZombies; i++) {
+                        window.draw(zombies[i].getSprite());
+                    }
             }
             else if (state == State::LEVEL_UP) {
 

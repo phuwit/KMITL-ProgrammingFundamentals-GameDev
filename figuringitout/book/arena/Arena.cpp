@@ -1,8 +1,9 @@
 #include <SFML/Graphics.hpp>
 
+#include "TextureHolder.cpp"
 #include "CreateBackground.cpp"
 #include "Player.cpp"
-#include "TextureHolder.cpp"
+#include "Bullet.cpp"
 #include "Zombie.cpp"
 #include "CreateHorde.cpp"
 
@@ -34,8 +35,22 @@ int main () {
     // mouse position relative to screen
     Vector2i mouseScreenPosition;
 
+    // instance THE singleton instance of texture holder
+    TextureHolder holder;
+
     // Create an instance of Player
     Player player;
+
+    // Bullets stuffs
+    const int MAX_BULLETS = 100;
+    Bullet bullets[MAX_BULLETS];
+    int currentBullet = 0;
+    int bulletsSpare = 24;
+    int clipSize = 6;
+    int bulletsInClip = clipSize;
+    float fireRate = 1;
+    // last shot timestamp
+    Time lastShot;
 
     // arena boundaries
     IntRect arena;
@@ -43,9 +58,6 @@ int main () {
     // Create the background
     VertexArray background;
     Texture textureBackground = TextureHolder::GetTexture("graphics/background_sheet.png");
-
-    // instance THE singleton instance of texture holder
-    TextureHolder holder;
 
     // Prepare zombie horde
     int numZombies;
@@ -88,7 +100,8 @@ int main () {
                     }
                 }
             } // End event polling
-
+            
+            // Handle events while in game
             // Handle movement keys
             if (state == State::IN_GAME) {
                 if (Keyboard::isKeyPressed(Keyboard::W)) {
@@ -115,7 +128,42 @@ int main () {
                 else {
                     player.stopLeft();
                 }
-            } // End handle movement keys
+                // End handle movement keys
+
+                // Handle reloads
+                if (Keyboard::isKeyPressed(Keyboard::R)) {
+                    if (bulletsSpare >= clipSize) {
+                        // can reload to max clip size
+                        bulletsInClip = clipSize;
+                        bulletsSpare -= clipSize;
+                    }
+                    else if (bulletsSpare <= clipSize) {
+                        // can't reload to max clip size; reload only to spare bullets
+                        bulletsInClip = bulletsSpare;
+                        bulletsSpare = 0;
+                    }
+                    else {
+                        // can't reload at all
+                    }
+                }
+
+                // handle gun firing
+                if (Mouse::isButtonPressed(Mouse::Left)) {
+                    if  (gameTimeTotal.asMilliseconds() - lastShot.asMilliseconds() >
+                        1000 / fireRate && bulletsInClip > 0)
+                        {
+                        // spawn a bullet with a tragectory from player centre to crosshair pos
+                        bullets[currentBullet].shoot(player.getCenter(), mouseWorldPosition);
+                        currentBullet++;
+                        // loop back
+                        if (currentBullet >= MAX_BULLETS - 1) {
+                            currentBullet = 0;
+                        }
+                        lastShot = gameTimeTotal;
+                        bulletsInClip--;
+                    } // handle gun firing
+                }
+            } 
         
             // Handle State::LEVEL_UP
             if (state == State::LEVEL_UP) {
@@ -189,6 +237,13 @@ int main () {
                         zombies[i].update(dtAsSeconds, playerPosition);
                     }
                 }
+
+                // update every bullets
+                for (int i = 0; i < MAX_BULLETS; i++) {
+                    if (bullets[i].isInFlight()) {
+                        bullets[i].update(dtAsSeconds);
+                    }
+                }
             } //End updating frame
 
         // DRAW SCENE
@@ -198,9 +253,17 @@ int main () {
                 window.setView(mainView);
                     window.draw(background, &textureBackground);
                     window.draw(player.getSprite());
+
                     // draw zombies
                     for (int i = 0; i < numZombies; i++) {
                         window.draw(zombies[i].getSprite());
+                    }
+                    
+                    // draw bullets
+                    for (int i = 0; i < MAX_BULLETS; i++) {
+                        if (bullets[i].isInFlight()) {
+                            window.draw(bullets[i].getShape());
+                        }
                     }
             }
             else if (state == State::LEVEL_UP) {

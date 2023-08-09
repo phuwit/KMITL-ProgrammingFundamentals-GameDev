@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/clang++",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "linux-clang-x64",
+            "compilerArgs": [
+                "-lm",
+                "-lsfml-audio",
+                "-lsfml-graphics",
+                "-lsfml-window",
+                "-lsfml-system",
+                "-Wpragma-once-outside-header"
+            ]
+        }
+    ],
+    "version": 4
+}

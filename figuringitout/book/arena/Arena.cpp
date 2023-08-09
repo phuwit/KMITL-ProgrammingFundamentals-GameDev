@@ -132,10 +132,11 @@ int main () {
 
                 // Handle reloads
                 if (Keyboard::isKeyPressed(Keyboard::R)) {
-                    if (bulletsSpare >= clipSize) {
+                        if (bulletsSpare >= clipSize) {
                         // can reload to max clip size
-                        bulletsInClip = clipSize;
-                        bulletsSpare -= clipSize;
+                        int bulletsDelta = clipSize - bulletsInClip;
+                        bulletsInClip += bulletsDelta;
+                        bulletsSpare -= bulletsDelta;
                     }
                     else if (bulletsSpare <= clipSize) {
                         // can't reload to max clip size; reload only to spare bullets

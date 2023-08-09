@@ -52,6 +52,13 @@ int main () {
     // last shot timestamp
     Time lastShot;
 
+    // hide pointers and replace it with crosshairs
+    window.setMouseCursorVisible(false);
+    Sprite spriteCrosshair;
+    Texture textureCrosshair = TextureHolder::GetTexture("graphics/crosshair.png");
+    spriteCrosshair.setTexture(textureCrosshair);
+    spriteCrosshair.setOrigin(25, 25);
+
     // arena boundaries
     IntRect arena;
 
@@ -224,6 +231,8 @@ int main () {
                 mouseScreenPosition = Mouse::getPosition();
                 // convert mouse coords to world coords
                 mouseWorldPosition = window.mapPixelToCoords(mouseScreenPosition, mainView);
+                // move crosshair to invisible mouse
+                spriteCrosshair.setPosition(mouseWorldPosition);
 
                 // update player
                 player.update(dtAsSeconds, mouseScreenPosition);
@@ -253,12 +262,13 @@ int main () {
                 // set mainView to be displayed then draw everying related
                 window.setView(mainView);
                     window.draw(background, &textureBackground);
-                    window.draw(player.getSprite());
-
+                    
                     // draw zombies
                     for (int i = 0; i < numZombies; i++) {
                         window.draw(zombies[i].getSprite());
                     }
+
+                    window.draw(player.getSprite());
                     
                     // draw bullets
                     for (int i = 0; i < MAX_BULLETS; i++) {
@@ -266,6 +276,9 @@ int main () {
                             window.draw(bullets[i].getShape());
                         }
                     }
+
+                    window.draw(spriteCrosshair);
+
             }
             else if (state == State::LEVEL_UP) {
 

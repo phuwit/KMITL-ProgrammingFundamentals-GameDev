@@ -3,6 +3,7 @@
 #include "TextureHolder.cpp"
 #include "CreateBackground.cpp"
 #include "Player.cpp"
+#include "Pickups.cpp"
 #include "Bullet.cpp"
 #include "Zombie.cpp"
 #include "CreateHorde.cpp"
@@ -70,6 +71,10 @@ int main () {
     int numZombies;
     int numZombiesAlive;
     Zombie* zombies = nullptr;
+
+    // create pickups
+    Pickups healthPickup(Pickups::PickupTypes::health);
+    Pickups ammoPickup(Pickups::PickupTypes::ammo);
 
     // game loop
     while (window.isOpen()) {
@@ -206,6 +211,10 @@ int main () {
 
                     player.spawn(arena, resolution, tileSize);
 
+                    // configure pickups
+                    healthPickup.setArena(arena);
+                    ammoPickup.setArena(arena);
+
                     // set horde size
                     numZombies = 100;
                     // delete allocated memory in free store from CreateHorde function
@@ -254,6 +263,10 @@ int main () {
                         bullets[i].update(dtAsSeconds);
                     }
                 }
+
+                // upadte pickups
+                healthPickup.update(dtAsSeconds);
+                ammoPickup.update(dtAsSeconds);
             } //End updating frame
 
         // DRAW SCENE
@@ -269,6 +282,10 @@ int main () {
                     }
 
                     window.draw(player.getSprite());
+
+                    // draw pickups if it supposed to be spawned
+                    if (ammoPickup.isSpawned())     window.draw(ammoPickup.getSprite());
+                    if (healthPickup.isSpawned())   window.draw(healthPickup.getSprite());
                     
                     // draw bullets
                     for (int i = 0; i < MAX_BULLETS; i++) {

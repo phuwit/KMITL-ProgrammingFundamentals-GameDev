@@ -25,7 +25,7 @@ class Zombie {
         bool m_Alive;
 
     public:
-        enum ZombieType { Bloater, Chaser, Crawler};
+        enum ZombieType { Bloater, Chaser, Crawler };
         // spawn a new zombie
         void spawn(Vector2f spawnLoaction, ZombieType type, int seed);
         // handle bullet hitting a zombie

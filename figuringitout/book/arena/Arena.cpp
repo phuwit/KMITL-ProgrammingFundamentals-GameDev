@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 
+#include "Arena.hpp"
 #include "TextureHolder.cpp"
 #include "CreateBackground.cpp"
 #include "Player.cpp"
@@ -75,6 +76,11 @@ int main () {
     // create pickups
     Pickups healthPickup(Pickups::PickupTypes::health);
     Pickups ammoPickup(Pickups::PickupTypes::ammo);
+
+    // storing scores
+    int score = 0;
+    int hiScore = 0;
+    const int scorePerZombieKilled = 10;
 
     // game loop
     while (window.isOpen()) {
@@ -264,7 +270,58 @@ int main () {
                     }
                 }
 
-                // upadte pickups
+                // detect collisions
+                // if zombies being shot
+                for (int i = 0; i < 100; i++) {
+                    for (int j = 0; j < numZombies; j++) {
+                        if (bullets[i].isInFlight() && zombies[j].isAlive()) {
+                            if (bullets[i].getPosition().intersects(zombies[j].getPosition())) {
+                                // stop bullet
+                                bullets[i].stop();
+                                // register hit and check if killed
+                                if (zombies[j].hit()) {
+                                    // is a kill
+                                    score += scorePerZombieKilled;
+                                    // check if highscore
+                                    if (score >= hiScore) {
+                                        hiScore = score;
+                                    }
+                                    numZombiesAlive--;
+
+                                    // when all zombies died
+                                    if (numZombiesAlive == 0) {
+                                        state = State::LEVEL_UP;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } // end zombies being shot 
+
+                // if zombie hit player
+                for (int i = 0; i < numZombies; i++) {
+                    if (player.getPosition().intersects(zombies[i].getPosition())
+                        && zombies[i].isAlive()) {
+                        if (player.hit(gameTimeTotal)) {
+
+                        }
+                        if (player.getHealth() <= 0) {
+                            state = State::GAME_OVER;
+                        }
+                    }
+                } // end zombie hitting player
+
+                // if player touched pickups
+                if (player.getPosition().intersects(healthPickup.getPosition())
+                    && healthPickup.isSpawned()) {
+                        player.increaseHealthLevel(healthPickup.pickUp());
+                    }
+                if (player.getPosition().intersects(ammoPickup.getPosition())
+                    && ammoPickup.isSpawned()) {
+                        bulletsSpare += ammoPickup.pickUp();
+                    } // end player touched pickups
+
+                // update pickups
                 healthPickup.update(dtAsSeconds);
                 ammoPickup.update(dtAsSeconds);
             } //End updating frame

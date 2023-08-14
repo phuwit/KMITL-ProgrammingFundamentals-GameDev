@@ -20,6 +20,8 @@ class Zombie {
 
         Vector2f m_Position;
         Sprite m_Sprite;
+        FloatRect m_Bounds;
+        Vector2f m_CenterOffset;
         float m_Speed;
         float m_Health;
         bool m_Alive;

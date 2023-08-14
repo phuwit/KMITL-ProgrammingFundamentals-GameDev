@@ -9,24 +9,29 @@
 using namespace std;
 
 void Zombie::spawn(Vector2f spawnLoaction, ZombieType type, int seed) {
-    switch (type) {
-        case ZombieType::Bloater :
-            m_Sprite = Sprite(TextureHolder::GetTexture("graphics/bloater.png"));
-            m_Speed = BLOATER_SPEED;
-            m_Health = BLOATER_HEALTH;
-            break;
-
-        case ZombieType::Chaser :
-            m_Sprite = Sprite(TextureHolder::GetTexture("graphics/chaser.png"));
-            m_Speed = CHASER_SPEED;
-            m_Health = CHASER_HEALTH;
-            break;
-
-        case ZombieType::Crawler :
-            m_Sprite = Sprite(TextureHolder::GetTexture("graphics/crawler.png"));
-            m_Speed = CRAWLER_SPEED;
-            m_Health = CRAWLER_HEALTH;
-            break;
+    if (type == ZombieType::Bloater) {
+        Texture &texture = TextureHolder::GetTexture("graphics/bloater.png");
+        Vector2f textureSize = (Vector2f)texture.getSize();
+        m_CenterOffset = Vector2f(textureSize.x / 2, textureSize.y / 2);
+        m_Sprite = Sprite(texture);
+        m_Speed = BLOATER_SPEED;
+        m_Health = BLOATER_HEALTH;
+    }
+    else if (type == ZombieType::Chaser) {
+        Texture &texture = TextureHolder::GetTexture("graphics/bloater.png");
+        Vector2f textureSize = (Vector2f)texture.getSize();
+        m_CenterOffset = Vector2f(textureSize.x / 2, textureSize.y / 2);
+        m_Sprite = Sprite(texture);
+        m_Speed = CHASER_SPEED;
+        m_Health = CHASER_HEALTH;
+    }
+    else if (type == ZombieType::Crawler) {
+        Texture &texture = TextureHolder::GetTexture("graphics/bloater.png");
+        Vector2f textureSize = (Vector2f)texture.getSize();
+        m_CenterOffset = Vector2f(textureSize.x / 2, textureSize.y / 2);
+        m_Sprite = Sprite(texture);
+        m_Speed = CRAWLER_SPEED;
+        m_Health = CRAWLER_HEALTH;
     }
 
     // vary speed to make each one unique
@@ -40,9 +45,11 @@ void Zombie::spawn(Vector2f spawnLoaction, ZombieType type, int seed) {
     // initialize location
     m_Position = spawnLoaction;
     // set origin to center
-    m_Sprite.setOrigin(25, 25);
+    m_Sprite.setOrigin(m_CenterOffset);
     // set position
     m_Sprite.setPosition(m_Position);
+    // set bounds size
+    m_Bounds = m_Sprite.getLocalBounds();
 
     // make alive
     m_Alive = true;
@@ -67,7 +74,12 @@ bool Zombie::isAlive() {
 }
 
 FloatRect Zombie::getPosition() {
-    return m_Sprite.getGlobalBounds();
+    FloatRect bounds(
+        m_Position.x - m_CenterOffset.x,
+        m_Position.y - m_CenterOffset.y,
+        m_Bounds.width,
+        m_Bounds.height);
+    return bounds;
 }
 
 Sprite Zombie::getSprite() {

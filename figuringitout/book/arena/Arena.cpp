@@ -1,5 +1,7 @@
-#include <SFML/Graphics.hpp>
 #include <sstream>
+#include <fstream>
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #include "Arena.hpp"
 #include "TextureHolder.cpp"
@@ -53,6 +55,7 @@ int main () {
     // Bullets stuffs
     const int MAX_BULLETS = 100;
     Bullet bullets[MAX_BULLETS];
+    // current bullet index in array
     int currentBullet = 0;
     int bulletsSpare = 24;
     int clipSize = 6;
@@ -88,6 +91,14 @@ int main () {
     int score = 0;
     int hiScore = 0;
     const int scorePerZombieKilled = 10;
+
+    // load up hiscore from a text file
+    ifstream inputFile("gamedata/scores.txt");
+    if (inputFile.is_open()) {
+        // reads data and put into hiScore var
+        inputFile >> hiScore;
+        inputFile.close();
+    }
 
     // home-gameover screen
     Sprite spriteGameOver;
@@ -187,6 +198,49 @@ int main () {
     const int HUD_UPDATE_INTERVAL = 200;
     int framesSinceLastHudUpdate = 0;
 
+    // Prepare sounds stuffs
+        // Prepare the hit sound
+        SoundBuffer hitBuffer;
+        hitBuffer.loadFromFile("sound/hit.wav");
+        Sound soundHit;
+        soundHit.setBuffer(hitBuffer);
+
+        // Prepare the splat sound
+        SoundBuffer splatBuffer;
+        splatBuffer.loadFromFile("sound/splat.wav");
+        Sound soundSplat;
+        soundSplat.setBuffer(splatBuffer);
+
+        // Prepare the shoot sound
+        SoundBuffer shootBuffer;
+        shootBuffer.loadFromFile("sound/shoot.wav");
+        Sound soundShoot;
+        soundShoot.setBuffer(shootBuffer);
+
+        // Prepare the reload sound
+        SoundBuffer reloadBuffer;
+        reloadBuffer.loadFromFile("sound/reload.wav");
+        Sound soundReload;
+        soundReload.setBuffer(reloadBuffer);
+
+        // Prepare the failed sound
+        SoundBuffer reloadFailedBuffer;
+        reloadFailedBuffer.loadFromFile("sound/reload_failed.wav");
+        Sound soundReloadFailed;
+        soundReloadFailed.setBuffer(reloadFailedBuffer);
+
+        // Prepare the levelup sound
+        SoundBuffer levelUpBuffer;
+        levelUpBuffer.loadFromFile("sound/powerup.wav");
+        Sound soundLevelUp;
+        soundLevelUp.setBuffer(levelUpBuffer);
+
+        // Prepare the pickup sound
+        SoundBuffer pickupBuffer;
+        pickupBuffer.loadFromFile("sound/pickup.wav");
+        Sound soundPickup;
+        soundPickup.setBuffer(pickupBuffer);
+
     // game loop
     while (window.isOpen()) {
         // HANDLE INPUT
@@ -217,6 +271,14 @@ int main () {
                         state = State::LEVEL_UP;
                         // restart clock so there are no frame jumps
                         clock.restart();
+
+                        // prepare for next game
+                        wave = 0;
+                        currentBullet = 0;
+                        bulletsInClip = 6;
+                        clipSize = 6;
+                        fireRate = 1;
+                        player.resetPlayerStats();
                     }
                     if (state == State::IN_GAME) {
                         // do something
@@ -260,14 +322,19 @@ int main () {
                         int bulletsDelta = clipSize - bulletsInClip;
                         bulletsInClip += bulletsDelta;
                         bulletsSpare -= bulletsDelta;
+
+                        soundReload.play();
                     }
                     else if (bulletsSpare <= clipSize) {
                         // can't reload to max clip size; reload only to spare bullets
                         bulletsInClip = bulletsSpare;
                         bulletsSpare = 0;
+
+                        soundReload.play();
                     }
                     else {
                         // can't reload at all
+                        soundReloadFailed.play();
                     }
                 }
 
@@ -285,35 +352,51 @@ int main () {
                         }
                         lastShot = gameTimeTotal;
                         bulletsInClip--;
+
+                        soundShoot.play();
                     } // handle gun firing
                 }
             } 
         
             // Handle State::LEVEL_UP
             if (state == State::LEVEL_UP) {
+                // upgrades
                 if (event.key.code == Keyboard::Num1) {
+                    fireRate++;
                     state = State::IN_GAME;
                 }
                 if (event.key.code == Keyboard::Num2) {
+                    clipSize += clipSize;
                     state = State::IN_GAME;
                 }
                 if (event.key.code == Keyboard::Num3) {
+                    player.upgradeHealth();
                     state = State::IN_GAME;
                 }
                 if (event.key.code == Keyboard::Num4) {
+                    player.upgradeSpeed();
                     state = State::IN_GAME;
                 }
                 if (event.key.code == Keyboard::Num5) {
+                    healthPickup.upgrade();
                     state = State::IN_GAME;
                 }
                 if (event.key.code == Keyboard::Num6) {
+                    ammoPickup.upgrade();
+                    state = State::IN_GAME;
+                }
+                if (event.key.code == Keyboard::Num0) {
+                    // skip upgrade lmao
                     state = State::IN_GAME;
                 }
 
                 if (state == State::IN_GAME) {
+                    // increment wave
+                    wave++;
+
                     // Prepare level
-                    arena.width = 500;
-                    arena.height = 500;
+                    arena.width = 500 * wave;
+                    arena.height = 500 * wave;
                     arena.left = 0;
                     arena.top = 0;
 
@@ -327,11 +410,14 @@ int main () {
                     ammoPickup.setArena(arena);
 
                     // set horde size
-                    numZombies = 100;
+                    numZombies = 5 * wave;
                     // delete allocated memory in free store from CreateHorde function
                     delete[] zombies;
                     zombies = createHorde(numZombies, arena);
                     numZombiesAlive = numZombies;
+                    
+                    // play levelup sound
+                    soundLevelUp.play();
 
                     // prevent frame jumps
                     clock.restart();
@@ -398,6 +484,7 @@ int main () {
                                         state = State::LEVEL_UP;
                                     }
                                 }
+                                soundSplat.play();
                             }
                         }
                     }
@@ -408,10 +495,15 @@ int main () {
                     if (player.getPosition().intersects(zombies[i].getPosition())
                         && zombies[i].isAlive()) {
                         if (player.hit(gameTimeTotal)) {
-
+                            soundHit.play();
                         }
                         if (player.getHealth() <= 0) {
                             state = State::GAME_OVER;
+                            
+                            // record scores
+                            ofstream outputFile("gamedata/scores.txt");
+                            outputFile << hiScore;
+                            outputFile.close();
                         }
                     }
                 } // end zombie hitting player
@@ -420,10 +512,12 @@ int main () {
                 if (player.getPosition().intersects(healthPickup.getPosition())
                     && healthPickup.isSpawned()) {
                         player.increaseHealthLevel(healthPickup.pickUp());
+                        soundPickup.play();
                     }
                 if (player.getPosition().intersects(ammoPickup.getPosition())
                     && ammoPickup.isSpawned()) {
                         bulletsSpare += ammoPickup.pickUp();
+                        soundPickup.play();
                     } // end player touched pickups
 
                 // update pickups

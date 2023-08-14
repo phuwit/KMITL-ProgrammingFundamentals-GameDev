@@ -276,6 +276,7 @@ int main () {
                         wave = 0;
                         currentBullet = 0;
                         bulletsInClip = 6;
+                        bulletsSpare = 24;
                         clipSize = 6;
                         fireRate = 1;
                         player.resetPlayerStats();
@@ -364,30 +365,37 @@ int main () {
                 if (event.key.code == Keyboard::Num1) {
                     fireRate++;
                     state = State::IN_GAME;
+                    bulletsSpare = 24;
                 }
                 if (event.key.code == Keyboard::Num2) {
                     clipSize += clipSize;
                     state = State::IN_GAME;
+                    bulletsSpare = 24;
                 }
                 if (event.key.code == Keyboard::Num3) {
                     player.upgradeHealth();
                     state = State::IN_GAME;
+                    bulletsSpare = 24;
                 }
                 if (event.key.code == Keyboard::Num4) {
                     player.upgradeSpeed();
                     state = State::IN_GAME;
+                    bulletsSpare = 24;
                 }
                 if (event.key.code == Keyboard::Num5) {
                     healthPickup.upgrade();
                     state = State::IN_GAME;
+                    bulletsSpare = 24;
                 }
                 if (event.key.code == Keyboard::Num6) {
                     ammoPickup.upgrade();
                     state = State::IN_GAME;
+                    bulletsSpare = 24;
                 }
                 if (event.key.code == Keyboard::Num0) {
                     // skip upgrade lmao
                     state = State::IN_GAME;
+                    bulletsSpare = 24;
                 }
 
                 if (state == State::IN_GAME) {

@@ -40,6 +40,7 @@ class Player {
         Vector2f getCenter();
         float getRotation();
         Sprite getSprite();
+        RectangleShape getDrawableHitbox();
         int getHealth();
 
         // speed upgrade

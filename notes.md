@@ -1,0 +1,1 @@
+- [pixel perfect collision detection](https://github.com/SFML/SFML/wiki/Source%3A-Simple-Collision-Detection-for-SFML-2)

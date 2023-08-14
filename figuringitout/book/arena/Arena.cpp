@@ -579,13 +579,15 @@ int main () {
                     // draw zombies
                     for (int i = 0; i < numZombies; i++) {
                         window.draw(zombies[i].getSprite());
+                        window.draw(zombies[i].getDrawableHitbox());
                     }
-
-                    window.draw(player.getSprite());
 
                     // draw pickups if it supposed to be spawned
                     if (ammoPickup.isSpawned())     window.draw(ammoPickup.getSprite());
                     if (healthPickup.isSpawned())   window.draw(healthPickup.getSprite());
+
+                    window.draw(player.getSprite());
+                    window.draw(player.getDrawableHitbox());
                     
                     // draw bullets
                     for (int i = 0; i < MAX_BULLETS; i++) {

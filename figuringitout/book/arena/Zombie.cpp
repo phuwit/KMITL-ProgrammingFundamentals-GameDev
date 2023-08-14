@@ -74,6 +74,19 @@ Sprite Zombie::getSprite() {
     return m_Sprite;
 }
 
+RectangleShape Zombie::getDrawableHitbox() {
+    FloatRect bounds = Zombie::getPosition();
+    RectangleShape drawableHitbox(sf::Vector2f(bounds.width, bounds.height));
+    drawableHitbox.setPosition(bounds.left, bounds.top);
+
+    // Set the fill color to transparent and set an outline color and thickness
+    drawableHitbox.setFillColor(sf::Color::Transparent);
+    drawableHitbox.setOutlineColor(sf::Color::Red);
+    drawableHitbox.setOutlineThickness(1.f);
+
+    return drawableHitbox;
+}
+
 void Zombie::update(float elapsedTime, Vector2f playerLocation) {
     float playerX = playerLocation.x;
     float playerY = playerLocation.y;

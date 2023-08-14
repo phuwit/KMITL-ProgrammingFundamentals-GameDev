@@ -35,6 +35,7 @@ class Zombie {
         bool isAlive();
         FloatRect getPosition();
         Sprite getSprite();
+        RectangleShape getDrawableHitbox();
 
         void update(float elapsedTime, Vector2f playerLocation);
 };

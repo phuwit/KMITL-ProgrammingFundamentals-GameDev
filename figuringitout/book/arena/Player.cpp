@@ -72,6 +72,19 @@ Sprite Player::getSprite() {
     return m_Sprite;
 }
 
+RectangleShape Player::getDrawableHitbox() {
+    FloatRect bounds = Player::getPosition();
+    RectangleShape drawableHitbox(sf::Vector2f(bounds.width, bounds.height));
+    drawableHitbox.setPosition(bounds.left, bounds.top);
+
+    // Set the fill color to transparent and set an outline color and thickness
+    drawableHitbox.setFillColor(sf::Color::Transparent);
+    drawableHitbox.setOutlineColor(sf::Color::Red);
+    drawableHitbox.setOutlineThickness(1.f);
+
+    return drawableHitbox;
+}
+
 int Player::getHealth() {
     return m_Health;
 }

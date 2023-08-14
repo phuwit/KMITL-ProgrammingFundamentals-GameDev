@@ -22,6 +22,10 @@ int main () {
     Vector2f resolution;
     resolution.x = VideoMode::getDesktopMode().width;
     resolution.y = VideoMode::getDesktopMode().height;
+
+    resolution.x = 1920;
+    resolution.y = 1080;
+
     // RenderWindow window(VideoMode(resolution.x, resolution.y), "Arena", Style::Fullscreen);
     RenderWindow window(VideoMode(resolution.x, resolution.y), "Arena");
 
@@ -180,7 +184,7 @@ int main () {
 
     // no need to update hud every single frame
     // how oftern shoud the HUD updates (in frames) 
-    const int HUD_UPDATE_INTERVAL = 1000;
+    const int HUD_UPDATE_INTERVAL = 200;
     int framesSinceLastHudUpdate = 0;
 
     // game loop

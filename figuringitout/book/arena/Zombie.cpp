@@ -43,6 +43,9 @@ void Zombie::spawn(Vector2f spawnLoaction, ZombieType type, int seed) {
     m_Sprite.setOrigin(25, 25);
     // set position
     m_Sprite.setPosition(m_Position);
+
+    // make alive
+    m_Alive = true;
 }
 
 bool Zombie::hit() {

@@ -408,6 +408,9 @@ int main () {
                     arena.left = 0;
                     arena.top = 0;
 
+                    // reset ammo 
+                    bulletsSpare = 24;
+
                     // Pass vertexarray by reference to createBackground function
                     int tileSize = createBackground(background, arena);
 

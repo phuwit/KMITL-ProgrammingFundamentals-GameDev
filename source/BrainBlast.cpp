@@ -26,11 +26,11 @@ int main() {
     armJoint.setFillColor(Color::Green);
     armJoint.setPosition(Vector2f(screenResolution.x / 2 - 20, screenResolution.y / 2 - 5));
 
-    CircleShape cursor(5);
+    CircleShape cursor(7);
     cursor.setFillColor(Color::Green);
     
     RectangleShape armRay(Vector2f(300, 4));
-    armRay.setPosition(Vector2f(screenResolution.x / 2 - 20, screenResolution.y / 2 - 5));
+    armRay.setPosition(Vector2f(screenResolution.x / 2 - 15, screenResolution.y / 2));
     armRay.setOrigin(Vector2f(0, 2));
     armRay.setFillColor(Color::Magenta);
 
@@ -50,8 +50,8 @@ int main() {
             // mouseWorldPosition = window.mapPixelToCoords(mouseScreenPosition, mainView);
             player.update(mouseScreenPosition);
 
-            float angle = (atan2(mouseScreenPosition.y - ((screenResolution.y / 2) - (1 * 5)),
-                         mouseScreenPosition.x - ((screenResolution.x / 2) - (4 * 5)))
+            float angle = (atan2(mouseScreenPosition.y - ((screenResolution.y / 2)),
+                         mouseScreenPosition.x - ((screenResolution.x / 2) - (15)))
                    * 180 / M_PI);
             armRay.setRotation(angle);
 

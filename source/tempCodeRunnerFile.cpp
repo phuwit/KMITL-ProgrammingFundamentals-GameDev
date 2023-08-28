@@ -1,1 +1,0 @@
-Vector2f(screenResolution.x / 2 - 20, screenResolution.y / 2 - 5)

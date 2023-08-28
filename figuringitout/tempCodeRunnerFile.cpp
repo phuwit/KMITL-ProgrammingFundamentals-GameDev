@@ -1,1 +1,0 @@
-event.type == sf::Event::Closed

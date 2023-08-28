@@ -23,16 +23,22 @@ int main() {
 
     RectangleShape whiteBackground(screenResolution);
     CircleShape armJoint(5);
+    armJoint.setOrigin(armJoint.getRadius(), armJoint.getRadius());
+    // armJoint.setFillColor(Color(0, 255, 0, 50));
     armJoint.setFillColor(Color::Green);
-    armJoint.setPosition(Vector2f(screenResolution.x / 2 - 20, screenResolution.y / 2 - 5));
+    armJoint.setPosition(player.getArmPosition());
 
     CircleShape cursor(7);
     cursor.setFillColor(Color::Green);
     
     RectangleShape armRay(Vector2f(300, 4));
-    armRay.setPosition(Vector2f(screenResolution.x / 2 - 15, screenResolution.y / 2));
+    armRay.setPosition(player.getArmPosition());
     armRay.setOrigin(Vector2f(0, 2));
     armRay.setFillColor(Color::Magenta);
+
+    CircleShape barrel(5);
+    barrel.setFillColor(Color::Red);
+    barrel.setOrigin(barrel.getRadius(), barrel.getRadius());
 
     while (window.isOpen()) {
         // HANDLE INPUTS
@@ -57,6 +63,11 @@ int main() {
 
             cursor.setPosition(Vector2f(mouseScreenPosition.x, mouseScreenPosition.y));
 
+            barrel.setPosition(player.getArmPosition() + Vector2f(23 * 5 * cos(player.getArmAngle() * (M_PI / 180)), 23 * 5 * sin(player.getArmAngle() * (M_PI / 180))));
+
+            float barrelx = barrel.getPosition().x;
+            float barrely = barrel.getPosition().y;
+            
         // DRAW SCENE
             window.clear();
             
@@ -68,6 +79,7 @@ int main() {
             window.draw(armJoint);
             window.draw(armRay);
             window.draw(cursor);
+            window.draw(barrel);
 
             window.display();
     }

@@ -43,10 +43,20 @@ Sprite Player::getSpriteGun() {
     return m_Gun;
 }
 
+float Player::getArmAngle() {
+    return m_ArmAngle;
+}
+
+Vector2f Player::getArmPosition() {
+    return m_Arm.getPosition();
+}
+
 void Player::update(Vector2i mousePosition) {
-    float angle = (atan2(mousePosition.y - ((m_ScreenResolution.y / 2)),
+    m_ArmAngle = (atan2(mousePosition.y - ((m_ScreenResolution.y / 2)),
                          mousePosition.x - ((m_ScreenResolution.x / 2) - (20)))
                    * 180 / M_PI);
-    m_Arm.setRotation(angle);
-    m_Gun.setRotation(angle);
+    m_Arm.setRotation(m_ArmAngle);
+    m_Gun.setRotation(m_ArmAngle);
+
+
 }

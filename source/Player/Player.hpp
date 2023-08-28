@@ -13,6 +13,7 @@ class Player {
         Sprite m_Base, m_Arm, m_Gun;
         
         Vector2f m_Position;
+        float m_ArmAngle;
         
         Vector2f m_ScreenResolution;
    
@@ -21,5 +22,8 @@ class Player {
         Sprite getSpriteBase();
         Sprite getSpriteArm();
         Sprite getSpriteGun();
+        float getArmAngle();
+        // return arm's joint/origin global position 
+        Vector2f getArmPosition();
         void update(Vector2i mousePosition);
 };

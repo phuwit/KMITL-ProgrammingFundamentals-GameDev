@@ -7,7 +7,7 @@ no further information provided
 
 # Todo
 
-- [ ] player sprite
+- [x] player sprite
 - [ ] import movement code
 - [ ] import gun code
 - [ ] make a map

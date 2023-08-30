@@ -6,3 +6,5 @@
     - [Free Guns Pack 2 for Main Characters Pixel Art](https://craftpix.net/freebies/free-guns-pack-2-for-main-characters-pixel-art/)
     - []()
     - []()
+
+- Used [2D Dungeon Asset Pack](https://styloo.itch.io/2d-dungeon) by [Styloo](https://styloo.itch.io/) on itch.io, licensed under [CC0 1.0 (Public Domain Dedication)](https://creativecommons.org/publicdomain/zero/1.0/), or licensed under CC4.0 from readme but did not scpeified rights. contacted Styloo and waiting for a response.

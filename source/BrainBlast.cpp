@@ -1,8 +1,9 @@
 #include <SFML/Graphics.hpp>
 
 #include "BrainBlast.hpp"
-#include "Player/Player.cpp"
+#include "CreateBackground.cpp"
 #include "TextureHolder.cpp"
+#include "Player/Player.cpp"
 
 using namespace sf;
 
@@ -18,6 +19,12 @@ int main() {
     VideoMode desktop = VideoMode::getDesktopMode();
     // RenderWindow window(VideoMode(screenResolution.y, screenResolution.x), "Brain Blast!", Style::Fullscreen);
     RenderWindow window(VideoMode(screenResolution.x, screenResolution.y), "Brain Blast!");
+
+    IntRect playArea = IntRect(0, 0, screenResolution.x, screenResolution.y);
+    Texture textureBackground;
+    textureBackground.loadFromFile("assets/sprites/dungeon/pixel-poem/Dungeon_Tileset-x4.png");
+    VertexArray background;
+    int tileSize = createBackground(background, playArea);
 
     Player player(screenResolution);
 
@@ -65,13 +72,12 @@ int main() {
 
             barrel.setPosition(player.getArmPosition() + Vector2f(23 * 5 * cos(player.getArmAngle() * (M_PI / 180)), 23 * 5 * sin(player.getArmAngle() * (M_PI / 180))));
 
-            float barrelx = barrel.getPosition().x;
-            float barrely = barrel.getPosition().y;
             
         // DRAW SCENE
             window.clear();
             
             window.draw(whiteBackground);
+            window.draw(background, &textureBackground);
             window.draw(player.getSpriteBase());
             window.draw(player.getSpriteGun());
             window.draw(player.getSpriteArm());

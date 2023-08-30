@@ -8,3 +8,5 @@
     - []()
 
 - Used [2D Dungeon Asset Pack](https://styloo.itch.io/2d-dungeon) by [Styloo](https://styloo.itch.io/) on itch.io, licensed under [CC0 1.0 (Public Domain Dedication)](https://creativecommons.org/publicdomain/zero/1.0/), or licensed under CC4.0 from readme but did not scpeified rights. contacted Styloo and waiting for a response.
+
+- [Used 2D Pixel Dungeon Asset Pack v2.0](https://pixel-poem.itch.io/dungeon-assetpuck) by [Pixel-Poem](https://pixel-poem.itch.io/) on itch.io, licensed under the clause `This asset pack can be used in free and commercial projects. You can modify it to suit your own needs. Credit is not necessary, but appreciated. You may not redistribute it or resell it.`

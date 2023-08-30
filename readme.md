@@ -4,6 +4,8 @@
 
 no further information provided
 
+# Attributions
+many projects/ assets are used in this one. please see [attribution.md](attribution.md) for more info.
 
 # Todo
 

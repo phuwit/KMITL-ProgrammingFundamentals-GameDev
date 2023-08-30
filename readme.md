@@ -10,6 +10,7 @@ no further information provided
 - [x] player sprite
 - [ ] import movement code
 - [ ] import gun code
+- [x] background generation
 - [ ] make a map
 - [ ] idk
 

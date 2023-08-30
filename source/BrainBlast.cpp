@@ -1,3 +1,4 @@
+#include <sstream>
 #include <SFML/Graphics.hpp>
 
 #include "BrainBlast.hpp"
@@ -20,13 +21,25 @@ int main() {
     // RenderWindow window(VideoMode(screenResolution.y, screenResolution.x), "Brain Blast!", Style::Fullscreen);
     RenderWindow window(VideoMode(screenResolution.x, screenResolution.y), "Brain Blast!");
 
-    IntRect playArea = IntRect(0, 0, screenResolution.x, screenResolution.y);
-    Texture textureBackground;
-    textureBackground.loadFromFile("assets/sprites/dungeon/pixel-poem/Dungeon_Tileset-x4.png");
-    VertexArray background;
-    int tileSize = createBackground(background, playArea);
+    // instance THE singleton instance of texture holder
+    TextureHolder holder;
 
-    Player player(screenResolution);
+    Clock frameTimeClock;
+
+    const int BACKGROUND_SCALE = 4;
+    IntRect backgroundSize = IntRect(0, 0, screenResolution.x, screenResolution.y);
+    Texture textureBackground;
+    std::stringstream textureBackgroundFilename;
+    textureBackgroundFilename << "assets/sprites/dungeon/pixel-poem/Dungeon_Tileset-x" << BACKGROUND_SCALE << ".png";
+    textureBackground = TextureHolder::GetTexture(textureBackgroundFilename.str());
+    VertexArray background;
+    int tileSize = createBackground(background, backgroundSize, BACKGROUND_SCALE);
+    IntRect playArea = IntRect(
+        backgroundSize.top + tileSize, backgroundSize.left + tileSize,
+        backgroundSize.width - tileSize, backgroundSize.height - tileSize);
+
+    Player player;
+    player.spawn(playArea, screenResolution);
 
     RectangleShape whiteBackground(screenResolution);
     CircleShape armJoint(5);
@@ -57,11 +70,12 @@ int main() {
             }
 
         // UPDATE FRAME
+            Time frameTime = frameTimeClock.restart();
             // get mouse coords
             Vector2i mouseScreenPosition = Mouse::getPosition(window);
             // convert mouse coords to world coords
             // mouseWorldPosition = window.mapPixelToCoords(mouseScreenPosition, mainView);
-            player.update(mouseScreenPosition);
+            player.update(mouseScreenPosition, frameTime);
 
             float angle = (atan2(mouseScreenPosition.y - ((screenResolution.y / 2)),
                          mouseScreenPosition.x - ((screenResolution.x / 2) - (15)))
@@ -82,10 +96,10 @@ int main() {
             window.draw(player.getSpriteGun());
             window.draw(player.getSpriteArm());
 
-            window.draw(armJoint);
-            window.draw(armRay);
+            // window.draw(armJoint);
+            // window.draw(armRay);
             window.draw(cursor);
-            window.draw(barrel);
+            // window.draw(barrel);
 
             window.display();
     }

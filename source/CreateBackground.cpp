@@ -1,9 +1,9 @@
 #include "BrainBlast.hpp"
 
 
-int createBackground (VertexArray& rVA, IntRect playArea) {
+int createBackground (VertexArray& rVA, IntRect playArea, int scale) {
     // anything we did to rVA is really doing to background in the main function
-    const int SCALE = 4;
+    const int SCALE = scale;
     const int TILE_SIZE = 16 * SCALE;
 
     const int FLOOR_TILE_TYPES = 12;

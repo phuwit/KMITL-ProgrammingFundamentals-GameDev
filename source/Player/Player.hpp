@@ -5,7 +5,7 @@ class Player {
     private:
         const IntRect m_TEXTURE_SHEET_OFFSET = IntRect(3, 13, 20, 35);
         Texture textureBase, textureArm, textureGun;
-        const float m_SPRITE_SCALING = 5;
+        const float m_SPRITE_SCALING = 4;
         // const Vector2f m_ARM_BASE_OFFSET = Vector2f(10.5 * m_SPRITE_SCALING, 29.5 * m_SPRITE_SCALING);
         const Vector2f m_BASE_ORIGIN_OFFSET = Vector2f(m_TEXTURE_SHEET_OFFSET.width / 2, m_TEXTURE_SHEET_OFFSET.height / 2);
         const Vector2f m_ARM_ORIGIN_OFFSET = Vector2f(4.5, 14.5);

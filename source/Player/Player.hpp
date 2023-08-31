@@ -35,6 +35,7 @@ class Player {
         Sprite getSpriteBase();
         Sprite getSpriteArm();
         Sprite getSpriteGun();
+        Vector2f getPosition();
         float getArmAngle();
         // return arm's joint/origin global position 
         Vector2f getArmPosition();

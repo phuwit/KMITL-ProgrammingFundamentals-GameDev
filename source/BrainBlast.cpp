@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "BrainBlast.hpp"
+#include "CommonEnum.hpp"
 #include "CreateBackground.cpp"
 #include "TextureHolder.cpp"
 #include "Player/Player.cpp"
@@ -38,15 +39,28 @@ int main() {
         backgroundSize.top + tileSize, backgroundSize.left + tileSize,
         backgroundSize.width - tileSize, backgroundSize.height - tileSize);
 
+    View gameView;
+    gameView.setSize(Vector2f(backgroundSize.width, backgroundSize.height));
+    View hudView;
+    hudView.setSize(screenResolution);
+
     Player player;
     player.spawn(playArea, screenResolution);
 
+    bool movementKeyPressed[4];
+
     RectangleShape whiteBackground(screenResolution);
+
     CircleShape armJoint(5);
     armJoint.setOrigin(armJoint.getRadius(), armJoint.getRadius());
     // armJoint.setFillColor(Color(0, 255, 0, 50));
     armJoint.setFillColor(Color::Green);
     armJoint.setPosition(player.getArmPosition());
+
+    CircleShape playerPosition(5);
+    playerPosition.setOrigin(armJoint.getRadius(), armJoint.getRadius());
+    // armJoint.setFillColor(Color(0, 255, 0, 50));
+    playerPosition.setFillColor(Color::Magenta);
 
     CircleShape cursor(7);
     cursor.setFillColor(Color::Green);
@@ -69,6 +83,15 @@ int main() {
                 }
             }
 
+            movementKeyPressed[MovementKey::UP] = Keyboard::isKeyPressed(Keyboard::W);
+            movementKeyPressed[MovementKey::DOWN] = Keyboard::isKeyPressed(Keyboard::S);
+            movementKeyPressed[MovementKey::LEFT] = Keyboard::isKeyPressed(Keyboard::A);
+            movementKeyPressed[MovementKey::RIGHT] = Keyboard::isKeyPressed(Keyboard::D);
+
+            for (int i = 0; i < 4; i++) {
+                player.setMovementKeyPressed(i, movementKeyPressed[i]);
+            }
+
         // UPDATE FRAME
             Time frameTime = frameTimeClock.restart();
             // get mouse coords
@@ -77,14 +100,19 @@ int main() {
             // mouseWorldPosition = window.mapPixelToCoords(mouseScreenPosition, mainView);
             player.update(mouseScreenPosition, frameTime);
 
-            float angle = (atan2(mouseScreenPosition.y - ((screenResolution.y / 2)),
-                         mouseScreenPosition.x - ((screenResolution.x / 2) - (15)))
+            float angle = (atan2(mouseScreenPosition.y - ((player.getArmPosition().y)),
+                         mouseScreenPosition.x - ((player.getArmPosition().x) - (15)))
                    * 180 / M_PI);
             armRay.setRotation(angle);
+            armRay.setPosition(player.getArmPosition());
 
             cursor.setPosition(Vector2f(mouseScreenPosition.x, mouseScreenPosition.y));
 
             barrel.setPosition(player.getArmPosition() + Vector2f(23 * 5 * cos(player.getArmAngle() * (M_PI / 180)), 23 * 5 * sin(player.getArmAngle() * (M_PI / 180))));
+
+            armJoint.setPosition(player.getArmPosition());
+            playerPosition.setPosition(player.getPosition());
+
 
             
         // DRAW SCENE
@@ -96,8 +124,9 @@ int main() {
             window.draw(player.getSpriteGun());
             window.draw(player.getSpriteArm());
 
-            // window.draw(armJoint);
-            // window.draw(armRay);
+            window.draw(armJoint);
+            window.draw(playerPosition);
+            window.draw(armRay);
             window.draw(cursor);
             // window.draw(barrel);
 

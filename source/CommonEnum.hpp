@@ -1,3 +1,4 @@
 #pragma once
 
-enum MovementKey {UP, DOWN, LEFT, RIGHT};
+enum MovementKey {MOVEMENT_UP, MOVEMENT_DOWN, MOVEMENT_LEFT, MOVEMENT_RIGHT};
+enum MouseButton {MOUSE_LEFT, MOUSE_LRIGHT};

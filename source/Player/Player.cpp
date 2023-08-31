@@ -8,21 +8,18 @@
 #include "../CommonEnum.hpp"
 
 Player::Player() {
-    textureBase = TextureHolder::GetTexture("assets/sprites/player/base/Idle2.png");
-    textureArm = TextureHolder::GetTexture("assets/sprites/player/arm/8.png");
-    textureGun = TextureHolder::GetTexture("assets/sprites/player/gun/1_1.png");
-    m_Base.setTexture(textureBase);
+    m_Base.setTexture(TextureHolder::GetTexture("assets/sprites/player/base/Idle2.png"));
     m_Base.setTextureRect(m_TEXTURE_SHEET_OFFSET);
     m_Base.setOrigin(m_BASE_ORIGIN_OFFSET);
-    m_Arm.setTexture(textureArm);
+    m_Arm.setTexture(TextureHolder::GetTexture("assets/sprites/player/arm/8.png"));
     m_Arm.setOrigin(m_ARM_ORIGIN_OFFSET);
-    m_Gun.setTexture(textureGun);
+    m_Gun.setTexture(TextureHolder::GetTexture("assets/sprites/gun/gun.png"));
     m_Gun.setOrigin(m_GUN_ORIGIN_OFFSET);
 
     m_Base.setScale(m_SPRITE_SCALING, m_SPRITE_SCALING);
     m_Arm.setScale(m_SPRITE_SCALING, m_SPRITE_SCALING);
     m_Gun.setScale(m_SPRITE_SCALING, m_SPRITE_SCALING);
-    m_MovementKeyPressed[MovementKey::DOWN] = true;
+    m_MovementKeyPressed[MovementKey::MOVEMENT_DOWN] = true;
 }
 void Player::spawn(IntRect playArea, Vector2f screenResolution) {
     m_ScreenResolution = screenResolution;
@@ -63,10 +60,10 @@ void Player::setMovementKeyPressed(int movementKey, bool isPressed) {
 
 void Player::update(Vector2i mousePosition, Time frameTime) {
     // movement
-    if (m_MovementKeyPressed[MovementKey::LEFT])  m_Position.x -= m_Speed * frameTime.asSeconds();
-    if (m_MovementKeyPressed[MovementKey::RIGHT]) m_Position.x += m_Speed * frameTime.asSeconds();
-    if (m_MovementKeyPressed[MovementKey::UP])    m_Position.y -= m_Speed * frameTime.asSeconds();
-    if (m_MovementKeyPressed[MovementKey::DOWN])  m_Position.y += m_Speed * frameTime.asSeconds();
+    if (m_MovementKeyPressed[MovementKey::MOVEMENT_LEFT])  m_Position.x -= m_Speed * frameTime.asSeconds();
+    if (m_MovementKeyPressed[MovementKey::MOVEMENT_RIGHT]) m_Position.x += m_Speed * frameTime.asSeconds();
+    if (m_MovementKeyPressed[MovementKey::MOVEMENT_UP])    m_Position.y -= m_Speed * frameTime.asSeconds();
+    if (m_MovementKeyPressed[MovementKey::MOVEMENT_DOWN])  m_Position.y += m_Speed * frameTime.asSeconds();
 
     // detect wall collision
     if (m_Position.x > m_PlayArea.width)  m_Position.x = m_PlayArea.width;

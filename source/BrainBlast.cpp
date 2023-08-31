@@ -6,6 +6,7 @@
 #include "CreateBackground.cpp"
 #include "TextureHolder.cpp"
 #include "Player/Player.cpp"
+#include "Bullet/Bullet.cpp"
 
 using namespace sf;
 
@@ -47,7 +48,14 @@ int main() {
     Player player;
     player.spawn(playArea, screenResolution);
 
-    bool movementKeyPressed[4];
+    Bullet bullet;
+
+    bool movementKeyPressed[sizeof(MovementKey)];
+    bool mouseKeyPressed[sizeof(MouseButton)];
+
+    enum class GameState {MENU, PLAYING, PAUSED, GAME_OVER};
+    int stage = 0;
+    GameState currentGameState = GameState::MENU;
 
     RectangleShape whiteBackground(screenResolution);
 
@@ -83,12 +91,18 @@ int main() {
                 }
             }
 
-            movementKeyPressed[MovementKey::UP] = Keyboard::isKeyPressed(Keyboard::W);
-            movementKeyPressed[MovementKey::DOWN] = Keyboard::isKeyPressed(Keyboard::S);
-            movementKeyPressed[MovementKey::LEFT] = Keyboard::isKeyPressed(Keyboard::A);
-            movementKeyPressed[MovementKey::RIGHT] = Keyboard::isKeyPressed(Keyboard::D);
+            movementKeyPressed[MovementKey::MOVEMENT_UP] = Keyboard::isKeyPressed(Keyboard::W);
+            movementKeyPressed[MovementKey::MOVEMENT_DOWN] = Keyboard::isKeyPressed(Keyboard::S);
+            movementKeyPressed[MovementKey::MOVEMENT_LEFT] = Keyboard::isKeyPressed(Keyboard::A);
+            movementKeyPressed[MovementKey::MOVEMENT_RIGHT] = Keyboard::isKeyPressed(Keyboard::D);
 
-            for (int i = 0; i < 4; i++) {
+            mouseKeyPressed[MouseButton::MOUSE_LEFT] = Mouse::isButtonPressed(Mouse::Left);
+
+            if (mouseKeyPressed[MouseButton::MOUSE_LEFT]) {
+                bullet.shoot(player.getArmPosition(), Vector2f(Mouse::getPosition()), playArea);
+            }
+
+            for (int i = 0; i < sizeof(MovementKey); i++) {
                 player.setMovementKeyPressed(i, movementKeyPressed[i]);
             }
 
@@ -112,8 +126,7 @@ int main() {
 
             armJoint.setPosition(player.getArmPosition());
             playerPosition.setPosition(player.getPosition());
-
-
+            bullet.update(frameTime);
             
         // DRAW SCENE
             window.clear();
@@ -123,10 +136,11 @@ int main() {
             window.draw(player.getSpriteBase());
             window.draw(player.getSpriteGun());
             window.draw(player.getSpriteArm());
+            window.draw(bullet.getShape());
 
-            window.draw(armJoint);
-            window.draw(playerPosition);
-            window.draw(armRay);
+            // window.draw(armJoint);
+            // window.draw(playerPosition);
+            // window.draw(armRay);
             window.draw(cursor);
             // window.draw(barrel);
 

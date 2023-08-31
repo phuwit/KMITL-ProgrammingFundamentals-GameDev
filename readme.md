@@ -10,7 +10,7 @@ many projects/ assets are used in this one. please see [attribution.md](attribut
 # Todo
 
 - [x] player sprite
-- [ ] import movement code
+- [x] import movement code
 - [ ] import gun code
 - [x] background generation
 - [ ] make a map

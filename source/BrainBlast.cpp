@@ -15,13 +15,13 @@ int main() {
     screenResolution.x = VideoMode::getDesktopMode().width;
     screenResolution.y = VideoMode::getDesktopMode().height;
 
-    // screenResolution.x = 1920;
-    // screenResolution.y = 1080;
+    screenResolution.x = 1280;
+    screenResolution.y = 720;
     
     // Create a window with the same pixel depth as the desktop
     VideoMode desktop = VideoMode::getDesktopMode();
-    RenderWindow window(VideoMode(screenResolution.y, screenResolution.x), "Brain Blast!", Style::Fullscreen);
-    // RenderWindow window(VideoMode(screenResolution.x, screenResolution.y), "Brain Blast!");
+    // RenderWindow window(VideoMode(screenResolution.y, screenResolution.x), "Brain Blast!", Style::Fullscreen);
+    RenderWindow window(VideoMode(screenResolution.x, screenResolution.y), "Brain Blast!");
 
     // instance THE singleton instance of texture holder
     TextureHolder holder;
@@ -99,7 +99,7 @@ int main() {
             mouseKeyPressed[MouseButton::MOUSE_LEFT] = Mouse::isButtonPressed(Mouse::Left);
 
             if (mouseKeyPressed[MouseButton::MOUSE_LEFT]) {
-                bullet.shoot(player.getArmPosition(), Vector2f(Mouse::getPosition()), playArea);
+                bullet.shoot(player.getArmPosition(), Vector2f(Mouse::getPosition(window)), playArea);
             }
 
             for (int i = 0; i < sizeof(MovementKey); i++) {

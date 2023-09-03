@@ -18,8 +18,6 @@ int main() {
     screenResolution.x = 1280;
     screenResolution.y = 720;
     
-    // Create a window with the same pixel depth as the desktop
-    VideoMode desktop = VideoMode::getDesktopMode();
     // RenderWindow window(VideoMode(screenResolution.y, screenResolution.x), "Brain Blast!", Style::Fullscreen);
     RenderWindow window(VideoMode(screenResolution.x, screenResolution.y), "Brain Blast!");
 
@@ -48,7 +46,18 @@ int main() {
     Player player;
     player.spawn(playArea, screenResolution);
 
-    Bullet bullet;
+    // Bullets stuffs
+    const int MAX_BULLETS = 100;
+    Bullet bullets[MAX_BULLETS];
+    // current bullet index in array
+    int currentBullet = 0;
+    int bulletsSpare = 24;
+    int clipSize = 6;
+    int bulletsInClip = clipSize;
+    float fireRate = 1;
+    // last shot timestamp
+    Time lastShot;
+    Time BULLET_COOLDOWN = milliseconds(100);
 
     bool movementKeyPressed[sizeof(MovementKey)];
     bool mouseKeyPressed[sizeof(MouseButton)];
@@ -98,16 +107,9 @@ int main() {
 
             mouseKeyPressed[MouseButton::MOUSE_LEFT] = Mouse::isButtonPressed(Mouse::Left);
 
-            if (mouseKeyPressed[MouseButton::MOUSE_LEFT]) {
-                bullet.shoot(player.getArmPosition(), Vector2f(Mouse::getPosition(window)), playArea);
-            }
-
-            for (int i = 0; i < sizeof(MovementKey); i++) {
-                player.setMovementKeyPressed(i, movementKeyPressed[i]);
-            }
-
         // UPDATE FRAME
             Time frameTime = frameTimeClock.restart();
+            lastShot += frameTime;
             // get mouse coords
             Vector2i mouseScreenPosition = Mouse::getPosition(window);
             // convert mouse coords to world coords
@@ -126,7 +128,24 @@ int main() {
 
             armJoint.setPosition(player.getArmPosition());
             playerPosition.setPosition(player.getPosition());
-            bullet.update(frameTime);
+            for (int i = 0; i < MAX_BULLETS; i++) {
+                if (bullets[i].isInFlight()) {
+                    bullets[i].update(frameTime);
+                }
+            }
+
+            if (mouseKeyPressed[MouseButton::MOUSE_LEFT] && (lastShot > BULLET_COOLDOWN)) {
+                bullets[currentBullet].shoot(player.getArmPosition(), Vector2f(mouseScreenPosition), playArea);
+                currentBullet++;
+                if (currentBullet >= MAX_BULLETS - 1) {
+                    currentBullet = 0;
+                }
+                lastShot = seconds(0);
+            }
+
+            for (int i = 0; i < sizeof(MovementKey); i++) {
+                player.setMovementKeyPressed(i, movementKeyPressed[i]);
+            }
             
         // DRAW SCENE
             window.clear();
@@ -136,7 +155,11 @@ int main() {
             window.draw(player.getSpriteBase());
             window.draw(player.getSpriteGun());
             window.draw(player.getSpriteArm());
-            window.draw(bullet.getShape());
+            for (int i = 0; i < MAX_BULLETS; i++) {
+                if (bullets[i].isInFlight()) {
+                    window.draw(bullets[i].getShape());
+                }
+            }
 
             // window.draw(armJoint);
             // window.draw(playerPosition);

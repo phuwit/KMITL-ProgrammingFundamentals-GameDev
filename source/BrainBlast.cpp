@@ -15,13 +15,13 @@ int main() {
     screenResolution.x = VideoMode::getDesktopMode().width;
     screenResolution.y = VideoMode::getDesktopMode().height;
 
-    screenResolution.x = 1920;
-    screenResolution.y = 1080;
+    // screenResolution.x = 1920;
+    // screenResolution.y = 1080;
     
     // Create a window with the same pixel depth as the desktop
     VideoMode desktop = VideoMode::getDesktopMode();
-    // RenderWindow window(VideoMode(screenResolution.y, screenResolution.x), "Brain Blast!", Style::Fullscreen);
-    RenderWindow window(VideoMode(screenResolution.x, screenResolution.y), "Brain Blast!");
+    RenderWindow window(VideoMode(screenResolution.y, screenResolution.x), "Brain Blast!", Style::Fullscreen);
+    // RenderWindow window(VideoMode(screenResolution.x, screenResolution.y), "Brain Blast!");
 
     // instance THE singleton instance of texture holder
     TextureHolder holder;

@@ -19,17 +19,34 @@ void Bullet::shoot(Vector2f startPos, Vector2f targetPos, IntRect playArea) {
     float bulletRadian = atan2(targetPos.y - startPos.y,
                          targetPos.x - startPos.x);
 
-    // calculate gradient of flight path
-    float gradient = (startPos.x - targetPos.x) / (startPos.y - targetPos.y);
-    // make gradient positive
-    if (gradient < 0) {
-        gradient *= -1;
-    }
+    // // calculate gradient of flight path
+    // float gradient = (startPos.x - targetPos.x) / (startPos.y - targetPos.y);
+    // // make gradient positive
+    // if (gradient < 0) {
+    //     gradient *= -1;
+    // }
 
-    // calculate XY ratio and set speed
-    float ratioXY = m_BulletSpeed / (1 + gradient);
-    m_BulletDeltaY = ratioXY;
-    m_BulletDeltaX = ratioXY * gradient;
+    // // calculate gradient of flight path
+    // float gradient = (startPos.x - targetPos.x) / (startPos.y - targetPos.y);
+    // // make gradient positive
+    // if (gradient < 0) {
+    //     gradient *= -1;
+    // }
+
+    // // calculate XY ratio and set speed
+    // float ratioXY = m_BulletSpeed / (1 + gradient);
+    // m_BulletDeltaY = ratioXY;
+    // m_BulletDeltaX = ratioXY * gradient;
+
+    // // point buillet in the right direction
+    // if (targetPos.x < startPos.x) m_BulletDeltaX *= -1;
+    // if (targetPos.y < startPos.y) m_BulletDeltaY *= -1;
+
+    Vector2f direction = targetPos - startPos;
+    float magnitude = sqrt(direction.x * direction.x + direction.y * direction.y);
+    direction = direction / magnitude;
+    m_BulletDeltaX = m_BulletSpeed * direction.x;
+    m_BulletDeltaY = m_BulletSpeed * direction.y;
 
     // save playarea
     m_PlayArea = playArea;

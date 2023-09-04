@@ -9,12 +9,14 @@ using namespace sf;
 
 Bullet::Bullet() {
     m_Sprite.setTexture(TextureHolder::GetTexture("assets/sprites/gun/bullet.png"));
+    m_Sprite.setScale(m_SpriteScaling, m_SpriteScaling);
 }
 
-void Bullet::shoot(Vector2f startPos, Vector2f targetPos, IntRect playArea) {
+void Bullet::shoot(Vector2f startPos, Vector2f targetPos, IntRect playArea, float spriteScaling) {
     // keeping track of bullet
     m_InFlight = true;
     m_Position = startPos;
+    m_SpriteScaling = spriteScaling;
 
     float bulletRadian = atan2(targetPos.y - startPos.y,
                          targetPos.x - startPos.x);
@@ -54,6 +56,8 @@ void Bullet::shoot(Vector2f startPos, Vector2f targetPos, IntRect playArea) {
     // set bullet position
     m_Sprite.setPosition(startPos);
     m_Sprite.setRotation((bulletRadian * 180) / M_PI);
+    m_Sprite.setScale(m_SpriteScaling, m_SpriteScaling);
+    m_Sprite.setColor(Color(255, 255, 255, m_SpriteAlpha));
 }
 
 void Bullet::stop() {

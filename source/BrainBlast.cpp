@@ -43,7 +43,9 @@ int main() {
     View hudView;
     hudView.setSize(screenResolution);
 
-    Player player;
+    float SPRITE_SCALING = 4;
+
+    Player player(SPRITE_SCALING);
     player.spawn(playArea, screenResolution);
 
     // Bullets stuffs
@@ -135,7 +137,7 @@ int main() {
             }
 
             if (mouseKeyPressed[MouseButton::MOUSE_LEFT] && (lastShot > BULLET_COOLDOWN)) {
-                bullets[currentBullet].shoot(player.getArmPosition(), Vector2f(mouseScreenPosition), playArea);
+                bullets[currentBullet].shoot(player.getArmPosition(), Vector2f(mouseScreenPosition), playArea, SPRITE_SCALING - 1);
                 currentBullet++;
                 if (currentBullet >= MAX_BULLETS - 1) {
                     currentBullet = 0;

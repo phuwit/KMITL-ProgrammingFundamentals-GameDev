@@ -7,7 +7,8 @@
 #include "../TextureHolder.cpp"
 #include "../CommonEnum.hpp"
 
-Player::Player() {
+Player::Player(float spriteScaling) {
+    m_SpriteScaling = spriteScaling;
     m_Base.setTexture(TextureHolder::GetTexture("assets/sprites/player/base/Idle2.png"));
     m_Base.setTextureRect(m_TEXTURE_SHEET_OFFSET);
     m_Base.setOrigin(m_BASE_ORIGIN_OFFSET);
@@ -16,9 +17,9 @@ Player::Player() {
     m_Gun.setTexture(TextureHolder::GetTexture("assets/sprites/gun/gun.png"));
     m_Gun.setOrigin(m_GUN_ORIGIN_OFFSET);
 
-    m_Base.setScale(m_SPRITE_SCALING, m_SPRITE_SCALING);
-    m_Arm.setScale(m_SPRITE_SCALING, m_SPRITE_SCALING);
-    m_Gun.setScale(m_SPRITE_SCALING, m_SPRITE_SCALING);
+    m_Base.setScale(m_SpriteScaling, m_SpriteScaling);
+    m_Arm.setScale(m_SpriteScaling, m_SpriteScaling);
+    m_Gun.setScale(m_SpriteScaling, m_SpriteScaling);
     m_MovementKeyPressed[MovementKey::MOVEMENT_DOWN] = true;
 }
 void Player::spawn(IntRect playArea, Vector2f screenResolution) {

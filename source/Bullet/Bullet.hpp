@@ -6,13 +6,12 @@ using namespace sf;
 
 class Bullet {
     private:
-        const int M_BASE_SPEED = 400;
-        const int M_BASE_DAMAGE = 10;
-
         Vector2f m_Position;
+        float m_SpriteScaling = 1;
+        Uint8 m_SpriteAlpha = 0.75 * 255;
         Sprite m_Sprite;
         bool m_InFlight = false;
-        float m_BulletSpeed = 1000;
+        float m_BulletSpeed = 500;
         // bullet distance between frame
         float m_BulletDeltaX;
         float m_BulletDeltaY;
@@ -22,7 +21,7 @@ class Bullet {
     public:
         Bullet();
         // make new bullet
-        void shoot(Vector2f startPos, Vector2f targetPos, IntRect playArea);
+        void shoot(Vector2f startPos, Vector2f targetPos, IntRect playArea, float spriteScaling);
         // stop bullet
         void stop();
 

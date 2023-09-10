@@ -5,10 +5,10 @@
 no further information provided.
 incompetence is my greatest superpower.
 
-# Attributions
+## Attributions
 many projects/ assets are used in this one. please see [attribution.md](attribution.md) for more info.
 
-# Todo
+## Todo
 
 - [x] player sprite
 - [x] import movement code
@@ -22,7 +22,7 @@ many projects/ assets are used in this one. please see [attribution.md](attribut
 - [ ] idk
 
 
-# Master Plan as a Garnt chart
+## Master Plan as a Garnt chart
 
 | Task                                     |            |            |            |            |            |            |    Week    |                |            |                |            |            |            |
 | :--------------------------------------- | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :------------: | :--------: | :------------: | :--------: | :--------: | :--------: |
@@ -38,3 +38,6 @@ many projects/ assets are used in this one. please see [attribution.md](attribut
 | Implementing Zombies drops/ scoring      |            |            |            |            |            |            |            |                |            |       /        |     /      |     /      |            |
 | Implementing Power-ups                   |            |            |            |            |            |            |            |                |            |                |            |     /      |     /      |
 
+
+## atan(rad) converted to deg visualization
+![angle_visualization.png](https://github.com/phuwit/KMITL-ProgrammingFundamentals-GameDev/assets/26784267/eb81752f-39c3-48e4-81ae-764c52441a85)

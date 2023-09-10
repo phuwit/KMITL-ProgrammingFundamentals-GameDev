@@ -31,7 +31,7 @@ void Player::spawn(FloatRect playArea, Vector2f screenResolution) {
 
     // positions organs haha yes
     m_Position = Vector2f(m_ScreenResolution.x / 2, m_ScreenResolution.y / 2);
-    setSpritesPosition();
+    m_SetSpritesPosition();
 }
 
 Sprite Player::getSpriteBase() {
@@ -56,6 +56,13 @@ float Player::getArmAngle() {
 
 Vector2f Player::getArmPosition() {
     return m_Arm.getPosition();
+}
+
+Vector2f Player::getBarrelPosition() {
+    return (m_Arm.getPosition() + 
+            Vector2f(23 * m_SpriteScaling * cos(m_ArmAngle * (M_PI / 180)), 
+                     23 * m_SpriteScaling * sin(m_ArmAngle * (M_PI / 180)))
+           );
 }
 
 void Player::setMovementKeyPressed(int movementKey, bool isPressed) {
@@ -98,15 +105,30 @@ void Player::update(Vector2i mousePosition, Time frameTime) {
     m_Arm.setRotation(m_ArmAngle);
     m_Gun.setRotation(m_ArmAngle);
 
-    if (m_ArmAngle > 90 && m_ArmAngle < 270) {
-        m_Base.
+    if (m_ArmAngle > -90 && m_ArmAngle < 90) {
+        m_UnFlip();
+    }
+    else {
+        m_Flip();
     }
     
-    setSpritesPosition();
+    m_SetSpritesPosition();
 }
 
-void Player::setSpritesPosition() {
+void Player::m_SetSpritesPosition() {
     m_Base.setPosition(m_Position);
     m_Arm.setPosition(Vector2f(m_Position.x - m_ARM_BASE_OFFSET.x, m_Position.y - m_ARM_BASE_OFFSET.y));
     m_Gun.setPosition(Vector2f(m_Position.x - m_ARM_BASE_OFFSET.x, m_Position.y - m_ARM_BASE_OFFSET.y));
+}
+
+void Player::m_Flip() {
+    m_Base.setScale(-m_SpriteScaling, m_SpriteScaling);
+    m_Arm.setScale(m_SpriteScaling, -m_SpriteScaling);
+    m_Gun.setScale(m_SpriteScaling, -m_SpriteScaling);
+}
+
+void Player::m_UnFlip() {
+    m_Base.setScale(m_SpriteScaling, m_SpriteScaling);
+    m_Arm.setScale(m_SpriteScaling, m_SpriteScaling);
+    m_Gun.setScale(m_SpriteScaling, m_SpriteScaling);
 }

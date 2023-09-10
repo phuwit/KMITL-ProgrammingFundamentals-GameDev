@@ -20,8 +20,11 @@ class Player {
         
         bool m_MovementKeyPressed[4] = {false};
         Vector2f m_Position;
-        void setSpritesPosition();
+        void m_SetSpritesPosition();
         float m_ArmAngle;
+        bool m_Flipped = false;
+        void m_Flip();
+        void m_UnFlip();
         
         Vector2f m_ScreenResolution;
         FloatRect m_PlayArea;
@@ -37,6 +40,7 @@ class Player {
         float getArmAngle();
         // return arm's joint/origin global position 
         Vector2f getArmPosition();
+        Vector2f getBarrelPosition();
 
         void setMovementKeyPressed(int movementKey, bool isPressed);
 

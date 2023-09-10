@@ -67,6 +67,9 @@ int main() {
 
     enum class GameState {MENU, PLAYING, PAUSED, GAME_OVER};
     int stage = 0;
+
+    // DEBUG STUFFS
+
     GameState currentGameState = GameState::MENU;
 
     RectangleShape whiteBackground(screenResolution);
@@ -93,6 +96,16 @@ int main() {
     CircleShape barrel(5);
     barrel.setFillColor(Color::Red);
     barrel.setOrigin(barrel.getRadius(), barrel.getRadius());
+
+    Text textArmAngle;
+    Font fontBebas;
+    fontBebas.loadFromFile("assets/fonts/BebasNeue-Regular.otf");
+    textArmAngle.setFont(fontBebas);
+    textArmAngle.setFillColor(Color::White);
+    textArmAngle.setCharacterSize(48);
+    textArmAngle.setPosition(Vector2f(0, 0));
+
+    // END DEBUG STUFFS
 
     while (window.isOpen()) {
         // HANDLE INPUTS
@@ -127,7 +140,7 @@ int main() {
 
             cursor.setPosition(Vector2f(mouseScreenPosition.x, mouseScreenPosition.y));
 
-            barrel.setPosition(player.getArmPosition() + Vector2f(23 * 5 * cos(player.getArmAngle() * (M_PI / 180)), 23 * 5 * sin(player.getArmAngle() * (M_PI / 180))));
+            barrel.setPosition(player.getBarrelPosition());
 
             armJoint.setPosition(player.getArmPosition());
             playerPosition.setPosition(player.getPosition());
@@ -137,8 +150,13 @@ int main() {
                 }
             }
 
+
+            std::stringstream streamTextArmAngle;
+            streamTextArmAngle << "armAngle : " << player.getArmAngle();
+            textArmAngle.setString(streamTextArmAngle.str());
+
             if (mouseKeyPressed[MouseButton::MOUSE_LEFT] && (lastShot > BULLET_COOLDOWN)) {
-                bullets[currentBullet].shoot(player.getArmPosition(), Vector2f(mouseScreenPosition), playArea, SPRITE_SCALING - 1);
+                bullets[currentBullet].shoot(player.getBarrelPosition(), Vector2f(mouseScreenPosition), playArea, SPRITE_SCALING - 1);
                 currentBullet++;
                 if (currentBullet >= MAX_BULLETS - 1) {
                     currentBullet = 0;
@@ -168,7 +186,8 @@ int main() {
             // window.draw(playerPosition);
             // window.draw(armRay);
             window.draw(cursor);
-            // window.draw(barrel);
+            window.draw(barrel);
+            window.draw(textArmAngle);
 
             window.display();
     }

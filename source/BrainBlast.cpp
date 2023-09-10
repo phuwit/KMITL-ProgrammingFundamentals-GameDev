@@ -1,4 +1,5 @@
 #include <sstream>
+#include <array>
 #include <SFML/Graphics.hpp>
 
 #include "BrainBlast.hpp"
@@ -46,7 +47,7 @@ int main() {
     float SPRITE_SCALING = 4;
 
     Player player(SPRITE_SCALING);
-    player.spawn(playArea, screenResolution);
+    player.spawn(FloatRect(playArea), screenResolution);
 
     // Bullets stuffs
     const int MAX_BULLETS = 100;

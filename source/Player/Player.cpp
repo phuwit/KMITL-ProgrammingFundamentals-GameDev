@@ -22,9 +22,12 @@ Player::Player(float spriteScaling) {
     m_Gun.setScale(m_SpriteScaling, m_SpriteScaling);
     m_MovementKeyPressed[MovementKey::MOVEMENT_DOWN] = true;
 }
-void Player::spawn(IntRect playArea, Vector2f screenResolution) {
+void Player::spawn(FloatRect playArea, Vector2f screenResolution) {
     m_ScreenResolution = screenResolution;
     m_PlayArea = playArea;
+    float paddingWidth = (m_Base.getLocalBounds().width) / 2;
+    float paddingHeight = (m_Base.getLocalBounds().height) / 2;
+    m_PlayArea = FloatRect(playArea.left + paddingWidth, playArea.top + paddingHeight, playArea.width - paddingWidth, playArea.height - paddingHeight);
 
     // positions organs haha yes
     m_Position = Vector2f(m_ScreenResolution.x / 2, m_ScreenResolution.y / 2);
@@ -61,10 +64,27 @@ void Player::setMovementKeyPressed(int movementKey, bool isPressed) {
 
 void Player::update(Vector2i mousePosition, Time frameTime) {
     // movement
-    if (m_MovementKeyPressed[MovementKey::MOVEMENT_LEFT])  m_Position.x -= m_Speed * frameTime.asSeconds();
-    if (m_MovementKeyPressed[MovementKey::MOVEMENT_RIGHT]) m_Position.x += m_Speed * frameTime.asSeconds();
-    if (m_MovementKeyPressed[MovementKey::MOVEMENT_UP])    m_Position.y -= m_Speed * frameTime.asSeconds();
-    if (m_MovementKeyPressed[MovementKey::MOVEMENT_DOWN])  m_Position.y += m_Speed * frameTime.asSeconds();
+    // detect diagonals
+    int buttonPressed = 0;
+    for (int i = 0; i < sizeof(MovementKey); i++) {
+        if (m_MovementKeyPressed[i] == true) {
+            buttonPressed++;
+        }
+    }
+
+    // actually move
+    if (buttonPressed == 1) {
+        if (m_MovementKeyPressed[MovementKey::MOVEMENT_LEFT])  m_Position.x -= m_Speed * frameTime.asSeconds();
+        if (m_MovementKeyPressed[MovementKey::MOVEMENT_RIGHT]) m_Position.x += m_Speed * frameTime.asSeconds();
+        if (m_MovementKeyPressed[MovementKey::MOVEMENT_UP])    m_Position.y -= m_Speed * frameTime.asSeconds();
+        if (m_MovementKeyPressed[MovementKey::MOVEMENT_DOWN])  m_Position.y += m_Speed * frameTime.asSeconds();
+    }
+    else if (buttonPressed > 1) {
+        if (m_MovementKeyPressed[MovementKey::MOVEMENT_LEFT])  m_Position.x -= m_SpeedDiagonal * frameTime.asSeconds();
+        if (m_MovementKeyPressed[MovementKey::MOVEMENT_RIGHT]) m_Position.x += m_SpeedDiagonal * frameTime.asSeconds();
+        if (m_MovementKeyPressed[MovementKey::MOVEMENT_UP])    m_Position.y -= m_SpeedDiagonal * frameTime.asSeconds();
+        if (m_MovementKeyPressed[MovementKey::MOVEMENT_DOWN])  m_Position.y += m_SpeedDiagonal * frameTime.asSeconds();
+    }
 
     // detect wall collision
     if (m_Position.x > m_PlayArea.width)  m_Position.x = m_PlayArea.width;
@@ -77,6 +97,16 @@ void Player::update(Vector2i mousePosition, Time frameTime) {
                    * 180 / M_PI);
     m_Arm.setRotation(m_ArmAngle);
     m_Gun.setRotation(m_ArmAngle);
+
+    if (m_ArmAngle > 90 && m_ArmAngle < 270) {
+        m_Base.
+    }
     
     setSpritesPosition();
+}
+
+void Player::setSpritesPosition() {
+    m_Base.setPosition(m_Position);
+    m_Arm.setPosition(Vector2f(m_Position.x - m_ARM_BASE_OFFSET.x, m_Position.y - m_ARM_BASE_OFFSET.y));
+    m_Gun.setPosition(Vector2f(m_Position.x - m_ARM_BASE_OFFSET.x, m_Position.y - m_ARM_BASE_OFFSET.y));
 }

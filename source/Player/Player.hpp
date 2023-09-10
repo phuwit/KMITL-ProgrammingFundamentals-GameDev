@@ -1,3 +1,4 @@
+#include <cmath>
 #include <SFML/Graphics.hpp>
 
 using namespace sf;
@@ -15,22 +16,19 @@ class Player {
         Sprite m_Base, m_Arm, m_Gun;
 
         float m_Speed = 250;
+        float m_SpeedDiagonal = 250 * sqrt(0.5);
         
         bool m_MovementKeyPressed[4] = {false};
         Vector2f m_Position;
-        void setSpritesPosition() {
-            m_Base.setPosition(m_Position);
-            m_Arm.setPosition(Vector2f(m_Position.x - m_ARM_BASE_OFFSET.x, m_Position.y - m_ARM_BASE_OFFSET.y));
-            m_Gun.setPosition(Vector2f(m_Position.x - m_ARM_BASE_OFFSET.x, m_Position.y - m_ARM_BASE_OFFSET.y));
-        }
+        void setSpritesPosition();
         float m_ArmAngle;
         
         Vector2f m_ScreenResolution;
-        IntRect m_PlayArea;
+        FloatRect m_PlayArea;
    
     public:
         Player(float spriteScaling);
-        void spawn(IntRect playArea, Vector2f screenResolution);
+        void spawn(FloatRect playArea, Vector2f screenResolution);
 
         Sprite getSpriteBase();
         Sprite getSpriteArm();

@@ -2,7 +2,8 @@
 ## there are no documentation
 ### i am figuring it out
 
-no further information provided
+no further information provided.
+incompetence is my greatest superpower.
 
 # Attributions
 many projects/ assets are used in this one. please see [attribution.md](attribution.md) for more info.
@@ -14,7 +15,12 @@ many projects/ assets are used in this one. please see [attribution.md](attribut
 - [x] import gun code
 - [x] background generation
 - [ ] make a map
+- [ ] hud
+- [ ] import zombies code
+- [ ] handle score
+- [ ] handle menu and scene change
 - [ ] idk
+
 
 # Master Plan as a Garnt chart
 

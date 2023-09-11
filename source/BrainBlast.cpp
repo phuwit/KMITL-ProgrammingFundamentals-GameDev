@@ -8,6 +8,7 @@
 #include "TextureHolder.cpp"
 #include "Player/Player.cpp"
 #include "Bullet/Bullet.cpp"
+#include "Zombie/Zombie.cpp"
 
 using namespace sf;
 
@@ -67,6 +68,10 @@ int main() {
 
     enum class GameState {MENU, PLAYING, PAUSED, GAME_OVER};
     int stage = 0;
+
+    Zombie zombie(SPRITE_SCALING - 2);
+    zombie.spawn(Vector2f(200, 200), ZombieType::ZOMBIE_NORMAL, 1);
+
 
     // DEBUG STUFFS
 
@@ -181,6 +186,7 @@ int main() {
                     window.draw(bullets[i].getShape());
                 }
             }
+            window.draw(zombie.getSprite());
 
             // window.draw(armJoint);
             // window.draw(playerPosition);

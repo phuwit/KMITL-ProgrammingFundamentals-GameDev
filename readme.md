@@ -16,7 +16,8 @@ many projects/ assets are used in this one. please see [attribution.md](attribut
 - [x] background generation
 - [ ] make a map
 - [ ] hud
-- [ ] import zombies code
+- [x] import zombies code
+- [x] import zombies horde spawning code
 - [ ] handle score
 - [ ] handle menu and scene change
 - [ ] idk

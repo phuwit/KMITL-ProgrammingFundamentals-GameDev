@@ -24,8 +24,9 @@ class Zombie {
 
     public:
         Zombie(float spriteScaling);
+        Zombie();
         // spawn a new zombie
-        void spawn(Vector2f spawnLoaction, ZombieType type, int seed);
+        void spawn(Vector2f spawnLoaction, float spriteScaling, ZombieType type, int seed);
         // handle bullet hitting a zombie
         bool hit();
         
@@ -35,5 +36,5 @@ class Zombie {
         Sprite getSprite();
         RectangleShape getDrawableHitbox();
 
-        void update(float elapsedTime, Vector2f playerLocation);
+        void update(Time frameTime, Vector2f playerLocation);
 };

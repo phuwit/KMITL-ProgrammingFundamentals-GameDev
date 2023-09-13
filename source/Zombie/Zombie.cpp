@@ -9,12 +9,9 @@
 
 using namespace std;
 
-Zombie::Zombie(float spriteScaling) {
-    m_SpriteScaling = spriteScaling;
-}
+Zombie::Zombie(){}
 
-
-void Zombie::spawn(Vector2f spawnLoaction, ZombieType type, int seed) {
+void Zombie::spawn(Vector2f spawnLoaction, float spriteScaling, ZombieType type, int seed) {
     // if (type == ZombieType::ZOMBIE_NORMAL) {
     //     Texture &texture = TextureHolder::GetTexture(".png");
     //     Vector2f textureSize = (Vector2f)texture.getSize();
@@ -39,6 +36,8 @@ void Zombie::spawn(Vector2f spawnLoaction, ZombieType type, int seed) {
     //     m_Speed = ;
     //     m_Health = ;
     // }
+
+    m_SpriteScaling = spriteScaling;
 
     Texture &texture = TextureHolder::GetTexture("../assets/sprites/zombies/Run.png");
     Vector2f textureSize = (Vector2f)texture.getSize();
@@ -113,22 +112,22 @@ RectangleShape Zombie::getDrawableHitbox() {
     return drawableHitbox;
 }
 
-void Zombie::update(float elapsedTime, Vector2f playerLocation) {
+void Zombie::update(Time frameTime, Vector2f playerLocation) {
     float playerX = playerLocation.x;
     float playerY = playerLocation.y;
 
     // move zombie to player 
-    if (playerX > m_Position.x) m_Position.x += m_Speed * elapsedTime;
-    if (playerX < m_Position.x) m_Position.x -= m_Speed * elapsedTime;
-    if (playerY > m_Position.y) m_Position.y += m_Speed * elapsedTime;
-    if (playerY < m_Position.y) m_Position.y -= m_Speed * elapsedTime;
+    if (playerX > m_Position.x) m_Position.x += m_Speed * frameTime.asSeconds();
+    if (playerX < m_Position.x) m_Position.x -= m_Speed * frameTime.asSeconds();
+    if (playerY > m_Position.y) m_Position.y += m_Speed * frameTime.asSeconds();
+    if (playerY < m_Position.y) m_Position.y -= m_Speed * frameTime.asSeconds();
 
     // set new position
     m_Sprite.setPosition(m_Position);
 
-    // face zombie to player
-    float angle = (atan2(playerY - m_Position.y,
-                        playerX - m_Position.x)
-                   * 180) / M_PI;
-    m_Sprite.setRotation(angle);
+    // // face zombie to player
+    // float angle = (atan2(playerY - m_Position.y,
+    //                     playerX - m_Position.x)
+    //                * 180) / M_PI;
+    // m_Sprite.setRotation(angle);
 }

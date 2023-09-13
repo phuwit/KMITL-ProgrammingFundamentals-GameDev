@@ -9,6 +9,7 @@
 #include "Player/Player.cpp"
 #include "Bullet/Bullet.cpp"
 #include "Zombie/Zombie.cpp"
+#include "Zombie/ZombieHorde.cpp"
 
 using namespace sf;
 
@@ -69,9 +70,16 @@ int main() {
     enum class GameState {MENU, PLAYING, PAUSED, GAME_OVER};
     int stage = 0;
 
-    Zombie zombie(SPRITE_SCALING - 2);
-    zombie.spawn(Vector2f(200, 200), ZombieType::ZOMBIE_NORMAL, 1);
+    // Zombie zombie;
+    // zombie.spawn(Vector2f(200, 200), SPRITE_SCALING - 2, ZombieType::ZOMBIE_NORMAL, 1);
 
+    int numZombies = 20;
+    int numZombiesAlive;
+    Zombie* zombies = nullptr;
+    
+    delete[] zombies;
+    zombies = createHorde(numZombies, (SPRITE_SCALING - 2), playArea);
+    numZombiesAlive = numZombies;
 
     // DEBUG STUFFS
 
@@ -154,7 +162,11 @@ int main() {
                     bullets[i].update(frameTime);
                 }
             }
-
+            
+            for(int i = 0; i < numZombies; i++) {
+                zombies[i].update(frameTime, player.getPosition());
+            }
+            
 
             std::stringstream streamTextArmAngle;
             streamTextArmAngle << "armAngle : " << player.getArmAngle();
@@ -186,7 +198,9 @@ int main() {
                     window.draw(bullets[i].getShape());
                 }
             }
-            window.draw(zombie.getSprite());
+            for(int i = 0; i < numZombies; i++) {
+                window.draw(zombies[i].getSprite());
+            }
 
             // window.draw(armJoint);
             // window.draw(playerPosition);

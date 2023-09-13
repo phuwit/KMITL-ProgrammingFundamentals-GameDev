@@ -2,15 +2,15 @@
 #include "../BrainBlast.hpp"
 #include "Zombie.hpp"
 
-Zombie* createHorde(int numZombies, IntRect arena) {
+Zombie* createHorde(int numZombies, float spriteScaling, IntRect playArea) {
     Zombie* zombies = new Zombie[numZombies];
 
-    const int WALL_PADDING = 40;
+    const int WALL_PADDING = 20;
 
-    int maxY = arena.height - WALL_PADDING;
-    int minY = arena.top + WALL_PADDING;
-    int maxX = arena.width - WALL_PADDING;
-    int minX = arena.left + WALL_PADDING;
+    int maxY = playArea.height - (WALL_PADDING * 2);
+    int minY = playArea.top + WALL_PADDING;
+    int maxX = playArea.width - (WALL_PADDING * 2);
+    int minX = playArea.left + WALL_PADDING;
 
     for (int i = 0; i < numZombies; i++) {
         // random side to spawn
@@ -45,9 +45,9 @@ Zombie* createHorde(int numZombies, IntRect arena) {
 
         // random types to spawn
         srand ((int)time(0) * i * 2);
-        ZombieType type = (ZombieType)(rand() % sizeof(ZombieType));
+        ZombieType type = (ZombieType)(rand() % (sizeof(ZombieType) - 1));
         // spawn new zombies into array
-        zombies[i].spawn(spawnLocation, type, i);
+        zombies[i].spawn(spawnLocation, spriteScaling, type, i);
     }
 
     return zombies;

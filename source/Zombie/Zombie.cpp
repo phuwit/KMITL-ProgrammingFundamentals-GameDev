@@ -12,30 +12,6 @@ using namespace std;
 Zombie::Zombie(){}
 
 void Zombie::spawn(Vector2f spawnLoaction, float spriteScaling, ZombieType type, int seed) {
-    // if (type == ZombieType::ZOMBIE_NORMAL) {
-    //     Texture &texture = TextureHolder::GetTexture(".png");
-    //     Vector2f textureSize = (Vector2f)texture.getSize();
-    //     m_CenterOffset = Vector2f(textureSize.x / 2, textureSize.y / 2);
-    //     m_Sprite = Sprite(texture);
-    //     m_Speed = SPEED[ZombieType::ZOMBIE_NORMAL];
-    //     m_Health = HEALTH[ZombieType::ZOMBIE_NORMAL];
-    // }
-    // else if (type == ZombieType::) {
-    //     Texture &texture = TextureHolder::GetTexture(".png");
-    //     Vector2f textureSize = (Vector2f)texture.getSize();
-    //     m_CenterOffset = Vector2f(textureSize.x / 2, textureSize.y / 2);
-    //     m_Sprite = Sprite(texture);
-    //     m_Speed = ;
-    //     m_Health = ;
-    // }
-    // else if (type == ZombieType::) {
-    //     Texture &texture = TextureHolder::GetTexture(".png");
-    //     Vector2f textureSize = (Vector2f)texture.getSize();
-    //     m_CenterOffset = Vector2f(textureSize.x / 2, textureSize.y / 2);
-    //     m_Sprite = Sprite(texture);
-    //     m_Speed = ;
-    //     m_Health = ;
-    // }
 
     m_SpriteScaling = spriteScaling;
 
@@ -44,13 +20,14 @@ void Zombie::spawn(Vector2f spawnLoaction, float spriteScaling, ZombieType type,
     m_Sprite = Sprite(texture, IntRect(26 + 96, 40, 50, 56));
     m_Sprite.setScale(Vector2f(m_SpriteScaling, m_SpriteScaling));
     m_CenterOffset = Vector2f(m_Sprite.getLocalBounds().width / 2, m_Sprite.getLocalBounds().height / 2);
-    m_Speed = SPEED[type];
-    m_Health = HEALTH[type];
+    m_Speed = M_SPEED[type];
+    m_Health = M_HEALTH[type];
+    m_Sprite.setColor(M_COLOR[type]);
 
     // vary speed to make each one unique
     srand((int)(time(0)) * seed);
     // somewhere between 80-100
-    float modifier = (rand() % MAX_VARIANCE) + OFFSET;
+    float modifier = (rand() % M_MAX_VARIANCE) + M_OFFSET;
     // convert to a fraction of 1; range 0.7-1
     modifier /= 100;
     m_Speed *= modifier;

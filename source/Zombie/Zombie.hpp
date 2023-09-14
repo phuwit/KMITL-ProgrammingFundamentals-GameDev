@@ -7,11 +7,12 @@ using namespace sf;
 
 class Zombie {
     private:
-        const float SPEED[sizeof(ZombieType)] = {50, 35, 65};
-        const float HEALTH[sizeof(ZombieType)] = {50, 85, 35};
+        const float M_SPEED[sizeof(ZombieType)] = {50, 35, 65};
+        const float M_HEALTH[sizeof(ZombieType)] = {50, 85, 35};
+        const Color M_COLOR[sizeof(ZombieType)] = {Color(255, 255, 0, 255), Color(0, 255, 255, 255), Color(255, 0, 255, 255)};
         // make each zombie speed varies slightly to prevent bunching up
-        const int MAX_VARIANCE = 30;
-        const int OFFSET = 101 - MAX_VARIANCE;
+        const int M_MAX_VARIANCE = 30;
+        const int M_OFFSET = 101 - M_MAX_VARIANCE;
 
         Vector2f m_Position;
         float m_SpriteScaling = 1;

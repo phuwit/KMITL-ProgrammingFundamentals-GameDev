@@ -50,7 +50,7 @@ bool Zombie::hit() {
     if (m_Health < 0) {
         // dead
         m_Alive = false;
-        // m_Sprite.setTexture(TextureHolder::GetTexture("die.png"));
+        m_Sprite.setTexture(TextureHolder::GetTexture("../assets/sprites/dungeon/pixel-poem/Dungeon_Tileset-x1.png"));
 
         return true;
     }
@@ -90,21 +90,23 @@ RectangleShape Zombie::getDrawableHitbox() {
 }
 
 void Zombie::update(Time frameTime, Vector2f playerLocation) {
-    float playerX = playerLocation.x;
-    float playerY = playerLocation.y;
+    if(m_Alive){
+        float playerX = playerLocation.x;
+        float playerY = playerLocation.y;
 
-    // move zombie to player 
-    if (playerX > m_Position.x) m_Position.x += m_Speed * frameTime.asSeconds();
-    if (playerX < m_Position.x) m_Position.x -= m_Speed * frameTime.asSeconds();
-    if (playerY > m_Position.y) m_Position.y += m_Speed * frameTime.asSeconds();
-    if (playerY < m_Position.y) m_Position.y -= m_Speed * frameTime.asSeconds();
+        // move zombie to player 
+        if (playerX > m_Position.x) m_Position.x += m_Speed * frameTime.asSeconds();
+        if (playerX < m_Position.x) m_Position.x -= m_Speed * frameTime.asSeconds();
+        if (playerY > m_Position.y) m_Position.y += m_Speed * frameTime.asSeconds();
+        if (playerY < m_Position.y) m_Position.y -= m_Speed * frameTime.asSeconds();
 
-    // set new position
-    m_Sprite.setPosition(m_Position);
+        // set new position
+        m_Sprite.setPosition(m_Position);
 
-    // // face zombie to player
-    // float angle = (atan2(playerY - m_Position.y,
-    //                     playerX - m_Position.x)
-    //                * 180) / M_PI;
-    // m_Sprite.setRotation(angle);
+        // // face zombie to player
+        // float angle = (atan2(playerY - m_Position.y,
+        //                     playerX - m_Position.x)
+        //                * 180) / M_PI;
+        // m_Sprite.setRotation(angle);
+    }
 }

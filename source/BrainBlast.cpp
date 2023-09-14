@@ -157,16 +157,29 @@ int main() {
 
             armJoint.setPosition(player.getArmPosition());
             playerPosition.setPosition(player.getPosition());
-            for (int i = 0; i < MAX_BULLETS; i++) {
-                if (bullets[i].isInFlight()) {
-                    bullets[i].update(frameTime);
-                }
-            }
-            
+
             for(int i = 0; i < numZombies; i++) {
                 zombies[i].update(frameTime, player.getPosition());
             }
-            
+
+            for (int i = 0; i < MAX_BULLETS; i++) {
+                if (bullets[i].isInFlight()) {
+                    bullets[i].update(frameTime);
+
+                    // check for collision of hitbox between each bullets and each zombies
+                    // TODO: FIX THIS, THIS IS HORRIBLE
+                    for (int j = 0; j < numZombies; j++) {
+                        if (bullets[i].getShape().getGlobalBounds().intersects(zombies[j].getPosition())) {
+                            // is zombie die after bullet hit
+                            if (zombies[j].hit()) {
+                                numZombiesAlive--;
+                            }
+                        }
+                    }
+
+
+                }
+            }
 
             std::stringstream streamTextArmAngle;
             streamTextArmAngle << "armAngle : " << player.getArmAngle();
@@ -193,14 +206,25 @@ int main() {
             window.draw(player.getSpriteBase());
             window.draw(player.getSpriteGun());
             window.draw(player.getSpriteArm());
+
+            for(int i = 0; i < numZombies; i++) {
+                window.draw(zombies[i].getSprite());
+                window.draw(zombies[i].getDrawableHitbox());
+            }
+
             for (int i = 0; i < MAX_BULLETS; i++) {
                 if (bullets[i].isInFlight()) {
                     window.draw(bullets[i].getShape());
+                    FloatRect bounds = bullets[i].getShape().getGlobalBounds();
+                    RectangleShape drawableBounds(Vector2f(bounds.width, bounds.height));
+                    drawableBounds.setPosition(Vector2f(bounds.left, bounds.top));
+                    drawableBounds.setOutlineColor(Color::Green);
+                    drawableBounds.setOutlineThickness(2);
+                    drawableBounds.setFillColor(Color::Transparent);
+                    window.draw(drawableBounds);
                 }
             }
-            for(int i = 0; i < numZombies; i++) {
-                window.draw(zombies[i].getSprite());
-            }
+
 
             // window.draw(armJoint);
             // window.draw(playerPosition);
@@ -211,4 +235,6 @@ int main() {
 
             window.display();
     }
+
+    return 0;
 }

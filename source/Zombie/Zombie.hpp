@@ -8,7 +8,7 @@ using namespace sf;
 class Zombie {
     private:
         const float M_SPEED[sizeof(ZombieType)] = {50, 35, 65};
-        const float M_HEALTH[sizeof(ZombieType)] = {50, 85, 35};
+        const float M_HEALTH[sizeof(ZombieType)] = {5, 8, 3};
         const Color M_COLOR[sizeof(ZombieType)] = {Color(255, 255, 0, 255), Color(0, 255, 255, 255), Color(255, 0, 255, 255)};
         // make each zombie speed varies slightly to prevent bunching up
         const int M_MAX_VARIANCE = 30;

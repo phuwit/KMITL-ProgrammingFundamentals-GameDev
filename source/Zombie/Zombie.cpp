@@ -15,14 +15,14 @@ void Zombie::spawn(Vector2f spawnLoaction, float spriteScaling, ZombieType type,
 
     m_SpriteScaling = spriteScaling;
 
-    Texture &texture = TextureHolder::GetTexture("../assets/sprites/zombies/Run.png");
+    Texture &texture = TextureHolder::GetTexture(M_SPRITE_FILENAME[type]);
     Vector2f textureSize = (Vector2f)texture.getSize();
     m_Sprite = Sprite(texture, IntRect(26 + 96, 40, 50, 56));
     m_Sprite.setScale(Vector2f(m_SpriteScaling, m_SpriteScaling));
     m_CenterOffset = Vector2f(m_Sprite.getLocalBounds().width / 2, m_Sprite.getLocalBounds().height / 2);
-    m_Speed = M_SPEED[type];
-    m_Health = M_HEALTH[type];
-    m_Sprite.setColor(M_COLOR[type]);
+    m_Speed = M_SPEED_BASE[type];
+    m_Health = M_HEALTH_BASE[type];
+    m_Sprite.setColor(M_COLOR_BASE[type]);
 
     // vary speed to make each one unique
     srand((int)(time(0)) * seed);

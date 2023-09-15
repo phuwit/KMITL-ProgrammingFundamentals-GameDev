@@ -7,9 +7,10 @@ using namespace sf;
 
 class Zombie {
     private:
-        const float M_SPEED[sizeof(ZombieType)] = {50, 35, 65};
-        const float M_HEALTH[sizeof(ZombieType)] = {5, 8, 3};
-        const Color M_COLOR[sizeof(ZombieType)] = {Color(255, 255, 0, 255), Color(0, 255, 255, 255), Color(255, 0, 255, 255)};
+        const float M_SPEED_BASE[sizeof(ZombieType)] = {50, 35, 65};
+        const float M_HEALTH_BASE[sizeof(ZombieType)] = {5, 8, 3};
+        const Color M_COLOR_BASE[sizeof(ZombieType)] = {Color(255, 255, 0, 255), Color(0, 255, 255, 255), Color(255, 0, 255, 255)};
+        const String M_SPRITE_FILENAME[sizeof(ZombieType)] = {"../assets/sprites/zombies/wild/Run.png", "../assets/sprites/zombies/male/Run.png","../assets/sprites/zombies/female/Run.png"};
         // make each zombie speed varies slightly to prevent bunching up
         const int M_MAX_VARIANCE = 30;
         const int M_OFFSET = 101 - M_MAX_VARIANCE;
@@ -24,7 +25,6 @@ class Zombie {
         bool m_Alive;
 
     public:
-        Zombie(float spriteScaling);
         Zombie();
         // spawn a new zombie
         void spawn(Vector2f spawnLoaction, float spriteScaling, ZombieType type, int seed);

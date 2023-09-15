@@ -171,13 +171,13 @@ int main() {
                     for (int j = 0; j < numZombies; j++) {
                         if (bullets[i].getShape().getGlobalBounds().intersects(zombies[j].getPosition())) {
                             // is zombie die after bullet hit
-                            if (zombies[j].hit()) {
-                                numZombiesAlive--;
+                            if (bullets[i].isInFlight() && zombies[j].isAlive()) {
+                                // numZombiesAlive--;
+                                zombies[j].hit();
+                                bullets[i].stop();
                             }
                         }
                     }
-
-
                 }
             }
 

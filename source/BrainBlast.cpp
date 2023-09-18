@@ -15,8 +15,8 @@ using namespace sf;
 
 int main() {
     Vector2f screenResolution;
-    screenResolution.x = VideoMode::getDesktopMode().width;
-    screenResolution.y = VideoMode::getDesktopMode().height;
+    // screenResolution.x = VideoMode::getDesktopMode().width;
+    // screenResolution.y = VideoMode::getDesktopMode().height;
 
     screenResolution.x = 1280;
     screenResolution.y = 720;
@@ -160,6 +160,7 @@ int main() {
 
             for(int i = 0; i < numZombies; i++) {
                 zombies[i].update(frameTime, player.getPosition());
+
             }
 
             for (int i = 0; i < MAX_BULLETS; i++) {
@@ -169,7 +170,7 @@ int main() {
                     // check for collision of hitbox between each bullets and each zombies
                     // TODO: FIX THIS, THIS IS HORRIBLE
                     for (int j = 0; j < numZombies; j++) {
-                        if (bullets[i].getShape().getGlobalBounds().intersects(zombies[j].getPosition())) {
+                        if (zombies[j].getHitBox().contains(bullets[i].getPosition())) {
                             // is zombie die after bullet hit
                             if (bullets[i].isInFlight() && zombies[j].isAlive()) {
                                 // numZombiesAlive--;
@@ -214,8 +215,8 @@ int main() {
 
             for (int i = 0; i < MAX_BULLETS; i++) {
                 if (bullets[i].isInFlight()) {
-                    window.draw(bullets[i].getShape());
-                    FloatRect bounds = bullets[i].getShape().getGlobalBounds();
+                    window.draw(bullets[i].getSprite());
+                    FloatRect bounds = bullets[i].getSprite().getGlobalBounds();
                     RectangleShape drawableBounds(Vector2f(bounds.width, bounds.height));
                     drawableBounds.setPosition(Vector2f(bounds.left, bounds.top));
                     drawableBounds.setOutlineColor(Color::Green);
@@ -231,7 +232,7 @@ int main() {
             // window.draw(armRay);
             window.draw(cursor);
             window.draw(barrel);
-            window.draw(textArmAngle);
+            // window.draw(textArmAngle);
 
             window.display();
     }

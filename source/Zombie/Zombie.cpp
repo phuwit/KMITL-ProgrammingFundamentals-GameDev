@@ -19,7 +19,7 @@ void Zombie::spawn(Vector2f spawnLoaction, float spriteScaling, ZombieType type,
     Vector2f textureSize = (Vector2f)texture.getSize();
     m_Sprite = Sprite(texture, IntRect(26 + 96, 40, 50, 56));
     m_Sprite.setScale(Vector2f(m_SpriteScaling, m_SpriteScaling));
-    m_CenterOffset = Vector2f(m_Sprite.getLocalBounds().width / 2, m_Sprite.getLocalBounds().height / 2);
+    m_CenterOffset = Vector2f(((m_Sprite.getLocalBounds().width) * m_SpriteScaling)/ 2, ((m_Sprite.getLocalBounds().height * m_SpriteScaling) / 2));
     m_Speed = M_SPEED_BASE[type];
     m_Health = M_HEALTH_BASE[type];
     m_Sprite.setColor(M_COLOR_BASE[type]);
@@ -63,12 +63,12 @@ bool Zombie::isAlive() {
     return m_Alive;
 }
 
-FloatRect Zombie::getPosition() {
+FloatRect Zombie::getHitBox() {
     FloatRect bounds(
-        m_Position.x - m_CenterOffset.x,
-        m_Position.y - m_CenterOffset.y,
-        m_Bounds.width,
-        m_Bounds.height);
+        m_Position.x - (m_CenterOffset.x * 2),
+        m_Position.y - (m_CenterOffset.y * 2),
+        m_Bounds.width * m_SpriteScaling,
+        m_Bounds.height * m_SpriteScaling);
     return bounds;
 }
 
@@ -77,7 +77,7 @@ Sprite Zombie::getSprite() {
 }
 
 RectangleShape Zombie::getDrawableHitbox() {
-    FloatRect bounds = Zombie::getPosition();
+    FloatRect bounds = Zombie::getHitBox();
     RectangleShape drawableHitbox(sf::Vector2f(bounds.width, bounds.height));
     drawableHitbox.setPosition(bounds.left, bounds.top);
 

@@ -18,8 +18,9 @@ void Bullet::shoot(Vector2f startPos, Vector2f targetPos, IntRect playArea, floa
     m_Position = startPos;
     m_SpriteScaling = spriteScaling;
 
-    float bulletRadian = atan2(targetPos.y - startPos.y,
-                         targetPos.x - startPos.x);
+    m_BulletRotationDegrees = ((atan2(targetPos.y - startPos.y,
+                                    targetPos.x - startPos.x) 
+                                * 180) / M_PI);
 
     // // calculate gradient of flight path
     // float gradient = (startPos.x - targetPos.x) / (startPos.y - targetPos.y);
@@ -55,7 +56,7 @@ void Bullet::shoot(Vector2f startPos, Vector2f targetPos, IntRect playArea, floa
 
     // set bullet position
     m_Sprite.setPosition(startPos);
-    m_Sprite.setRotation((bulletRadian * 180) / M_PI);
+    m_Sprite.setRotation(m_BulletRotationDegrees);
     m_Sprite.setScale(m_SpriteScaling, m_SpriteScaling);
     m_Sprite.setColor(Color(255, 255, 255, m_SpriteAlpha));
 }
@@ -68,11 +69,15 @@ bool Bullet::isInFlight() {
     return m_InFlight;
 }
 
-FloatRect Bullet::getPosition() {
+Vector2f Bullet::getPosition() {
+    return m_Position;
+}
+
+FloatRect Bullet::getHitBox() {
     return m_Sprite.getGlobalBounds();
 }
 
-Sprite Bullet::getShape() {
+Sprite Bullet::getSprite() {
     return m_Sprite;
 }
 

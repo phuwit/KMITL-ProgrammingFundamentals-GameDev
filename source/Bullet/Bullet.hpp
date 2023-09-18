@@ -7,6 +7,7 @@ using namespace sf;
 class Bullet {
     private:
         Vector2f m_Position;
+        float m_BulletRotationDegrees;
         float m_SpriteScaling = 1;
         Uint8 m_SpriteAlpha = 0.75 * 255;
         Sprite m_Sprite;
@@ -27,8 +28,9 @@ class Bullet {
 
         // getters
         bool isInFlight();
-        FloatRect getPosition();
-        Sprite getShape();
+        Vector2f getPosition();
+        FloatRect getHitBox();
+        Sprite getSprite();
 
         void update(Time frameTime);
 };

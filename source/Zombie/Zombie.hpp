@@ -33,7 +33,7 @@ class Zombie {
         
         // getters
         bool isAlive();
-        FloatRect getPosition();
+        FloatRect getHitBox();
         Sprite getSprite();
         RectangleShape getDrawableHitbox();
 

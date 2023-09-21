@@ -75,6 +75,7 @@
         "source_location": "cpp",
         "stdfloat": "cpp",
         "cfenv": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "hash_map": "cpp"
     }
 }

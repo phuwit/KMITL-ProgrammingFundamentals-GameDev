@@ -51,6 +51,12 @@ int main() {
     Player player(SPRITE_SCALING);
     player.spawn(FloatRect(playArea), screenResolution);
 
+    const Time PLAYER_HIT_COOLDOWN = milliseconds(300);
+    Time playerLastHit = seconds(0);
+
+    const int PLAYER_BASE_HEALTH = 5;
+    int playerHealth = PLAYER_BASE_HEALTH;
+
     // Bullets stuffs
     const int MAX_BULLETS = 100;
     Bullet bullets[MAX_BULLETS];
@@ -62,7 +68,7 @@ int main() {
     float fireRate = 1;
     // last shot timestamp
     Time lastShot;
-    Time BULLET_COOLDOWN = milliseconds(100);
+    Time BULLET_COOLDOWN = milliseconds(200);
 
     bool movementKeyPressed[sizeof(MovementKey)];
     bool mouseKeyPressed[sizeof(MouseButton)];
@@ -110,13 +116,20 @@ int main() {
     barrel.setFillColor(Color::Red);
     barrel.setOrigin(barrel.getRadius(), barrel.getRadius());
 
-    Text textArmAngle;
     Font fontBebas;
     fontBebas.loadFromFile("assets/fonts/BebasNeue-Regular.otf");
+    
+    Text textArmAngle;
     textArmAngle.setFont(fontBebas);
     textArmAngle.setFillColor(Color::White);
     textArmAngle.setCharacterSize(48);
     textArmAngle.setPosition(Vector2f(0, 0));
+
+    Text textHealth;
+    textHealth.setFont(fontBebas);
+    textHealth.setFillColor(Color::White);
+    textHealth.setCharacterSize(32);
+    textHealth.setPosition(0, 64);
 
     // END DEBUG STUFFS
 
@@ -139,6 +152,7 @@ int main() {
         // UPDATE FRAME
             Time frameTime = frameTimeClock.restart();
             lastShot += frameTime;
+            playerLastHit += frameTime;
             // get mouse coords
             Vector2i mouseScreenPosition = Mouse::getPosition(window);
             // convert mouse coords to world coords
@@ -160,7 +174,18 @@ int main() {
 
             for(int i = 0; i < numZombies; i++) {
                 zombies[i].update(frameTime, player.getPosition());
+            }
 
+            for(int i = 0; i < numZombies; i++) {
+                if (zombies[i].isAlive() && (playerLastHit > PLAYER_HIT_COOLDOWN)) {
+                    if (zombies[i].getHitBox().intersects(player.getSpriteBase().getGlobalBounds())) {
+                        playerHealth--;
+                        playerLastHit = seconds(0);
+                        if (playerHealth <= 0) {
+                            // game over idk
+                        }
+                    }
+                }
             }
 
             for (int i = 0; i < MAX_BULLETS; i++) {
@@ -182,10 +207,6 @@ int main() {
                 }
             }
 
-            std::stringstream streamTextArmAngle;
-            streamTextArmAngle << "armAngle : " << player.getArmAngle();
-            textArmAngle.setString(streamTextArmAngle.str());
-
             if (mouseKeyPressed[MouseButton::MOUSE_LEFT] && (lastShot > BULLET_COOLDOWN)) {
                 bullets[currentBullet].shoot(player.getBarrelPosition(), Vector2f(mouseScreenPosition), playArea, SPRITE_SCALING - 1);
                 currentBullet++;
@@ -198,41 +219,52 @@ int main() {
             for (int i = 0; i < sizeof(MovementKey); i++) {
                 player.setMovementKeyPressed(i, movementKeyPressed[i]);
             }
+
+            std::stringstream streamTextArmAngle;
+            streamTextArmAngle << "armAngle : " << player.getArmAngle();
+            textArmAngle.setString(streamTextArmAngle.str());
             
+            std::stringstream streamTextHealth;
+            streamTextHealth << "health : " << playerHealth;
+            textArmAngle.setString(streamTextHealth.str());
+
         // DRAW SCENE
             window.clear();
+
+            // window.setView(gameView);
             
-            window.draw(whiteBackground);
-            window.draw(background, &textureBackground);
-            window.draw(player.getSpriteBase());
-            window.draw(player.getSpriteGun());
-            window.draw(player.getSpriteArm());
+                window.draw(whiteBackground);
+                window.draw(background, &textureBackground);
+                window.draw(player.getSpriteBase());
+                window.draw(player.getSpriteGun());
+                window.draw(player.getSpriteArm());
 
-            for(int i = 0; i < numZombies; i++) {
-                window.draw(zombies[i].getSprite());
-                window.draw(zombies[i].getDrawableHitbox());
-            }
-
-            for (int i = 0; i < MAX_BULLETS; i++) {
-                if (bullets[i].isInFlight()) {
-                    window.draw(bullets[i].getSprite());
-                    FloatRect bounds = bullets[i].getSprite().getGlobalBounds();
-                    RectangleShape drawableBounds(Vector2f(bounds.width, bounds.height));
-                    drawableBounds.setPosition(Vector2f(bounds.left, bounds.top));
-                    drawableBounds.setOutlineColor(Color::Green);
-                    drawableBounds.setOutlineThickness(2);
-                    drawableBounds.setFillColor(Color::Transparent);
-                    window.draw(drawableBounds);
+                for(int i = 0; i < numZombies; i++) {
+                    window.draw(zombies[i].getSprite());
+                    window.draw(zombies[i].getDrawableHitbox());
                 }
-            }
 
-
-            // window.draw(armJoint);
-            // window.draw(playerPosition);
-            // window.draw(armRay);
-            window.draw(cursor);
-            window.draw(barrel);
-            // window.draw(textArmAngle);
+                for (int i = 0; i < MAX_BULLETS; i++) {
+                    if (bullets[i].isInFlight()) {
+                        window.draw(bullets[i].getSprite());
+                        FloatRect bounds = bullets[i].getSprite().getGlobalBounds();
+                        RectangleShape drawableBounds(Vector2f(bounds.width, bounds.height));
+                        drawableBounds.setPosition(Vector2f(bounds.left, bounds.top));
+                        drawableBounds.setOutlineColor(Color::Green);
+                        drawableBounds.setOutlineThickness(2);
+                        drawableBounds.setFillColor(Color::Transparent);
+                        window.draw(drawableBounds);
+                    }
+                }
+            
+            // window.setView(hudView);
+                // window.draw(armJoint);
+                // window.draw(playerPosition);
+                // window.draw(armRay);
+                window.draw(cursor);
+                window.draw(barrel);
+                // window.draw(textArmAngle);
+                window.draw(textArmAngle);
 
             window.display();
     }

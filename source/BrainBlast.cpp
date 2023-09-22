@@ -19,11 +19,11 @@ int main() {
     std::vector<sf::VideoMode> allVideoModes = VideoMode::getFullscreenModes();
     VideoMode videoMode = VideoMode((int)allVideoModes[0].width, (int)allVideoModes[0].height, allVideoModes[0].bitsPerPixel);
     
-    screenResolution.x = videoMode.width;
-    screenResolution.y = videoMode.height;
+    // screenResolution.x = videoMode.width;
+    // screenResolution.y = videoMode.height;
 
-    // screenResolution.x = 1280;
-    // screenResolution.y = 720;
+    screenResolution.x = 1920;
+    screenResolution.y = 1080;
     
     // RenderWindow window(videoMode, "Brain Blast!", Style::Fullscreen);
     // RenderWindow window(videoMode, "Brain Blast!");
@@ -261,7 +261,7 @@ int main() {
             textScore.setString(streamTextScore.str());
 
         // DRAW SCENE
-            window.clear();
+            window.clear(Color(37, 19, 26));
 
             window.draw(textArmAngle);
             window.draw(textHealth);
@@ -269,7 +269,7 @@ int main() {
 
             window.setView(gameView);
             
-                window.draw(whiteBackground);
+                // window.draw(whiteBackground);
                 window.draw(background, &textureBackground);
                 window.draw(player.getSpriteBase());
                 window.draw(player.getSpriteGun());

@@ -14,7 +14,7 @@ many projects/ assets are used in this one. please see [attribution.md](attribut
 - [x] import movement code
 - [x] import gun code
 - [x] background generation
-- [ ] make a map
+- [x] make a map
 - [ ] hud
 - [x] import zombies code
 - [x] import zombies horde spawning code

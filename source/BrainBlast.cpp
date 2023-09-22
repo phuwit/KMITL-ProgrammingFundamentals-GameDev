@@ -18,11 +18,15 @@ int main() {
     // screenResolution.x = VideoMode::getDesktopMode().width;
     // screenResolution.y = VideoMode::getDesktopMode().height;
 
+    // std::vector<sf::VideoMode> modes = VideoMode::getFullscreenModes();
+
     screenResolution.x = 1280;
     screenResolution.y = 720;
     
-    // RenderWindow window(VideoMode(screenResolution.y, screenResolution.x), "Brain Blast!", Style::Fullscreen);
-    RenderWindow window(VideoMode(screenResolution.x, screenResolution.y), "Brain Blast!");
+    RenderWindow window(VideoMode::getFullscreenModes()[0], "Brain Blast!", Style::Fullscreen);
+    // RenderWindow window(VideoMode::getFullscreenModes()[0], "Brain Blast!");
+    // RenderWindow window(VideoMode(screenResolution.y, screenResolution.x), "Brain Blast!");
+
     // window.setMouseCursorVisible(false);
 
     // instance THE singleton instance of texture holder
@@ -31,7 +35,8 @@ int main() {
     Clock frameTimeClock;
 
     const int BACKGROUND_SCALE = 4;
-    IntRect backgroundSize = IntRect(0, 0, screenResolution.x, screenResolution.y);
+    // IntRect backgroundSize = IntRect(0, 0, screenResolution.x, screenResolution.y);
+    IntRect backgroundSize = IntRect(0, 0, screenResolution.x * 2, screenResolution.y * 2);
     Texture textureBackground;
     std::stringstream textureBackgroundFilename;
     textureBackgroundFilename << "assets/sprites/dungeon/pixel-poem/Dungeon_Tileset-x" << BACKGROUND_SCALE << ".png";
@@ -42,16 +47,21 @@ int main() {
         backgroundSize.top + tileSize, backgroundSize.left + tileSize,
         backgroundSize.width - tileSize, backgroundSize.height - tileSize);
 
-    View gameView;
-    gameView.setSize(Vector2f(backgroundSize.width, backgroundSize.height));
-    gameView.setCenter(backgroundSize.width / 2, backgroundSize.height / 2);
-    View hudView;
-    hudView.setSize(screenResolution);
-
     float SPRITE_SCALING = 4;
 
     Player player(SPRITE_SCALING);
     player.spawn(FloatRect(playArea), screenResolution);
+
+    View gameView;
+    gameView.setSize(Vector2f(backgroundSize.width, backgroundSize.height));
+    gameView.setCenter(player.getPosition());
+    View hudView;
+    hudView.setSize(screenResolution);
+    hudView.setCenter(Vector2f(screenResolution.x / 2, screenResolution.y / 2));
+
+    // CircleShape centerHud(500);
+    // centerHud.setPosition(Vector2f(0, 0));
+
 
     const Time LAST_HIT_COOLDOWN = milliseconds(300);
     Time lastHit = seconds(0);
@@ -164,23 +174,25 @@ int main() {
             lastShot += frameTime;
             lastHit += frameTime;
             // get mouse coords
-            Vector2i mouseScreenPosition = Mouse::getPosition(window);
+            // Vector2i mouseScreenPosition = Mouse::getPosition(window);
+            Vector2i mouseScreenPosition = Mouse::getPosition();
             // convert mouse coords to world coords
-            // mouseWorldPosition = window.mapPixelToCoords(mouseScreenPosition, mainView);
-            player.update(mouseScreenPosition, frameTime);
+            Vector2f mouseWorldPosition = window.mapPixelToCoords(mouseScreenPosition, gameView);
+            player.update((mouseWorldPosition), frameTime);
 
-            float angle = (atan2(mouseScreenPosition.y - ((player.getArmPosition().y)),
-                         mouseScreenPosition.x - ((player.getArmPosition().x) - (15)))
+            float angle = (atan2(mouseWorldPosition.y - ((player.getArmPosition().y)),
+                         mouseWorldPosition.x - ((player.getArmPosition().x) - (15)))
                    * 180 / M_PI);
             armRay.setRotation(angle);
             armRay.setPosition(player.getArmPosition());
 
-            cursor.setPosition(Vector2f(mouseScreenPosition.x, mouseScreenPosition.y));
+            cursor.setPosition(Vector2f(mouseWorldPosition.x, mouseWorldPosition.y));
 
             barrel.setPosition(player.getBarrelPosition());
 
             armJoint.setPosition(player.getArmPosition());
             playerPosition.setPosition(player.getPosition());
+            gameView.setCenter(player.getPosition());
 
             for(int i = 0; i < numZombies; i++) {
                 zombies[i].update(frameTime, player.getPosition());
@@ -222,7 +234,7 @@ int main() {
             }
 
             if (mouseKeyPressed[MouseButton::MOUSE_LEFT] && (lastShot > BULLET_COOLDOWN)) {
-                bullets[currentBullet].shoot(player.getBarrelPosition(), Vector2f(mouseScreenPosition), playArea, SPRITE_SCALING - 1);
+                bullets[currentBullet].shoot(player.getBarrelPosition(), mouseWorldPosition, playArea, SPRITE_SCALING - 1);
                 currentBullet++;
                 if (currentBullet >= MAX_BULLETS - 1) {
                     currentBullet = 0;
@@ -274,17 +286,18 @@ int main() {
                         window.draw(drawableBounds);
                     }
                 }
+                window.draw(armJoint);
+                window.draw(playerPosition);
+                window.draw(armRay);
+                window.draw(cursor);
+                window.draw(barrel);
             
             window.setView(hudView);
-                // window.draw(armJoint);
-                // window.draw(playerPosition);
-                // window.draw(armRay);
-                // window.draw(cursor);
-                // window.draw(barrel);
                 // window.draw(textArmAngle);
                 window.draw(textArmAngle);
                 window.draw(textHealth);
                 window.draw(textScore);
+                // window.draw(centerHud);
 
             window.display();
     }

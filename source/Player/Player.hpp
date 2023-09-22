@@ -44,5 +44,5 @@ class Player {
 
         void setMovementKeyPressed(int movementKey, bool isPressed);
 
-        void update(Vector2i mousePosition, Time deltaTime);
+        void update(Vector2f mousePosition, Time deltaTime);
 };

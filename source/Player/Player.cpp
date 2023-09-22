@@ -69,7 +69,7 @@ void Player::setMovementKeyPressed(int movementKey, bool isPressed) {
     m_MovementKeyPressed[movementKey] = isPressed;
 }
 
-void Player::update(Vector2i mousePosition, Time frameTime) {
+void Player::update(Vector2f mousePosition, Time frameTime) {
     // movement
     // detect diagonals
     int buttonPressed = 0;

@@ -15,17 +15,19 @@ using namespace sf;
 
 int main() {
     Vector2f screenResolution;
-    // screenResolution.x = VideoMode::getDesktopMode().width;
-    // screenResolution.y = VideoMode::getDesktopMode().height;
 
-    // std::vector<sf::VideoMode> modes = VideoMode::getFullscreenModes();
-
-    screenResolution.x = 1280;
-    screenResolution.y = 720;
+    std::vector<sf::VideoMode> allVideoModes = VideoMode::getFullscreenModes();
+    VideoMode videoMode = VideoMode((int)allVideoModes[0].width, (int)allVideoModes[0].height, allVideoModes[0].bitsPerPixel);
     
-    RenderWindow window(VideoMode::getFullscreenModes()[0], "Brain Blast!", Style::Fullscreen);
-    // RenderWindow window(VideoMode::getFullscreenModes()[0], "Brain Blast!");
-    // RenderWindow window(VideoMode(screenResolution.y, screenResolution.x), "Brain Blast!");
+    screenResolution.x = videoMode.width;
+    screenResolution.y = videoMode.height;
+
+    // screenResolution.x = 1280;
+    // screenResolution.y = 720;
+    
+    // RenderWindow window(videoMode, "Brain Blast!", Style::Fullscreen);
+    // RenderWindow window(videoMode, "Brain Blast!");
+    RenderWindow window(VideoMode(screenResolution.x, screenResolution.y), "Brain Blast!");
 
     // window.setMouseCursorVisible(false);
 
@@ -36,7 +38,7 @@ int main() {
 
     const int BACKGROUND_SCALE = 4;
     // IntRect backgroundSize = IntRect(0, 0, screenResolution.x, screenResolution.y);
-    IntRect backgroundSize = IntRect(0, 0, screenResolution.x * 2, screenResolution.y * 2);
+    IntRect backgroundSize = IntRect(0, 0, screenResolution.x, screenResolution.y);
     Texture textureBackground;
     std::stringstream textureBackgroundFilename;
     textureBackgroundFilename << "assets/sprites/dungeon/pixel-poem/Dungeon_Tileset-x" << BACKGROUND_SCALE << ".png";
@@ -56,12 +58,11 @@ int main() {
     gameView.setSize(Vector2f(backgroundSize.width, backgroundSize.height));
     gameView.setCenter(player.getPosition());
     View hudView;
-    hudView.setSize(screenResolution);
+    hudView.setSize(Vector2f(screenResolution.x, screenResolution.y));
     hudView.setCenter(Vector2f((int)(screenResolution.x / 2), (int)(screenResolution.y / 2)));
 
     // CircleShape centerHud(500);
     // centerHud.setPosition(Vector2f(0, 0));
-
 
     const Time LAST_HIT_COOLDOWN = milliseconds(300);
     Time lastHit = seconds(0);
@@ -132,25 +133,25 @@ int main() {
 
     Font fontBebas;
     fontBebas.loadFromFile("assets/fonts/BebasNeue-Regular.otf");
-    fontBebas.setSmooth(false);
+    // fontBebas.setSmooth(false);
     
     Text textArmAngle;
     textArmAngle.setFont(fontBebas);
-    textArmAngle.setFillColor(Color::White);
     textArmAngle.setCharacterSize(48);
+    textArmAngle.setFillColor(Color::White);
     textArmAngle.setPosition(Vector2f(0, 0));
 
     Text textHealth;
     textHealth.setFont(fontBebas);
-    textHealth.setFillColor(Color::White);
     textHealth.setCharacterSize(32);
-    textHealth.setPosition(0, 64);
+    textHealth.setFillColor(Color::White);
+    textHealth.setPosition(0, 48);
 
     Text textScore;
     textScore.setFont(fontBebas);
-    textScore.setFillColor(Color::White);
     textScore.setCharacterSize(32);
-    textScore.setPosition(0, 96);
+    textScore.setFillColor(Color::White);
+    textScore.setPosition(0, 80);
 
     // END DEBUG STUFFS
 
@@ -262,6 +263,10 @@ int main() {
         // DRAW SCENE
             window.clear();
 
+            window.draw(textArmAngle);
+            window.draw(textHealth);
+            window.draw(textScore);
+
             window.setView(gameView);
             
                 window.draw(whiteBackground);
@@ -287,11 +292,11 @@ int main() {
                         window.draw(drawableBounds);
                     }
                 }
-                window.draw(armJoint);
-                window.draw(playerPosition);
-                window.draw(armRay);
+                // window.draw(armJoint);
+                // window.draw(playerPosition);
+                // window.draw(armRay);
                 window.draw(cursor);
-                window.draw(barrel);
+                // window.draw(barrel);
             
             window.setView(hudView);
                 // window.draw(textArmAngle);

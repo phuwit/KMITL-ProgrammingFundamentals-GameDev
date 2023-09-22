@@ -23,6 +23,7 @@ int main() {
     
     // RenderWindow window(VideoMode(screenResolution.y, screenResolution.x), "Brain Blast!", Style::Fullscreen);
     RenderWindow window(VideoMode(screenResolution.x, screenResolution.y), "Brain Blast!");
+    // window.setMouseCursorVisible(false);
 
     // instance THE singleton instance of texture holder
     TextureHolder holder;
@@ -43,6 +44,7 @@ int main() {
 
     View gameView;
     gameView.setSize(Vector2f(backgroundSize.width, backgroundSize.height));
+    gameView.setCenter(backgroundSize.width / 2, backgroundSize.height / 2);
     View hudView;
     hudView.setSize(screenResolution);
 
@@ -51,11 +53,13 @@ int main() {
     Player player(SPRITE_SCALING);
     player.spawn(FloatRect(playArea), screenResolution);
 
-    const Time PLAYER_HIT_COOLDOWN = milliseconds(300);
-    Time playerLastHit = seconds(0);
+    const Time LAST_HIT_COOLDOWN = milliseconds(300);
+    Time lastHit = seconds(0);
 
     const int PLAYER_BASE_HEALTH = 5;
     int playerHealth = PLAYER_BASE_HEALTH;
+
+    int score = 0;
 
     // Bullets stuffs
     const int MAX_BULLETS = 100;
@@ -131,6 +135,12 @@ int main() {
     textHealth.setCharacterSize(32);
     textHealth.setPosition(0, 64);
 
+    Text textScore;
+    textScore.setFont(fontBebas);
+    textScore.setFillColor(Color::White);
+    textScore.setCharacterSize(32);
+    textScore.setPosition(0, 96);
+
     // END DEBUG STUFFS
 
     while (window.isOpen()) {
@@ -152,7 +162,7 @@ int main() {
         // UPDATE FRAME
             Time frameTime = frameTimeClock.restart();
             lastShot += frameTime;
-            playerLastHit += frameTime;
+            lastHit += frameTime;
             // get mouse coords
             Vector2i mouseScreenPosition = Mouse::getPosition(window);
             // convert mouse coords to world coords
@@ -177,10 +187,10 @@ int main() {
             }
 
             for(int i = 0; i < numZombies; i++) {
-                if (zombies[i].isAlive() && (playerLastHit > PLAYER_HIT_COOLDOWN)) {
+                if (zombies[i].isAlive() && (lastHit > LAST_HIT_COOLDOWN)) {
                     if (zombies[i].getHitBox().intersects(player.getSpriteBase().getGlobalBounds())) {
                         playerHealth--;
-                        playerLastHit = seconds(0);
+                        lastHit = seconds(0);
                         if (playerHealth <= 0) {
                             // game over idk
                         }
@@ -199,7 +209,11 @@ int main() {
                             // is zombie die after bullet hit
                             if (bullets[i].isInFlight() && zombies[j].isAlive()) {
                                 // numZombiesAlive--;
-                                zombies[j].hit();
+
+                                if (zombies[j].hit()) {
+                                    score++;
+                                }
+
                                 bullets[i].stop();
                             }
                         }
@@ -226,12 +240,16 @@ int main() {
             
             std::stringstream streamTextHealth;
             streamTextHealth << "health : " << playerHealth;
-            textArmAngle.setString(streamTextHealth.str());
+            textHealth.setString(streamTextHealth.str());
+
+            std::stringstream streamTextScore;
+            streamTextScore << "score : " << score;
+            textScore.setString(streamTextScore.str());
 
         // DRAW SCENE
             window.clear();
 
-            // window.setView(gameView);
+            window.setView(gameView);
             
                 window.draw(whiteBackground);
                 window.draw(background, &textureBackground);
@@ -257,14 +275,16 @@ int main() {
                     }
                 }
             
-            // window.setView(hudView);
+            window.setView(hudView);
                 // window.draw(armJoint);
                 // window.draw(playerPosition);
                 // window.draw(armRay);
-                window.draw(cursor);
-                window.draw(barrel);
+                // window.draw(cursor);
+                // window.draw(barrel);
                 // window.draw(textArmAngle);
                 window.draw(textArmAngle);
+                window.draw(textHealth);
+                window.draw(textScore);
 
             window.display();
     }

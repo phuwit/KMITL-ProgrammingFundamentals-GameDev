@@ -57,7 +57,7 @@ int main() {
     gameView.setCenter(player.getPosition());
     View hudView;
     hudView.setSize(screenResolution);
-    hudView.setCenter(Vector2f(screenResolution.x / 2, screenResolution.y / 2));
+    hudView.setCenter(Vector2f((int)(screenResolution.x / 2), (int)(screenResolution.y / 2)));
 
     // CircleShape centerHud(500);
     // centerHud.setPosition(Vector2f(0, 0));
@@ -132,6 +132,7 @@ int main() {
 
     Font fontBebas;
     fontBebas.loadFromFile("assets/fonts/BebasNeue-Regular.otf");
+    fontBebas.setSmooth(false);
     
     Text textArmAngle;
     textArmAngle.setFont(fontBebas);

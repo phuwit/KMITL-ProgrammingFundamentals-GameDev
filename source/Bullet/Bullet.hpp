@@ -22,7 +22,7 @@ class Bullet {
     public:
         Bullet();
         // make new bullet
-        void shoot(Vector2f startPos, Vector2f targetPos, IntRect playArea, float spriteScaling);
+        void shoot(Vector2f startPos, Vector2f targetPos, Vector2f spawnPos, IntRect playArea, float spriteScaling);
         // stop bullet
         void stop();
 

@@ -12,15 +12,21 @@ Bullet::Bullet() {
     m_Sprite.setScale(m_SpriteScaling, m_SpriteScaling);
 }
 
-void Bullet::shoot(Vector2f startPos, Vector2f targetPos, IntRect playArea, float spriteScaling) {
+void Bullet::shoot(Vector2f startPos, Vector2f targetPos, Vector2f spawnPos, IntRect playArea, float spriteScaling) {
     // keeping track of bullet
     m_InFlight = true;
-    m_Position = startPos;
+    m_Position = spawnPos;
     m_SpriteScaling = spriteScaling;
 
     m_BulletRotationDegrees = ((atan2(targetPos.y - startPos.y,
                                     targetPos.x - startPos.x) 
                                 * 180) / M_PI);
+
+    m_PlayArea = playArea;
+    m_Sprite.setPosition(m_Position);
+    m_Sprite.setRotation(m_BulletRotationDegrees);
+    m_Sprite.setScale(m_SpriteScaling, m_SpriteScaling);
+    m_Sprite.setColor(Color(255, 255, 255, m_SpriteAlpha));
 
     // // calculate gradient of flight path
     // float gradient = (startPos.x - targetPos.x) / (startPos.y - targetPos.y);
@@ -50,15 +56,6 @@ void Bullet::shoot(Vector2f startPos, Vector2f targetPos, IntRect playArea, floa
     direction = direction / magnitude;
     m_BulletDeltaX = m_BulletSpeed * direction.x;
     m_BulletDeltaY = m_BulletSpeed * direction.y;
-
-    // save playarea
-    m_PlayArea = playArea;
-
-    // set bullet position
-    m_Sprite.setPosition(startPos);
-    m_Sprite.setRotation(m_BulletRotationDegrees);
-    m_Sprite.setScale(m_SpriteScaling, m_SpriteScaling);
-    m_Sprite.setColor(Color(255, 255, 255, m_SpriteAlpha));
 }
 
 void Bullet::stop() {

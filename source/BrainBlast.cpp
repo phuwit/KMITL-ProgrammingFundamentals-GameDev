@@ -236,7 +236,7 @@ int main() {
             }
 
             if (mouseKeyPressed[MouseButton::MOUSE_LEFT] && (lastShot > BULLET_COOLDOWN)) {
-                bullets[currentBullet].shoot(player.getBarrelPosition(), mouseWorldPosition, playArea, SPRITE_SCALING - 1);
+                bullets[currentBullet].shoot(player.getArmPosition(), mouseWorldPosition, player.getBarrelPosition(), playArea, SPRITE_SCALING - 1);
                 currentBullet++;
                 if (currentBullet >= MAX_BULLETS - 1) {
                     currentBullet = 0;

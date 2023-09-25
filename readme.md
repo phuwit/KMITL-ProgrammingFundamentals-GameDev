@@ -18,9 +18,10 @@ many projects/ assets are used in this one. please see [attribution.md](attribut
 - [ ] hud
 - [x] import zombies code
 - [x] import zombies horde spawning code
-- [ ] handle score
+- [ ] zombie dead animation?
+- [x] handle score
 - [ ] handle menu and scene change
-- [ ] idk
+- [ ] implement pickups
 
 
 ## Master Plan as a Garnt chart

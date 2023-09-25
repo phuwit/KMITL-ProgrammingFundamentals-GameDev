@@ -91,14 +91,22 @@ RectangleShape Zombie::getDrawableHitbox() {
 
 void Zombie::update(Time frameTime, Vector2f playerLocation) {
     if(m_Alive){
-        float playerX = playerLocation.x;
-        float playerY = playerLocation.y;
+        // check for moving in diagonal
+        bool moveInX = ((playerLocation.x - m_Position.x) != 0);
+        bool moveInY = ((playerLocation.y - m_Position.y) != 0);
+
+        float speed = m_Speed;
+
+        if (moveInX && moveInY) {
+            speed = m_Speed * sqrt(2);
+        }
+
 
         // move zombie to player 
-        if (playerX > m_Position.x) m_Position.x += m_Speed * frameTime.asSeconds();
-        if (playerX < m_Position.x) m_Position.x -= m_Speed * frameTime.asSeconds();
-        if (playerY > m_Position.y) m_Position.y += m_Speed * frameTime.asSeconds();
-        if (playerY < m_Position.y) m_Position.y -= m_Speed * frameTime.asSeconds();
+        if (playerLocation.x > m_Position.x) m_Position.x += m_Speed * frameTime.asSeconds();
+        if (playerLocation.x < m_Position.x) m_Position.x -= m_Speed * frameTime.asSeconds();
+        if (playerLocation.y > m_Position.y) m_Position.y += m_Speed * frameTime.asSeconds();
+        if (playerLocation.y < m_Position.y) m_Position.y -= m_Speed * frameTime.asSeconds();
 
         // set new position
         m_Sprite.setPosition(m_Position);

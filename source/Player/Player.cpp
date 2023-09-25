@@ -99,8 +99,8 @@ void Player::update(Vector2f mousePosition, Time frameTime) {
     if (m_Position.y > m_PlayArea.height) m_Position.y = m_PlayArea.height;
     if (m_Position.y < m_PlayArea.top)    m_Position.y = m_PlayArea.top;
 
-    m_ArmAngle = (atan2(mousePosition.y - ((m_Arm.getPosition().y)),
-                        mousePosition.x - ((m_Arm.getPosition().x) - (20)))
+    m_ArmAngle = (atan2(mousePosition.y - (m_Arm.getPosition().y),
+                        mousePosition.x - (m_Arm.getPosition().x))
                    * 180 / M_PI);
     m_Arm.setRotation(m_ArmAngle);
     m_Gun.setRotation(m_ArmAngle);

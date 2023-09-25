@@ -19,15 +19,15 @@ int main() {
     std::vector<sf::VideoMode> allVideoModes = VideoMode::getFullscreenModes();
     VideoMode videoMode = VideoMode((int)allVideoModes[0].width, (int)allVideoModes[0].height, allVideoModes[0].bitsPerPixel);
     
-    // screenResolution.x = videoMode.width;
-    // screenResolution.y = videoMode.height;
+    screenResolution.x = videoMode.width;
+    screenResolution.y = videoMode.height;
 
-    screenResolution.x = 1920;
-    screenResolution.y = 1080;
+    // screenResolution.x = 1920;
+    // screenResolution.y = 1080;
     
-    // RenderWindow window(videoMode, "Brain Blast!", Style::Fullscreen);
+    RenderWindow window(videoMode, "Brain Blast!", Style::Fullscreen);
     // RenderWindow window(videoMode, "Brain Blast!");
-    RenderWindow window(VideoMode(screenResolution.x, screenResolution.y), "Brain Blast!");
+    // RenderWindow window(VideoMode(screenResolution.x, screenResolution.y), "Brain Blast!");
 
     // window.setMouseCursorVisible(false);
 

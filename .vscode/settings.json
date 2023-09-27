@@ -76,6 +76,8 @@
         "stdfloat": "cpp",
         "cfenv": "cpp",
         "valarray": "cpp",
-        "hash_map": "cpp"
+        "hash_map": "cpp",
+        "bitset": "cpp",
+        "forward_list": "cpp"
     }
 }

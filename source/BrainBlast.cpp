@@ -1,5 +1,6 @@
 #include <sstream>
 #include <array>
+#include <iostream>
 #include <SFML/Graphics.hpp>
 
 #include "BrainBlast.hpp"
@@ -25,8 +26,8 @@ int main() {
     // screenResolution.x = 1920;
     // screenResolution.y = 1080;
     
-    RenderWindow window(videoMode, "Brain Blast!", Style::Fullscreen);
-    // RenderWindow window(videoMode, "Brain Blast!");
+    // RenderWindow window(videoMode, "Brain Blast!", Style::Fullscreen);
+    RenderWindow window(videoMode, "Brain Blast!");
     // RenderWindow window(VideoMode(screenResolution.x, screenResolution.y), "Brain Blast!");
 
     // window.setMouseCursorVisible(false);
@@ -170,6 +171,17 @@ int main() {
             movementKeyPressed[MovementKey::MOVEMENT_RIGHT] = Keyboard::isKeyPressed(Keyboard::D);
 
             mouseKeyPressed[MouseButton::MOUSE_LEFT] = Mouse::isButtonPressed(Mouse::Left);
+            
+            if(Keyboard::isKeyPressed(Keyboard::F2)) {
+                Texture screenshot;
+                screenshot.create(window.getSize().x, window.getSize().y);
+                screenshot.update(window);
+                std::stringstream screenshotFilename;
+                screenshotFilename << "screenshot_" << time(0) << ".png";
+                if (screenshot.copyToImage().saveToFile(screenshotFilename.str())) {
+                    std::cout << "screenshot saved to " << screenshotFilename.str() << std::endl;
+                }
+            }
 
         // UPDATE FRAME
             Time frameTime = frameTimeClock.restart();

@@ -20,7 +20,11 @@ many projects/ assets are used in this one. please see [attribution.md](attribut
 - [x] import zombies horde spawning code
 - [ ] zombie dead animation?
 - [x] handle score
-- [ ] handle menu and scene change
+- [ ] handle menu screen
+- [ ] handle paused screen
+- [ ] handle gameover screen
+- [ ] handle levelup screen
+- [x] handle scene change
 - [ ] implement pickups
 
 

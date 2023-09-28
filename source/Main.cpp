@@ -2,7 +2,11 @@
 #include "TextureHolder.cpp"
 #include "Scene.hpp"
 
+// #include "Menu.cpp"
 #include "Game.cpp"
+// #include "Paused.cpp"
+// #include "LevelUp.cpp"
+// #include "GameOver.cpp"
 
 int main() {
     // instance THE singleton instance of texture holder
@@ -33,13 +37,16 @@ int main() {
     window.setMouseCursorVisible(false);
 
     // Screens preparations
-    // TODO
-    // scene_0 s0;
-    // Scenes.push_back(&s0);
-    // scene_1 s1;
-    // Scenes.push_back(&s1);
+    // Menu menu;
+    // Scenes.push_back(&menu);
     Game game;
     Scenes.push_back(&game);
+    // Paused paused;
+    // Scenes.push_back(&paused);
+    // LevelUp levelUp;
+    // Scenes.push_back(&levelUp);
+    // GameOver gameOver;
+    // Scenes.push_back(&gameOver);
 
     // Main loop
     while (currentScene.getNextScreen() >= 0) {

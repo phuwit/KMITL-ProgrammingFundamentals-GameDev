@@ -1,4 +1,4 @@
-#include "BrainBlast.hpp"
+#include "Game.hpp"
 
 
 int createBackground (VertexArray& rVA, IntRect playArea, int scale) {

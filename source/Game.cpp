@@ -3,10 +3,11 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
-#include "BrainBlast.hpp"
+#include "Game.hpp"
 #include "CommonEnum.hpp"
-#include "CreateBackground.cpp"
+#include "Scene.hpp"
 #include "TextureHolder.cpp"
+#include "CreateBackground.cpp"
 #include "Player/Player.cpp"
 #include "Bullet/Bullet.cpp"
 #include "Zombie/Zombie.cpp"
@@ -14,26 +15,37 @@
 
 using namespace sf;
 
-int main() {
+class Game : public Scenes {
+    public:
+        virtual SceneChange run(RenderWindow &window);
+};
+
+
+SceneChange Game::run(RenderWindow &window) {
+    // Vector2f screenResolution;
+
+    // std::vector<sf::VideoMode> allVideoModes = VideoMode::getFullscreenModes();
+    // VideoMode videoMode = VideoMode((int)allVideoModes[0].width, (int)allVideoModes[0].height, allVideoModes[0].bitsPerPixel);
+    
+    // screenResolution.x = videoMode.width;
+    // screenResolution.y = videoMode.height;
+
+    // // screenResolution.x = 1920;
+    // // screenResolution.y = 1080;
+    
+    // // RenderWindow window(videoMode, "Brain Blast!", Style::Fullscreen);
+    // RenderWindow window(videoMode, "Brain Blast!");
+    // // RenderWindow window(VideoMode(screenResolution.x, screenResolution.y), "Brain Blast!");
+
+    // // window.setMouseCursorVisible(false);
+
+    // // instance THE singleton instance of texture holder
+    // TextureHolder holder;
+
     Vector2f screenResolution;
 
-    std::vector<sf::VideoMode> allVideoModes = VideoMode::getFullscreenModes();
-    VideoMode videoMode = VideoMode((int)allVideoModes[0].width, (int)allVideoModes[0].height, allVideoModes[0].bitsPerPixel);
-    
-    screenResolution.x = videoMode.width;
-    screenResolution.y = videoMode.height;
-
-    // screenResolution.x = 1920;
-    // screenResolution.y = 1080;
-    
-    // RenderWindow window(videoMode, "Brain Blast!", Style::Fullscreen);
-    RenderWindow window(videoMode, "Brain Blast!");
-    // RenderWindow window(VideoMode(screenResolution.x, screenResolution.y), "Brain Blast!");
-
-    // window.setMouseCursorVisible(false);
-
-    // instance THE singleton instance of texture holder
-    TextureHolder holder;
+    screenResolution.x = window.getSize().x;
+    screenResolution.y = window.getSize().y;
 
     Clock frameTimeClock;
 
@@ -320,5 +332,5 @@ int main() {
             window.display();
     }
 
-    return 0;
+    return SceneChange(ScenesList::SCENE_MENU);
 }

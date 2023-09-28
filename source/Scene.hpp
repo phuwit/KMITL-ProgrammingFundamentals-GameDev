@@ -1,6 +1,11 @@
+#pragma once
+
 #include <SFML/Graphics.hpp>
+
+#include "CommonEnum.hpp"
+#include "SceneChange.hpp"
 
 class Scenes {
    public:
-    virtual int Run(sf::RenderWindow &App) = 0;
+        virtual SceneChange run(RenderWindow &window) = 0;
 };

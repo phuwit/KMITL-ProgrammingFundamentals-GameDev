@@ -1,11 +1,16 @@
 #include "CommonEnum.hpp"
+#include "TextureHolder.cpp"
 #include "Scene.hpp"
-#include "SceneChange.hpp"
+
+#include "Game.cpp"
 
 int main() {
+    // instance THE singleton instance of texture holder
+    TextureHolder holder;
+
     // Applications variables
     std::vector<Scenes*> Scenes;
-    int currentScene = 0;
+    SceneChange currentScene = SceneChange(ScenesList::SCENE_MENU);
 
     Vector2f screenResolution;
 
@@ -24,9 +29,6 @@ int main() {
 
     // window.setMouseCursorVisible(false);
 
-    // instance THE singleton instance of texture holder
-    TextureHolder holder;
-
     // Mouse cursor no more visible
     window.setMouseCursorVisible(false);
 
@@ -36,10 +38,12 @@ int main() {
     // Scenes.push_back(&s0);
     // scene_1 s1;
     // Scenes.push_back(&s1);
+    Game game;
+    Scenes.push_back(&game);
 
     // Main loop
-    while (currentScene >= 0) {
-        currentScene = Scenes[currentScene]->Run(window);
+    while (currentScene.getNextScreen() >= 0) {
+        currentScene = Scenes[currentScene.getNextScreen()]->run(window);
     }
 
     return EXIT_SUCCESS;

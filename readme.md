@@ -19,7 +19,6 @@ many projects/ assets are used in this one. please see [attribution.md](attribut
 - [x] import zombies code
 - [x] import zombies horde spawning code
 - [ ] rework spawn timing
-- [ ] zombie dead animation?
 - [x] handle score
 - [ ] level progression
 - [ ] handle menu screen
@@ -28,6 +27,7 @@ many projects/ assets are used in this one. please see [attribution.md](attribut
 - [ ] handle levelup screen
 - [x] handle scene change
 - [ ] implement pickups
+- [ ] zombie dead animation?
 - [ ] animation
 
 

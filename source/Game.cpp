@@ -173,7 +173,7 @@ SceneChange Game::run(RenderWindow &window) {
             Event event;
             while (window.pollEvent(event)) {
                 if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape)) {
-                    window.close();
+                    return SceneChange(EXIT);
                 }
             }
 
@@ -332,5 +332,5 @@ SceneChange Game::run(RenderWindow &window) {
             window.display();
     }
 
-    return SceneChange(ScenesList::SCENE_MENU);
+    return SceneChange(EXIT);
 }

@@ -16,25 +16,14 @@ int main() {
     std::vector<Scenes*> Scenes;
     SceneChange currentScene = SceneChange(ScenesList::SCENE_MENU);
 
-    Vector2f screenResolution;
-
     std::vector<sf::VideoMode> allVideoModes = VideoMode::getFullscreenModes();
-    VideoMode videoMode = VideoMode((int)allVideoModes[0].width, (int)allVideoModes[0].height, allVideoModes[0].bitsPerPixel);
-    
-    screenResolution.x = videoMode.width;
-    screenResolution.y = videoMode.height;
-
-    // screenResolution.x = 1920;
-    // screenResolution.y = 1080;
-    
+    VideoMode videoMode = VideoMode(allVideoModes[0]);
+      
     // RenderWindow window(videoMode, "Brain Blast!", Style::Fullscreen);
     RenderWindow window(videoMode, "Brain Blast!");
     // RenderWindow window(VideoMode(screenResolution.x, screenResolution.y), "Brain Blast!");
 
     // window.setMouseCursorVisible(false);
-
-    // Mouse cursor no more visible
-    window.setMouseCursorVisible(false);
 
     // Screens preparations
     // Menu menu;

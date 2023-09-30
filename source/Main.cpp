@@ -1,8 +1,9 @@
 #include "CommonEnum.hpp"
 #include "TextureHolder.cpp"
-#include "Scene.hpp"
+#include "Scenes.hpp"
 
-// #include "Menu.cpp"
+#include "Menu.cpp"
+#include "Info.cpp"
 #include "Game.cpp"
 // #include "Paused.cpp"
 // #include "LevelUp.cpp"
@@ -17,7 +18,8 @@ int main() {
     SceneChange currentScene = SceneChange(ScenesList::SCENE_MENU);
 
     std::vector<sf::VideoMode> allVideoModes = VideoMode::getFullscreenModes();
-    VideoMode videoMode = VideoMode(allVideoModes[0]);
+    // VideoMode videoMode = VideoMode(allVideoModes[0]);
+    VideoMode videoMode = VideoMode(1920, 1080); 
       
     // RenderWindow window(videoMode, "Brain Blast!", Style::Fullscreen);
     RenderWindow window(videoMode, "Brain Blast!");
@@ -26,8 +28,10 @@ int main() {
     // window.setMouseCursorVisible(false);
 
     // Screens preparations
-    // Menu menu;
-    // Scenes.push_back(&menu);
+    Menu menu;
+    Scenes.push_back(&menu);
+    Info info;
+    Scenes.push_back(&info);
     Game game;
     Scenes.push_back(&game);
     // Paused paused;

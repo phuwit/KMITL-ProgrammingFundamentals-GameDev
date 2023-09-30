@@ -6,6 +6,6 @@
 #include "SceneChange.hpp"
 
 class Scenes {
-   public:
+    public:
         virtual SceneChange run(RenderWindow &window) = 0;
 };

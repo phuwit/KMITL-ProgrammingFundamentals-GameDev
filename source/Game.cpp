@@ -5,7 +5,7 @@
 
 #include "Game.hpp"
 #include "CommonEnum.hpp"
-#include "Scene.hpp"
+#include "Scenes.hpp"
 #include "TextureHolder.cpp"
 #include "CreateBackground.cpp"
 #include "Player/Player.cpp"
@@ -201,7 +201,7 @@ SceneChange Game::run(RenderWindow &window) {
             lastHit += frameTime;
             // get mouse coords
             // Vector2i mouseScreenPosition = Mouse::getPosition(window);
-            Vector2i mouseScreenPosition = Mouse::getPosition();
+            Vector2i mouseScreenPosition = Mouse::getPosition(window);
             // convert mouse coords to world coords
             Vector2f mouseWorldPosition = window.mapPixelToCoords(mouseScreenPosition, gameView);
             player.update((mouseWorldPosition), frameTime);

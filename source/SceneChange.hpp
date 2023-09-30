@@ -8,16 +8,16 @@ using namespace sf;
 
 class SceneChange {
     private:
-        Texture m_Screenshot;
+        Image m_Screenshot;
         ScenesList m_nextScreen;
     public:
-        SceneChange(ScenesList nextScreen, Texture screenshot);
+        SceneChange(ScenesList nextScreen, Image screenshot);
         SceneChange(ScenesList nextScreen);
-        Texture getScreenShot();
+        Image getScreenShot();
         ScenesList getNextScreen();
 };
 
-SceneChange::SceneChange(ScenesList nextScreen, Texture screenshot) {
+SceneChange::SceneChange(ScenesList nextScreen, Image screenshot) {
     m_Screenshot = screenshot;
     m_nextScreen = nextScreen;
 }
@@ -30,7 +30,7 @@ SceneChange::SceneChange(ScenesList nextScreen) {
     m_nextScreen = nextScreen;
 }
 
-Texture SceneChange::getScreenShot() {
+Image SceneChange::getScreenShot() {
     return m_Screenshot;
 }
 

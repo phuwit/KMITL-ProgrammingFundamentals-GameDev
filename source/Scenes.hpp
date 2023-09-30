@@ -7,17 +7,17 @@
 
 class Scenes {
     private:
-        Texture m_ScreenShot;
+        Image m_ScreenShot;
     public:
         virtual SceneChange run(RenderWindow &window) = 0;
-        virtual void setScreenShot(Texture screenshot);
-        virtual Texture getScreenShot();
+        virtual void setScreenShot(Image screenshot);
+        virtual Image getScreenShot();
 };
 
-void Scenes::setScreenShot(Texture screenshot) {
+void Scenes::setScreenShot(Image screenshot) {
     m_ScreenShot = screenshot;
 }
 
-Texture Scenes::getScreenShot() {
+Image Scenes::getScreenShot() {
     return m_ScreenShot;
 }

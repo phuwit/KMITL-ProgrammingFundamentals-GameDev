@@ -9,12 +9,20 @@ class LevelUp : public Scenes {
 };
 
 SceneChange LevelUp::run(RenderWindow &window) {
-    Sprite screenshot(getScreenShot());
+    Texture textureScreenshot;
+    textureScreenshot.loadFromImage(getScreenShot());
+    Sprite screenshot(textureScreenshot);
+
+    Font fontBebas;
+    fontBebas.loadFromFile("assets/fonts/BebasNeue-Regular.otf");
+    Text textLevelUp("Level Up!", fontBebas, 60);
+    textLevelUp.setPosition(Vector2f(50, 50));
 
     while (window.isOpen())
     {   
         window.clear(COLOR_BACKGROUND);
         window.draw(screenshot);
+        window.draw(textLevelUp);
         window.display();
     }
     

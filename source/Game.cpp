@@ -247,12 +247,7 @@ SceneChange Game::run(RenderWindow &window) {
                                     score++;
                                     numZombiesAlive--;
                                     if (numZombiesAlive <= 0) {
-                                        // Texture screenshot = getScreenshot(window);
-                                        Texture screenshot;
-                                        screenshot.create(window.getSize().x, window.getSize().y);
-                                        screenshot.update(window);
-
-                                        return SceneChange(ScenesList::SCENE_LEVELUP, screenshot);
+                                        return SceneChange(ScenesList::SCENE_LEVELUP, getScreenshot(window).copyToImage());
                                     }
                                 }
                                 bullets[i].stop();

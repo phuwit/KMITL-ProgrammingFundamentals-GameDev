@@ -75,7 +75,7 @@ SceneChange Menu::run(RenderWindow &window) {
 
         // Draw frame
 
-        window.clear(Color(37, 19, 26));
+        window.clear(COLOR_BACKGROUND);
             window.draw(logo);
 
             window.draw(playButton);

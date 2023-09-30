@@ -12,6 +12,7 @@
 #include "Bullet/Bullet.cpp"
 #include "Zombie/Zombie.cpp"
 #include "Zombie/ZombieHorde.cpp"
+#include "Tools/GetScreenshot.cpp"
 
 using namespace sf;
 
@@ -107,13 +108,12 @@ SceneChange Game::run(RenderWindow &window) {
     // Zombie zombie;
     // zombie.spawn(Vector2f(200, 200), SPRITE_SCALING - 2, ZombieType::ZOMBIE_NORMAL, 1);
 
-    int numZombies = 20;
-    int numZombiesAlive;
+    int numZombies = 0 + (3 * currentLevel);
+    int numZombiesAlive = numZombies;
     Zombie* zombies = nullptr;
     
     delete[] zombies;
     zombies = createHorde(numZombies, (SPRITE_SCALING - 2), playArea);
-    numZombiesAlive = numZombies;
 
     // DEBUG STUFFS
 
@@ -185,12 +185,9 @@ SceneChange Game::run(RenderWindow &window) {
             mouseKeyPressed[MouseButton::MOUSE_LEFT] = Mouse::isButtonPressed(Mouse::Left);
             
             if(Keyboard::isKeyPressed(Keyboard::F2)) {
-                Texture screenshot;
-                screenshot.create(window.getSize().x, window.getSize().y);
-                screenshot.update(window);
                 std::stringstream screenshotFilename;
                 screenshotFilename << "screenshot_" << time(0) << ".png";
-                if (screenshot.copyToImage().saveToFile(screenshotFilename.str())) {
+                if (getScreenshot(window).copyToImage().saveToFile(screenshotFilename.str())) {
                     std::cout << "screenshot saved to " << screenshotFilename.str() << std::endl;
                 }
             }
@@ -246,12 +243,18 @@ SceneChange Game::run(RenderWindow &window) {
                         if (zombies[j].getHitBox().contains(bullets[i].getPosition())) {
                             // is zombie die after bullet hit
                             if (bullets[i].isInFlight() && zombies[j].isAlive()) {
-                                // numZombiesAlive--;
-
                                 if (zombies[j].hit()) {
                                     score++;
-                                }
+                                    numZombiesAlive--;
+                                    if (numZombiesAlive <= 0) {
+                                        // Texture screenshot = getScreenshot(window);
+                                        Texture screenshot;
+                                        screenshot.create(window.getSize().x, window.getSize().y);
+                                        screenshot.update(window);
 
+                                        return SceneChange(ScenesList::SCENE_LEVELUP, screenshot);
+                                    }
+                                }
                                 bullets[i].stop();
                             }
                         }
@@ -285,7 +288,7 @@ SceneChange Game::run(RenderWindow &window) {
             textScore.setString(streamTextScore.str());
 
         // DRAW SCENE
-            window.clear(Color(37, 19, 26));
+            window.clear(COLOR_BACKGROUND);
 
             window.draw(textArmAngle);
             window.draw(textHealth);

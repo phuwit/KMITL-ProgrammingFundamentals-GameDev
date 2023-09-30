@@ -1,10 +1,10 @@
 #include <SFML/Graphics.hpp>
 
-#include "Menu.hpp"
 #include "CommonEnum.hpp"
 #include "Scenes.hpp"
 #include "TextureHolder.hpp"
 #include "Tools/SetOriginCenter.cpp"
+#include "Tools/SetRectangleShapeOnMouseHover.cpp"
 
 class Menu : public Scenes {
     public:
@@ -55,9 +55,9 @@ SceneChange Menu::run(RenderWindow &window) {
             if (event.type == Event::MouseMoved) {
                 Vector2f mouseScreenPosition = Vector2f(Mouse::getPosition(window));
 
-                setRectangleShapeColorWhenMouseHover(playButton, mouseScreenPosition);
-                setRectangleShapeColorWhenMouseHover(exitButton, mouseScreenPosition);
-                setRectangleShapeColorWhenMouseHover(infoButton, mouseScreenPosition);
+                setRectangleShapeColorOnMouseHover(playButton, mouseScreenPosition, Color(176, 190, 197), Color::White);
+                setRectangleShapeColorOnMouseHover(exitButton, mouseScreenPosition, Color(176, 190, 197), Color::White);
+                setRectangleShapeColorOnMouseHover(infoButton, mouseScreenPosition, Color(176, 190, 197), Color::White);
             }
             if (event.type == Event::MouseButtonPressed) {
                 Vector2f mouseScreenPosition = Vector2f(Mouse::getPosition(window));
@@ -71,7 +71,6 @@ SceneChange Menu::run(RenderWindow &window) {
                 }
             }
         }
-
 
         // Draw frame
 
@@ -89,13 +88,4 @@ SceneChange Menu::run(RenderWindow &window) {
     }
 
     return SceneChange(EXIT);
-}
-
-void setRectangleShapeColorWhenMouseHover (sf::RectangleShape &rectangleShape, sf::Vector2f &mousePos) {
-    if (rectangleShape.getGlobalBounds().contains(Vector2f(mousePos))) {
-        rectangleShape.setFillColor(Color(176, 190, 197));
-    }
-    else {
-        rectangleShape.setFillColor(Color::White);
-    }
 }

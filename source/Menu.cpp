@@ -3,6 +3,7 @@
 #include "CommonEnum.hpp"
 #include "Scenes.hpp"
 #include "TextureHolder.hpp"
+#include "FontHolder.cpp"
 #include "Tools/SetOriginCenter.cpp"
 #include "Tools/SetRectangleShapeOnMouseHover.cpp"
 
@@ -16,8 +17,7 @@ SceneChange Menu::run(RenderWindow &window) {
     spriteSetOriginCenter(logo);
     logo.setPosition(Vector2f(window.getSize().x / 2, window.getSize().y * 0.25));
 
-    Font fontBebas;
-    fontBebas.loadFromFile("assets/fonts/BebasNeue-Regular.otf");
+    Font fontBebas = FontHolder::GetFont("assets/fonts/BebasNeue-Regular.otf");
 
     int BUTTON_PADDING = 30;
 
@@ -55,9 +55,9 @@ SceneChange Menu::run(RenderWindow &window) {
             if (event.type == Event::MouseMoved) {
                 Vector2f mouseScreenPosition = Vector2f(Mouse::getPosition(window));
 
-                setRectangleShapeColorOnMouseHover(playButton, mouseScreenPosition, Color(176, 190, 197), Color::White);
-                setRectangleShapeColorOnMouseHover(exitButton, mouseScreenPosition, Color(176, 190, 197), Color::White);
-                setRectangleShapeColorOnMouseHover(infoButton, mouseScreenPosition, Color(176, 190, 197), Color::White);
+                setRectangleShapeColorOnMouseHover(playButton, mouseScreenPosition, Color(189, 189, 189), Color::White);
+                setRectangleShapeColorOnMouseHover(exitButton, mouseScreenPosition, Color(189, 189, 189), Color::White);
+                setRectangleShapeColorOnMouseHover(infoButton, mouseScreenPosition, Color(189, 189, 189), Color::White);
             }
             if (event.type == Event::MouseButtonPressed) {
                 Vector2f mouseScreenPosition = Vector2f(Mouse::getPosition(window));

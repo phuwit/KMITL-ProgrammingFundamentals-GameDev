@@ -7,6 +7,7 @@
 #include "CommonEnum.hpp"
 #include "Scenes.hpp"
 #include "TextureHolder.cpp"
+#include "FontHolder.cpp"
 #include "CreateBackground.cpp"
 #include "Player/Player.cpp"
 #include "Bullet/Bullet.cpp"
@@ -144,9 +145,7 @@ SceneChange Game::run(RenderWindow &window) {
     barrel.setFillColor(Color::Red);
     barrel.setOrigin(barrel.getRadius(), barrel.getRadius());
 
-    Font fontBebas;
-    fontBebas.loadFromFile("assets/fonts/BebasNeue-Regular.otf");
-    // fontBebas.setSmooth(false);
+    Font fontBebas = FontHolder::GetFont("assets/fonts/BebasNeue-Regular.otf");
     
     Text textArmAngle;
     textArmAngle.setFont(fontBebas);
@@ -172,8 +171,8 @@ SceneChange Game::run(RenderWindow &window) {
         // HANDLE INPUTS
             Event event;
             while (window.pollEvent(event)) {
-                if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape)) {
-                    return SceneChange(EXIT);
+                if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape) || event.type == Event::LostFocus) {
+                    return SceneChange(ScenesList::SCENE_PAUSED);
                 }
             }
 

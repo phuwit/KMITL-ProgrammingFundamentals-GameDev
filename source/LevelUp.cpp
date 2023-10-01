@@ -2,6 +2,7 @@
 
 #include "CommonEnum.hpp"
 #include "Scenes.hpp"
+#include "FontHolder.cpp"
 #include "Tools/SetOriginCenter.cpp"
 #include "Tools/SetRectangleShapeOnMouseHover.cpp"
 
@@ -26,8 +27,8 @@ SceneChange LevelUp::run(RenderWindow &window) {
     RectangleShape darkOverlay(Vector2f(window.getSize()));
     darkOverlay.setFillColor(Color(0, 0, 0, 128));
 
-    Font fontBebas;
-    fontBebas.loadFromFile("assets/fonts/BebasNeue-Regular.otf");
+    Font fontBebas = FontHolder::GetFont("assets/fonts/BebasNeue-Regular.otf");
+
     Text textLevelUp("Level Up!", fontBebas, 80);
     textSetOriginCenter(textLevelUp);
     textLevelUp.setOrigin(Vector2f(0, textLevelUp.getOrigin().y));
@@ -68,8 +69,8 @@ SceneChange LevelUp::run(RenderWindow &window) {
             if (event.type == Event::MouseMoved) {
                 Vector2f mouseScreenPosition = Vector2f(Mouse::getPosition(window));
 
-                setRectangleShapeColorOnMouseHover(nextLevelButton, mouseScreenPosition, Color(176, 190, 197), Color::White);
-                setRectangleShapeColorOnMouseHover(exitButton, mouseScreenPosition, Color(176, 190, 197), Color::White);
+                setRectangleShapeColorOnMouseHover(nextLevelButton, mouseScreenPosition, Color(189, 189, 189), Color::White);
+                setRectangleShapeColorOnMouseHover(exitButton, mouseScreenPosition, Color(189, 189, 189), Color::White);
             }
             if (event.type == Event::MouseButtonPressed) {
                 Vector2f mouseScreenPosition = Vector2f(Mouse::getPosition(window));

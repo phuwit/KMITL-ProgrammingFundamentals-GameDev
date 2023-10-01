@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
-#include "Zombie/Zombie.hpp"
+#include "../Zombie/Zombie.hpp"
 
 using namespace sf;
 

@@ -4,8 +4,8 @@
 #include <SFML/Graphics.hpp>
 
 #include "Zombie.hpp"
-#include "../TextureHolder.hpp"
 #include "../CommonEnum.hpp"
+#include "../Holders/TextureHolder.hpp"
 
 using namespace std;
 

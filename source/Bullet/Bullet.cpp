@@ -2,8 +2,8 @@
 
 #include <cmath>
 #include <SFML/Graphics.hpp>
-#include "../TextureHolder.hpp"
 #include "Bullet.hpp"
+#include "../Holders/TextureHolder.hpp"
 
 using namespace sf;
 

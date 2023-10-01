@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 
-#include "CommonEnum.hpp"
 #include "Scenes.hpp"
+#include "../CommonEnum.hpp"
 
 class Paused : public Scenes {
     public:

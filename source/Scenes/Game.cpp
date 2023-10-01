@@ -4,16 +4,16 @@
 #include <SFML/Graphics.hpp>
 
 #include "Game.hpp"
-#include "CommonEnum.hpp"
 #include "Scenes.hpp"
-#include "TextureHolder.cpp"
-#include "FontHolder.cpp"
-#include "CreateBackground.cpp"
-#include "Player/Player.cpp"
-#include "Bullet/Bullet.cpp"
-#include "Zombie/Zombie.cpp"
-#include "Zombie/ZombieHorde.cpp"
-#include "Tools/GetScreenshot.cpp"
+#include "../CommonEnum.hpp"
+#include "../Holders/TextureHolder.cpp"
+#include "../Holders/FontHolder.cpp"
+#include "../Player/Player.cpp"
+#include "../Bullet/Bullet.cpp"
+#include "../Zombie/Zombie.cpp"
+#include "../Zombie/ZombieHorde.cpp"
+#include "../Tools/CreateBackground.cpp"
+#include "../Tools/GetScreenshot.cpp"
 
 using namespace sf;
 

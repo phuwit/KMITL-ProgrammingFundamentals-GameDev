@@ -1,8 +1,8 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "CommonEnum.hpp"
-#include "TextureHolder.hpp"
+#include "../Holders/TextureHolder.hpp"
+#include "../CommonEnum.hpp"
 
 using namespace sf;
 

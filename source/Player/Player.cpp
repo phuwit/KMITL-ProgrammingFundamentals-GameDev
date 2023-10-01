@@ -4,8 +4,8 @@
 #include <SFML/Graphics.hpp>
 
 #include "Player.hpp"
-#include "../TextureHolder.cpp"
 #include "../CommonEnum.hpp"
+#include "../Holders/TextureHolder.cpp"
 
 Player::Player(float spriteScaling) {
     m_SpriteScaling = spriteScaling;

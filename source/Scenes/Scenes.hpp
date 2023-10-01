@@ -2,8 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "CommonEnum.hpp"
 #include "SceneChange.hpp"
+#include "../CommonEnum.hpp"
 
 class Scenes {
     private:

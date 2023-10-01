@@ -1,11 +1,11 @@
 #include <SFML/Graphics.hpp>
 
-#include "CommonEnum.hpp"
 #include "Scenes.hpp"
-#include "TextureHolder.hpp"
-#include "FontHolder.cpp"
-#include "Tools/SetOriginCenter.cpp"
-#include "Tools/SetRectangleShapeOnMouseHover.cpp"
+#include "../CommonEnum.hpp"
+#include "../Holders/TextureHolder.hpp"
+#include "../Holders/FontHolder.cpp"
+#include "../Tools/SetOriginCenter.cpp"
+#include "../Tools/SetRectangleShapeOnMouseHover.cpp"
 
 class Menu : public Scenes {
     public:
@@ -23,7 +23,7 @@ SceneChange Menu::run(RenderWindow &window) {
 
     Text playText("Play!", fontBebas);
     playText.setFillColor(Color::Black);
-    playText.setCharacterSize(48);
+    playText.setCharacterSize(60);
     RectangleShape playButton(Vector2f(playText.getLocalBounds().width + BUTTON_PADDING, playText.getLocalBounds().height + BUTTON_PADDING));
     textSetOriginCenter(playText);
     shapeSetOriginCenter(playButton);
@@ -32,7 +32,7 @@ SceneChange Menu::run(RenderWindow &window) {
 
     Text exitText("Exit", fontBebas);
     exitText.setFillColor(Color::Black);
-    exitText.setCharacterSize(48);
+    exitText.setCharacterSize(60);
     RectangleShape exitButton(Vector2f(exitText.getLocalBounds().width + BUTTON_PADDING, exitText.getLocalBounds().height + BUTTON_PADDING));
     textSetOriginCenter(exitText);
     shapeSetOriginCenter(exitButton);
@@ -41,7 +41,7 @@ SceneChange Menu::run(RenderWindow &window) {
 
     Text infoText("Info", fontBebas);
     infoText.setFillColor(Color::Black);
-    infoText.setCharacterSize(48);
+    infoText.setCharacterSize(60);
     RectangleShape infoButton(Vector2f(infoText.getLocalBounds().width + BUTTON_PADDING, infoText.getLocalBounds().height + BUTTON_PADDING));
     textSetOriginCenter(infoText);
     shapeSetOriginCenter(infoButton);

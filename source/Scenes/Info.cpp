@@ -1,11 +1,11 @@
 #include <SFML/Graphics.hpp>
 
-#include "CommonEnum.hpp"
 #include "Scenes.hpp"
-#include "FontHolder.cpp"
-#include "Tools/SetOriginCenter.cpp"
-#include "Tools/SetRectangleShapeOnMouseHover.cpp"
-#include "Tools/OpenURL.cpp"
+#include "../CommonEnum.hpp"
+#include "../Holders/FontHolder.cpp"
+#include "../Tools/SetOriginCenter.cpp"
+#include "../Tools/SetRectangleShapeOnMouseHover.cpp"
+#include "../Tools/OpenURL.cpp"
 
 using namespace sf;
 

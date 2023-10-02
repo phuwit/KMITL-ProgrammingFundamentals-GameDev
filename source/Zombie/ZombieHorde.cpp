@@ -5,7 +5,7 @@
 Zombie* createHorde(int numZombies, float spriteScaling, IntRect playArea) {
     Zombie* zombies = new Zombie[numZombies];
 
-    const int WALL_PADDING = 20;
+    const int WALL_PADDING = 50;
 
     int maxY = playArea.height - (WALL_PADDING * 2);
     int minY = playArea.top + WALL_PADDING;
@@ -46,8 +46,9 @@ Zombie* createHorde(int numZombies, float spriteScaling, IntRect playArea) {
         // random types to spawn
         srand ((int)time(0) * i * 2);
         ZombieType type = (ZombieType)(rand() % (sizeof(ZombieType) - 1));
+        ZombieMoveStyle moveStyle = (ZombieMoveStyle)(rand() % (sizeof(ZombieMoveStyle) - 1));
         // spawn new zombies into array
-        zombies[i].spawn(spawnLocation, spriteScaling, type, i);
+        zombies[i].spawn(spawnLocation, spriteScaling, type, moveStyle, i, FloatRect(playArea));
     }
 
     return zombies;

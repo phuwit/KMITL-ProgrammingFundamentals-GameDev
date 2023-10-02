@@ -62,7 +62,7 @@ SceneChange Game::run(RenderWindow &window) {
     int tileSize = createBackground(background, backgroundSize, BACKGROUND_SCALE);
     IntRect playArea = IntRect(
         backgroundSize.top + tileSize, backgroundSize.left + tileSize,
-        backgroundSize.width - tileSize, backgroundSize.height - tileSize);
+        backgroundSize.width - tileSize, backgroundSize.height - (2 * tileSize));
 
     float SPRITE_SCALING = 4;
 
@@ -227,6 +227,7 @@ SceneChange Game::run(RenderWindow &window) {
                         lastHit = seconds(0);
                         if (playerHealth <= 0) {
                             // game over idk
+                            // return SceneChange(ScenesList::SCENE_GAMEOVER);
                         }
                     }
                 }
@@ -284,35 +285,33 @@ SceneChange Game::run(RenderWindow &window) {
         // DRAW SCENE
             window.clear(COLOR_BACKGROUND);
 
-            window.draw(textArmAngle);
-            window.draw(textHealth);
-            window.draw(textScore);
-
             window.setView(gameView);
             
                 // window.draw(whiteBackground);
                 window.draw(background, &textureBackground);
-                window.draw(player.getSpriteBase());
-                window.draw(player.getSpriteGun());
-                window.draw(player.getSpriteArm());
 
                 for(int i = 0; i < numZombies; i++) {
                     window.draw(zombies[i].getSprite());
-                    window.draw(zombies[i].getDrawableHitbox());
+                    // window.draw(zombies[i].getDrawableHitbox());
                 }
 
                 for (int i = 0; i < MAX_BULLETS; i++) {
                     if (bullets[i].isInFlight()) {
                         window.draw(bullets[i].getSprite());
-                        FloatRect bounds = bullets[i].getSprite().getGlobalBounds();
-                        RectangleShape drawableBounds(Vector2f(bounds.width, bounds.height));
-                        drawableBounds.setPosition(Vector2f(bounds.left, bounds.top));
-                        drawableBounds.setOutlineColor(Color::Green);
-                        drawableBounds.setOutlineThickness(2);
-                        drawableBounds.setFillColor(Color::Transparent);
-                        window.draw(drawableBounds);
+                        // FloatRect bounds = bullets[i].getSprite().getGlobalBounds();
+                        // RectangleShape drawableBounds(Vector2f(bounds.width, bounds.height));
+                        // drawableBounds.setPosition(Vector2f(bounds.left, bounds.top));
+                        // drawableBounds.setOutlineColor(Color::Green);
+                        // drawableBounds.setOutlineThickness(2);
+                        // drawableBounds.setFillColor(Color::Transparent);
+                        // window.draw(drawableBounds);
                     }
                 }
+                
+                window.draw(player.getSpriteBase());
+                window.draw(player.getSpriteGun());
+                window.draw(player.getSpriteArm());
+
                 // window.draw(armJoint);
                 // window.draw(playerPosition);
                 // window.draw(armRay);

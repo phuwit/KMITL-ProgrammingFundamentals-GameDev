@@ -16,19 +16,27 @@ class Zombie {
         const int M_MAX_VARIANCE = 30;
         const int M_OFFSET = 101 - M_MAX_VARIANCE;
 
+        FloatRect m_PlayArea;
         Vector2f m_Position;
         float m_SpriteScaling = 1;
         Sprite m_Sprite;
         FloatRect m_Bounds;
         Vector2f m_CenterOffset;
-        float m_Speed;
+        Vector2f m_Speed;
+        struct SpeedInverse {
+            int x = 1;
+            int y = 1;
+        } m_SpeedInverse;
+        ZombieMoveStyle m_MoveStyle;
+        float m_Peroid = 0;
+        float m_SinAmplitude = 20;
         float m_Health;
         bool m_Alive;
 
     public:
         Zombie();
         // spawn a new zombie
-        void spawn(Vector2f spawnLoaction, float spriteScaling, ZombieType type, int seed);
+        void spawn(Vector2f spawnLoaction, float spriteScaling, ZombieType type, ZombieMoveStyle moveStyle, int seed, FloatRect playArea);
         // handle bullet hitting a zombie
         bool hit();
         

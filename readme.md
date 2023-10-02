@@ -17,6 +17,7 @@ many projects/ assets are used in this one. please see [attribution.md](attribut
 - [x] make a map
 - [ ] hud
 - [x] import zombies code
+- [x] vary zombies movement
 - [x] import zombies horde spawning code
 - [ ] rework spawn timing
 - [x] handle score
@@ -25,6 +26,7 @@ many projects/ assets are used in this one. please see [attribution.md](attribut
 - [ ] handle paused screen
 - [ ] handle gameover screen
 - [ ] handle levelup screen
+- [ ] handle leaderboard
 - [x] handle scene change
 - [ ] implement pickups
 - [ ] zombie dead animation?

@@ -35,6 +35,7 @@ SceneChange Info::run(RenderWindow &window) {
     paragraphText.setString("\
     Brain Blast! \n\
     2D top-down arcade zombie shooter.\n\
+    Made using C++ and SFML.\n\
     \n\
     Made for KMITL 01076103 \"Programming Fundamentals\".\n\
     Instructed by Asst.Prof.Dr. Thanunchai Threepak.\n\

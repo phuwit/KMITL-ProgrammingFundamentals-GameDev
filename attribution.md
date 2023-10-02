@@ -1,4 +1,5 @@
 # Attibution
+- Used [SFML](https://www.sfml-dev.org) by Laurent Gomila under [zlib/png](https://www.sfml-dev.org/license.php) license.
 - Used free assets from [Craftpix](https://craftpix.net) under their [Freebie products file license](https://craftpix.net/file-licenses/)
     - [Free 3 Cyberpunk Characters Pixel Art](https://craftpix.net/freebies/free-3-cyberpunk-characters-pixel-art/)
     - [Free Extra Animations for Cyberpunk Characters](https://craftpix.net/freebies/free-extra-animations-for-cyberpunk-characters/)

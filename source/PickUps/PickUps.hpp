@@ -10,7 +10,7 @@ class PickUps {
     private:
         // base values
         const int BASE_VALUE[sizeof(PickupsType)] = {5, 12, 2, 2};
-        const String TEXTURE_NAME[sizeof(PickupsType)] = {"assets/sprites/pickups/pickups/health.png", "assets/sprites/pickups/pickups/ammo.png", "assets/sprites/pickups/pickups/speed.png", "assets/sprites/pickups/pickups/score.png"};
+        const String TEXTURE_NAME[sizeof(PickupsType)] = {"assets/sprites/pickups/health.png", "assets/sprites/pickups/ammo.png", "assets/sprites/pickups/speed.png", "assets/sprites/pickups/score.png"};
         const int BASE_SECONDS_TO_WAIT = 10;
         const int BASE_SECONDS_TO_LIVE = 5;
 

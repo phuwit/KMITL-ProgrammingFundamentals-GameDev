@@ -1,7 +1,8 @@
 {
     "code-runner.executorMap": {
-        "c": "cd $dir && clang -lm -lsfml-graphics -lsfml-window -lsfml-system $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+        // "cpp": "clang++ -L$workspaceRoot/build/SFML-2.6.0/lib/ -I-L$workspaceRoot/build/SFML-2.6.0/include/ -lm -lsfml-audio-d -lsfml-graphics-d -lsfml-window-d -lsfml-system-d $dir$fileName -o $workspaceRoot/build/$fileNameWithoutExt && export LD_LIBRARY_PATH=$workspaceRoot/build/SFML-2.6.0/lib && $workspaceRoot/build/$fileNameWithoutExt"
         "cpp": "cd $dir && clang++ -lm -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
+
     },
     "files.associations": {
         "sstream": "cpp",

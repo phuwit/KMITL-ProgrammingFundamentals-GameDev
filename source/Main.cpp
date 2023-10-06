@@ -34,7 +34,7 @@ int main() {
     Scenes.push_back(&menu);
     Info info;
     Scenes.push_back(&info);
-    Game game;
+    Game game(Vector2f(window.getSize()), Vector2f(window.getSize()));
     Scenes.push_back(&game);
     Paused paused;
     Scenes.push_back(&paused);

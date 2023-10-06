@@ -17,3 +17,4 @@ enum PickupsType {PICKUPS_HEALTH, PICKUPS_AMMO, PICKUPS_SPEED, PICKUPS_SCORE};
 int ZombieDifficulty[sizeof(ZombieType)] {30, 40, 40};
 
 int currentLevel = 1;
+bool paused = false;

@@ -31,6 +31,7 @@ class Player {
    
     public:
         Player(float spriteScaling);
+        Player();
         void spawn(FloatRect playArea, Vector2f screenResolution);
 
         Sprite getSpriteBase();

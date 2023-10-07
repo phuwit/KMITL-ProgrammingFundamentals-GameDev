@@ -75,10 +75,6 @@ FloatRect Zombie::getHitBox() {
     return bounds;
 }
 
-Sprite Zombie::getSprite() {
-    return m_Sprite;
-}
-
 RectangleShape Zombie::getDrawableHitbox() {
     FloatRect bounds = Zombie::getHitBox();
     RectangleShape drawableHitbox(sf::Vector2f(bounds.width, bounds.height));
@@ -90,6 +86,14 @@ RectangleShape Zombie::getDrawableHitbox() {
     drawableHitbox.setOutlineThickness(1.f);
 
     return drawableHitbox;
+}
+
+Sprite Zombie::getSprite() {
+    return m_Sprite;
+}
+
+Vector2f Zombie::getPosition() {
+    return m_Position;
 }
 
 void Zombie::update(Time frameTime, Vector2f playerLocation) {

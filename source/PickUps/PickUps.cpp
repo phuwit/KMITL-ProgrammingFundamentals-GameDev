@@ -1,12 +1,15 @@
 #pragma once
 
+#include <utility>
 #include "PickUps.hpp"
 #include "../CommonEnum.hpp"
 #include "../Holders/TextureHolder.hpp"
 
-PickUps::PickUps(PickupsType type, bool isSpawnRandom) {
+PickUps::PickUps(PickupsType type, bool isSpawnRandom, IntRect playArea) {
+    srand((uint)time(0) * (type + 1));
     m_Type = type;
     m_SpawnRandom = isSpawnRandom;
+    m_PlayArea = playArea;
 
     m_Sprite = Sprite(TextureHolder::GetTexture(TEXTURE_NAME[m_Type]));
     m_Value = BASE_VALUE[m_Type];
@@ -16,20 +19,10 @@ PickUps::PickUps(PickupsType type, bool isSpawnRandom) {
     m_SecondsToWait = BASE_SECONDS_TO_WAIT;
 }
 
-void PickUps::setArena(IntRect arena) {
-    // copy arena's detail
-    m_Arena.left = arena.left + 50;
-    m_Arena.width = arena.width - 50;
-    m_Arena.top = arena.top + 50;
-    m_Arena.height = arena.height - 50;
-}
-
 void PickUps::spawnRandom() {
     // spawn at random location
-    srand((uint)time(0) / ((uint)m_Type + 1));
-    int x = (rand() % m_Arena.width);
-    srand((uint)time(0) * ((uint)m_Type + 1));
-    int y = (rand() % m_Arena.height);
+    int x = (rand() % m_PlayArea.width);
+    int y = (rand() % m_PlayArea.height);
     m_Sprite.setPosition(x, y);
 
     m_SecondsSinceSpawned = 0;
@@ -74,10 +67,10 @@ bool PickUps::isSpawned() {
     return m_Spawned;
 }
 
-void PickUps::update(float elapsedTime) {
+void PickUps::update(Time frameTime) {
     // update timer
-    if (m_Spawned)  m_SecondsSinceSpawned += elapsedTime;
-    else            m_SecondsSinceDespawned += elapsedTime;
+    if (m_Spawned)  m_SecondsSinceSpawned += frameTime.asSeconds();
+    else            m_SecondsSinceDespawned += frameTime.asSeconds();
 
     // hide the pcikup if timeout
     if ((m_SecondsSinceSpawned > m_SecondsToLive) && m_Spawned) {
@@ -85,7 +78,7 @@ void PickUps::update(float elapsedTime) {
         m_SecondsSinceDespawned = 0;
     }
     // spawn new one if exceeded the despawn timer
-    else if ((m_SecondsSinceDespawned > m_SecondsToWait) && !m_Spawned) {
+    else if ((m_SecondsSinceDespawned > m_SecondsToWait) && !m_Spawned && m_SpawnRandom) {
         spawnRandom();
     }
 }

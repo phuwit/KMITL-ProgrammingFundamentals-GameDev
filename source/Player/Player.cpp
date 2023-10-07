@@ -51,6 +51,10 @@ Vector2f Player::getPosition() {
     return m_Position;
 }
 
+FloatRect Player::getHitbox() {
+    return m_Base.getGlobalBounds();
+}
+
 float Player::getArmAngle() {
     return m_ArmAngle;
 }

@@ -1,10 +1,12 @@
 #pragma once
+#include <vector>
 #include <SFML/Graphics.hpp>
 
 #include "Scenes.hpp"
 #include "../Zombie/Zombie.hpp"
 #include "../Player/Player.cpp"
 #include "../Bullet/Bullet.cpp"
+#include "../PickUps/PickUps.cpp"
 
 using namespace sf;
 
@@ -40,6 +42,8 @@ class Game : public Scenes {
         float           m_FireRate = 1;
         Time            m_LastShot;
         const Time      M_BULLET_COOLDOWN = milliseconds(100);
+
+        vector<PickUps> m_PickUpsList;
 
         bool            m_MovementKeyPressed[sizeof(MovementKey)];
         bool            m_MouseKeyPressed[sizeof(MouseButton)];

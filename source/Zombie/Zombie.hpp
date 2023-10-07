@@ -41,8 +41,9 @@ class Zombie {
         // getters
         bool isAlive();
         FloatRect getHitBox();
-        Sprite getSprite();
         RectangleShape getDrawableHitbox();
+        Sprite getSprite();
+        Vector2f getPosition();
 
         void update(Time frameTime, Vector2f playerLocation);
 };

@@ -33,129 +33,20 @@ Game::Game(Vector2f screenResolution, Vector2f levelSize) {
 
     // Zombie zombie;
     // zombie.spawn(Vector2f(200, 200), M_SPRITE_SCALING - 2, ZombieType::ZOMBIE_NORMAL, 1);
-    
+
+    m_PickUpsList.push_back(PickUps(PickupsType::PICKUPS_HEALTH, true, m_PlayArea));
+    m_PickUpsList.push_back(PickUps(PickupsType::PICKUPS_AMMO,   true, m_PlayArea));
+    m_PickUpsList.push_back(PickUps(PickupsType::PICKUPS_SPEED, false, m_PlayArea));
+    m_PickUpsList.push_back(PickUps(PickupsType::PICKUPS_SCORE, false, m_PlayArea));
+
     delete[] m_Zombies;
     m_Zombies = createHorde(m_NumZombies, (M_SPRITE_SCALING - 2), m_PlayArea);
-
-    // // DEBUG STUFFS
-
-    // RectangleShape whiteBackground(screenResolution);
-
-    // CircleShape armJoint(5);
-    // armJoint.setOrigin(armJoint.getRadius(), armJoint.getRadius());
-    // // armJoint.setFillColor(Color(0, 255, 0, 50));
-    // armJoint.setFillColor(Color::Green);
-    // armJoint.setPosition(m_Player.getArmPosition());
-
-    // CircleShape playerPosition(5);
-    // playerPosition.setOrigin(armJoint.getRadius(), armJoint.getRadius());
-    // // armJoint.setFillColor(Color(0, 255, 0, 50));
-    // playerPosition.setFillColor(Color::Magenta);
-
-    // CircleShape cursor(7);
-    // cursor.setFillColor(Color::Green);
-    
-    // RectangleShape armRay(Vector2f(300, 4));
-    // armRay.setPosition(m_Player.getArmPosition());
-    // armRay.setOrigin(Vector2f(0, 2));
-    // armRay.setFillColor(Color::Magenta);
-
-    // CircleShape barrel(5);
-    // barrel.setFillColor(Color::Red);
-    // barrel.setOrigin(barrel.getRadius(), barrel.getRadius());
-
-    // Font fontBebas = FontHolder::GetFont("assets/fonts/BebasNeue-Regular.otf");
-    
-    // // Text textArmAngle;
-    // // textArmAngle.setFont(fontBebas);
-    // // textArmAngle.setCharacterSize(48);
-    // // textArmAngle.setFillColor(Color::White);
-    // // textArmAngle.setPosition(Vector2f(0, 0));
-
-    // Text textHealth;
-    // textHealth.setFont(fontBebas);
-    // textHealth.setCharacterSize(32);
-    // textHealth.setFillColor(Color::White);
-    // textHealth.setPosition(0, 48);
-
-    // Text textScore;
-    // textScore.setFont(fontBebas);
-    // textScore.setCharacterSize(32);
-    // textScore.setFillColor(Color::White);
-    // textScore.setPosition(0, 80);
-    // // END DEBUG STUFFS
 }
 
 SceneChange Game::run(RenderWindow &window) {
     Vector2f screenResolution = Vector2f(window.getSize());
 
-    // Clock frameTimeClock;
-
-    // const int BACKGROUND_SCALE = 4;
-    // // IntRect backgroundSize = IntRect(0, 0, screenResolution.x, screenResolution.y);
-    // IntRect backgroundSize = IntRect(0, 0, screenResolution.x, screenResolution.y);
-    // Texture textureBackground;
-    // std::stringstream textureBackgroundFilename;
-    // textureBackgroundFilename << "assets/sprites/dungeon/pixel-poem/Dungeon_Tileset-x" << BACKGROUND_SCALE << ".png";
-    // textureBackground = TextureHolder::GetTexture(textureBackgroundFilename.str());
-    // VertexArray m_Background;
-    // int tileSize = createBackground(m_Background, backgroundSize, BACKGROUND_SCALE);
-    // IntRect playArea = IntRect(
-    //     backgroundSize.top + tileSize, backgroundSize.left + tileSize,
-    //     backgroundSize.width - tileSize, backgroundSize.height - (2 * tileSize));
-
-    // float SPRITE_SCALING = 4;
-
-    // Player m_Player(M_SPRITE_SCALING);
-    // m_Player.spawn(FloatRect(m_PlayArea), screenResolution);
-    // m_GameView.setCenter(m_Player.getPosition());
-
-    // View gameView;
-    // gameView.setSize(Vector2f(backgroundSize.width, backgroundSize.height));
-    // gameView.setCenter(m_Player.getPosition());
-    // View hudView;
-    // hudView.setSize(Vector2f(screenResolution.x, screenResolution.y));
-    // hudView.setCenter(Vector2f(screenResolution.x / 2, screenResolution.y / 2));
-
-    // // CircleShape centerHud(500);
-    // // centerHud.setPosition(Vector2f(0, 0));
-
-    // const Time LAST_HIT_COOLDOWN = milliseconds(300);
-    // Time lastHit = seconds(0);
-
-    // const int PLAYER_BASE_HEALTH = 5;
-    // int playerHealth = PLAYER_BASE_HEALTH;
-
-    // int score = 0;
-
-    // // Bullets stuffs
-    // const int MAX_BULLETS = 100;
-    // Bullet bullets[MAX_BULLETS];
-    // // current bullet index in array
-    // int currentBullet = 0;
-    // int bulletsSpare = 24;
-    // int clipSize = 6;
-    // int bulletsInClip = clipSize;
-    // float fireRate = 1;
-    // // last shot timestamp
-    // Time lastShot;
-    // Time BULLET_COOLDOWN = milliseconds(200);
-
-    // bool movementKeyPressed[sizeof(MovementKey)];
-    // bool mouseKeyPressed[sizeof(MouseButton)];
-
-    // enum class GameState {MENU, PLAYING, PAUSED, GAME_OVER};
-    // int stage = 0;
-
-    // // Zombie zombie;
-    // // zombie.spawn(Vector2f(200, 200), SPRITE_SCALING - 2, ZombieType::ZOMBIE_NORMAL, 1);
-
-    // int numZombies = 0 + (3 * currentLevel);
-    // int numZombiesAlive = numZombies;
-    // Zombie* zombies = nullptr;
-    
-    // delete[] zombies;
-    // zombies = createHorde(numZombies, (SPRITE_SCALING - 2), playArea);
+    srand((uint)time(0));
 
     // DEBUG STUFFS
 
@@ -262,7 +153,7 @@ SceneChange Game::run(RenderWindow &window) {
 
             for(int i = 0; i < m_NumZombies; i++) {
                 if (m_Zombies[i].isAlive() && (m_LastHit > M_LAST_HIT_COOLDOWN)) {
-                    if (m_Zombies[i].getHitBox().intersects(m_Player.getSpriteBase().getGlobalBounds())) {
+                    if (m_Zombies[i].getHitBox().intersects(m_Player.getHitbox())) {
                         m_PlayerHealth--;
                         m_LastHit = seconds(0);
                         if (m_PlayerHealth <= 0) {
@@ -289,12 +180,31 @@ SceneChange Game::run(RenderWindow &window) {
                                     if (m_NumZombiesAlive <= 0) {
                                         return SceneChange(ScenesList::SCENE_LEVELUP, getScreenshot(window).copyToImage());
                                     }
+
+                                    int randomNumber = (rand() % 5);
+                                    if (randomNumber == 0) {
+                                        m_PickUpsList[PickupsType::PICKUPS_SCORE].spawnAt(m_Zombies[j].getPosition());
+                                    } else if (randomNumber == 1) {
+                                        m_PickUpsList[PickupsType::PICKUPS_SPEED].spawnAt(m_Zombies[j].getPosition());
+                                    }
                                 }
                                 m_Bullets[i].stop();
                             }
                         }
                     }
                 }
+            }
+
+            uint pickuplistsize = sizeof(m_PickUpsList);
+
+            for (int i = 0; i < sizeof(PickupsType); i++) {
+                if (m_PickUpsList[i].isSpawned()) {
+                    if (m_Player.getHitbox().intersects(m_PickUpsList[i].getPosition())) {
+                        // do something
+                    }
+                }
+
+                m_PickUpsList[i].update(frameTime);
             }
 
             if (m_MouseKeyPressed[MouseButton::MOUSE_LEFT] && (m_LastShot > M_BULLET_COOLDOWN)) {
@@ -333,6 +243,12 @@ SceneChange Game::run(RenderWindow &window) {
                 for(int i = 0; i < m_NumZombies; i++) {
                     window.draw(m_Zombies[i].getSprite());
                     // window.draw(m_Zombies[i].getDrawableHitbox());
+                }
+
+                for (int i = 0; i < sizeof(PickupsType); i++) {
+                    if (m_PickUpsList[i].isSpawned()) {
+                        window.draw(m_PickUpsList[i].getSprite());
+                    }
                 }
 
                 for (int i = 0; i < M_MAX_BULLETS; i++) {

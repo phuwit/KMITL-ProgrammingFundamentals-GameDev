@@ -15,7 +15,7 @@ class PickUps {
         const int BASE_SECONDS_TO_LIVE = 5;
 
         Sprite m_Sprite;
-        IntRect m_Arena;
+        IntRect m_PlayArea;
         // pickup resource value
         int m_Value;
         // pickup type
@@ -23,15 +23,14 @@ class PickUps {
 
         // handle spawning and disappearing
         bool m_SpawnRandom;
-        bool m_Spawned;
+        bool m_Spawned = false;
         float m_SecondsSinceSpawned;
         float m_SecondsSinceDespawned;
         float m_SecondsToLive;
         float m_SecondsToWait;
 
     public:
-        PickUps(PickupsType type, bool isSpawnRandom);
-        void setArena(IntRect arena);
+        PickUps(PickupsType type, bool isSpawnRandom, IntRect playArea);
         void spawnRandom();
         void spawnAt(Vector2f location);
 
@@ -44,5 +43,5 @@ class PickUps {
         Sprite getSprite();
         bool isSpawned();
 
-        void update(float elapsedTime);
+        void update(Time frameTime);
 };

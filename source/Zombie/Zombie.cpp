@@ -147,7 +147,7 @@ void Zombie::update(Time frameTime, Vector2f playerLocation) {
 
         // check for moving in diagonal
         if (moveX && moveY) {
-            speed = Vector2f(m_Speed.x * sqrt(2), m_Speed.y * sqrt(2));
+            speed = Vector2f(m_Speed.x * sqrt(0.5), m_Speed.y * sqrt(0.5));
         }
 
 

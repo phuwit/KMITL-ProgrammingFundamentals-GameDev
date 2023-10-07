@@ -24,8 +24,7 @@ class Game : public Scenes {
         View            m_GameView;
         View            m_HudView;
         
-        // Player*         m_PlayerPtr = nullptr;
-        // Player          m_Player = *m_PlayerPtr;
+        Player          m_Player = Player(M_SPRITE_SCALING);
         const Time      M_LAST_HIT_COOLDOWN = milliseconds(300);
         Time            m_LastHit = seconds(0);
         const int       M_PLAYER_BASE_HEALTH = 5;

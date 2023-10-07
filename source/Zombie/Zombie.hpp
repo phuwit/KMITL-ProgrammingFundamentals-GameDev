@@ -23,10 +23,8 @@ class Zombie {
         FloatRect m_Bounds;
         Vector2f m_CenterOffset;
         Vector2f m_Speed;
-        struct SpeedInverse {
-            int x = 1;
-            int y = 1;
-        } m_SpeedInverse;
+        Vector2i m_SpeedInverse = Vector2i(1, 1);
+        Vector2i M_BASE_INVERSE_CHANCE = Vector2i(10000, 10000);
         ZombieMoveStyle m_MoveStyle;
         float m_Peroid = 0;
         float m_SinAmplitude = 20;

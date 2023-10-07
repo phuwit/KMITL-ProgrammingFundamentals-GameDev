@@ -97,19 +97,68 @@ void Zombie::update(Time frameTime, Vector2f playerLocation) {
         float distanceX = (playerLocation.x - m_Position.x);
         float distanceY = (playerLocation.y - m_Position.y);
 
+        bool moveX, moveY;
+
         Vector2f speed = m_Speed;
 
-        if ((rand() % 2000) == 0) m_SpeedInverse.x = -m_SpeedInverse.x;
-        if ((rand() % 2000) == 0) m_SpeedInverse.y = -m_SpeedInverse.y;
+        Vector2i inverseChance = M_BASE_INVERSE_CHANCE;
+
+        if (m_SpeedInverse.x == -1) {
+            inverseChance.x /= 2;
+        }
+        if (m_SpeedInverse.y == -1) {
+            inverseChance.y /= 2;
+        }
+
+        if ((rand() % inverseChance.x) == 0) m_SpeedInverse.x = -m_SpeedInverse.x;
+        if ((rand() % inverseChance.y) == 0) m_SpeedInverse.y = -m_SpeedInverse.y;
+
+        if (!m_PlayArea.contains(m_Position)) {
+            if (m_Position.x < m_PlayArea.left)   m_SpeedInverse.x = 1;
+            if (m_Position.x > m_PlayArea.width)  m_SpeedInverse.x = 1;
+            if (m_Position.y < m_PlayArea.top)    m_SpeedInverse.y = 1;
+            if (m_Position.y > m_PlayArea.height) m_SpeedInverse.y = 1;
+        }
+
+        if (distanceX != 0) {
+            moveX = true;
+        }
+        if (distanceY != 0) {
+            moveY = true;
+        }
+
+
+        if (m_MoveStyle == ZombieMoveStyle::ZOMBIE_MOVESTYLE_XFIRST) {
+            if (abs(distanceX) >= 50) {
+                moveX = true;
+                moveY = false;
+            }
+        }
+        else if (m_MoveStyle == ZombieMoveStyle::ZOMBIE_MOVESTYLE_YFIRST) {
+            if (abs(distanceY) >= 50) {
+                moveX = false;
+                moveY = true;
+            }
+        }
+        else if (m_MoveStyle == ZombieMoveStyle::ZOMBIE_MOVESTYLE_RANDOM) {
+            moveX = (rand() % 2) == 0;
+            moveY = (rand() % 2) == 0;
+        }
 
         // check for moving in diagonal
-        if (distanceX != 0 && distanceY != 0) {
+        if (moveX && moveY) {
             speed = Vector2f(m_Speed.x * sqrt(2), m_Speed.y * sqrt(2));
         }
 
-        if (m_MoveStyle == ZombieMoveStyle::ZOMBIE_MOVESTYLE_XFIRST && distanceX != 0) distanceY = 0;
-        if (m_MoveStyle == ZombieMoveStyle::ZOMBIE_MOVESTYLE_YFIRST && distanceY != 0) distanceX = 0;
 
+        if (moveX == true) {
+            if (distanceX > 0) m_Position.x += (speed.x * m_SpeedInverse.x) * frameTime.asSeconds();
+            if (distanceX < 0) m_Position.x -= (speed.x * m_SpeedInverse.x) * frameTime.asSeconds();
+        }
+        if (moveY == true) {
+            if (distanceY > 0) m_Position.y += (speed.y * m_SpeedInverse.y) * frameTime.asSeconds();
+            if (distanceY < 0) m_Position.y -= (speed.y * m_SpeedInverse.y) * frameTime.asSeconds();
+        }
 
         // flip zombie if facing in -x direction
         // if ((playerLocation.x - m_Position.x ) < 0) {
@@ -118,33 +167,6 @@ void Zombie::update(Time frameTime, Vector2f playerLocation) {
         // else {
         //     m_Sprite.setScale(Vector2f(-m_SpriteScaling, m_SpriteScaling));
         // }
-
-        // move zombie to player 
-        if (m_MoveStyle != ZombieMoveStyle::ZOMBIE_MOVESTYLE_YFIRST || distanceX != 0) {
-            if (distanceX > 0) m_Position.x += (speed.x * m_SpeedInverse.x) * frameTime.asSeconds();
-            if (distanceX < 0) m_Position.x -= (speed.x * m_SpeedInverse.x) * frameTime.asSeconds();
-            // if (distanceX > 0) m_Position.x += sin((m_Position.y) * (m_Peroid * 1)) * 5;
-            // if (distanceX < 0) m_Position.x -= sin((m_Position.y) * (m_Peroid * 1)) * 5;
-        }
-
-        if (m_MoveStyle != ZombieMoveStyle::ZOMBIE_MOVESTYLE_XFIRST || distanceY != 0) {
-            if (distanceY > 0) m_Position.y += (speed.y * m_SpeedInverse.y) * frameTime.asSeconds();
-            if (distanceY < 0) m_Position.y -= (speed.y * m_SpeedInverse.y) * frameTime.asSeconds();
-            // if (distanceY > 0) m_Position.y += sin((m_Position.x) * (m_Peroid * 1)) * 5;
-            // if (distanceY < 0) m_Position.y -= sin((m_Position.x) * (m_Peroid * 1)) * 5;
-        }
-
-        // m_Peroid += 0.05;
-        // if (m_Peroid > 2 * M_PI) {
-        //     m_Peroid = 0;
-        // }
-
-        if (m_PlayArea.contains(m_Position) == false) {
-            if (m_Position.x < m_PlayArea.left)   m_SpeedInverse.x = 1;
-            if (m_Position.x > m_PlayArea.width)  m_SpeedInverse.x = 1;
-            if (m_Position.y < m_PlayArea.top)    m_SpeedInverse.y = 1;
-            if (m_Position.y > m_PlayArea.height) m_SpeedInverse.y = 1;
-        }
 
         // set new position
         m_Sprite.setPosition(m_Position);

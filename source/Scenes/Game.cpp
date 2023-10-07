@@ -19,15 +19,12 @@ Game::Game(Vector2f screenResolution, Vector2f levelSize) {
     std::stringstream textureBackgroundFilename;
     textureBackgroundFilename << "./assets/sprites/dungeon/pixel-poem/Dungeon_Tileset-x" << M_BACKGROUND_SCALE << ".png";
     m_TextureBackground = TextureHolder::GetTexture(textureBackgroundFilename.str());
-    int tileSize = createBackground(m_Background, m_BackgroundSize, M_BACKGROUND_SCALE);
+    m_TileSize = createBackground(m_Background, m_BackgroundSize, M_BACKGROUND_SCALE);
     m_PlayArea = IntRect(
-        m_BackgroundSize.top + tileSize, m_BackgroundSize.left + tileSize,
-        m_BackgroundSize.width - tileSize, m_BackgroundSize.height - (2 * tileSize));
+        m_BackgroundSize.top + m_TileSize, m_BackgroundSize.left + m_TileSize,
+        m_BackgroundSize.width - m_TileSize, m_BackgroundSize.height - (2 * m_TileSize));
 
-    float SPRITE_SCALING = 4;
-
-    // m_PlayerPtr = new Player(M_SPRITE_SCALING);
-    // m_Player.spawn(FloatRect(m_PlayArea), screenResolution);
+    m_Player.spawn(FloatRect(m_PlayArea), screenResolution);
 
     m_GameView.setSize(Vector2f(m_BackgroundSize.width, m_BackgroundSize.height));
     // m_GameView.setCenter(m_Player.getPosition());
@@ -35,10 +32,10 @@ Game::Game(Vector2f screenResolution, Vector2f levelSize) {
     m_HudView.setCenter(Vector2f(screenResolution.x / 2, screenResolution.y / 2));
 
     // Zombie zombie;
-    // zombie.spawn(Vector2f(200, 200), SPRITE_SCALING - 2, ZombieType::ZOMBIE_NORMAL, 1);
+    // zombie.spawn(Vector2f(200, 200), M_SPRITE_SCALING - 2, ZombieType::ZOMBIE_NORMAL, 1);
     
     delete[] m_Zombies;
-    m_Zombies = createHorde(m_NumZombies, (SPRITE_SCALING - 2), m_PlayArea);
+    m_Zombies = createHorde(m_NumZombies, (M_SPRITE_SCALING - 2), m_PlayArea);
 
     // // DEBUG STUFFS
 
@@ -109,9 +106,9 @@ SceneChange Game::run(RenderWindow &window) {
 
     // float SPRITE_SCALING = 4;
 
-    Player m_Player(M_SPRITE_SCALING);
-    m_Player.spawn(FloatRect(m_PlayArea), screenResolution);
-    m_GameView.setCenter(m_Player.getPosition());
+    // Player m_Player(M_SPRITE_SCALING);
+    // m_Player.spawn(FloatRect(m_PlayArea), screenResolution);
+    // m_GameView.setCenter(m_Player.getPosition());
 
     // View gameView;
     // gameView.setSize(Vector2f(backgroundSize.width, backgroundSize.height));
@@ -214,7 +211,7 @@ SceneChange Game::run(RenderWindow &window) {
             Event event;
             while (window.pollEvent(event)) {
                 if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape) || event.type == Event::LostFocus) {
-                    return SceneChange(ScenesList::SCENE_PAUSED);
+                    // return SceneChange(ScenesList::SCENE_PAUSED);
                 }
             }
 

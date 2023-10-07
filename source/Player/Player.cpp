@@ -23,22 +23,6 @@ Player::Player(float spriteScaling) {
     m_MovementKeyPressed[MovementKey::MOVEMENT_DOWN] = true;
 }
 
-Player::Player() {
-    m_SpriteScaling = 1;
-    m_Base.setTexture(TextureHolder::GetTexture("assets/sprites/player/base/Idle2.png"));
-    m_Base.setTextureRect(m_TEXTURE_SHEET_OFFSET);
-    m_Base.setOrigin(m_BASE_ORIGIN_OFFSET);
-    m_Arm.setTexture(TextureHolder::GetTexture("assets/sprites/player/arm/8.png"));
-    m_Arm.setOrigin(m_ARM_ORIGIN_OFFSET);
-    m_Gun.setTexture(TextureHolder::GetTexture("assets/sprites/gun/gun.png"));
-    m_Gun.setOrigin(m_GUN_ORIGIN_OFFSET);
-
-    m_Base.setScale(m_SpriteScaling, m_SpriteScaling);
-    m_Arm.setScale(m_SpriteScaling, m_SpriteScaling);
-    m_Gun.setScale(m_SpriteScaling, m_SpriteScaling);
-    m_MovementKeyPressed[MovementKey::MOVEMENT_DOWN] = true;
-}
-
 void Player::spawn(FloatRect playArea, Vector2f screenResolution) {
     m_ScreenResolution = screenResolution;
     m_PlayArea = playArea;
@@ -47,8 +31,7 @@ void Player::spawn(FloatRect playArea, Vector2f screenResolution) {
     m_PlayArea = FloatRect(playArea.left + paddingWidth, playArea.top + paddingHeight, playArea.width - paddingWidth, playArea.height - paddingHeight);
 
     // positions organs haha yes
-    // m_Position = Vector2f(playArea.width / 2, playArea.height / 2);
-    m_Position = Vector2f(500, 500);
+    m_Position = Vector2f((playArea.width + playArea.left) / 2, (playArea.height + playArea.top) / 2);
     m_SetSpritesPosition();
 }
 

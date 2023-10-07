@@ -4,16 +4,15 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-
         {
             "name": "C/C++: clang++ build and launch active file",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/${fileBasenameNoExtension}",
+            "program": "${workspaceFolder}/build/Main",
             "environment": [
                 {
                     "name": "LD_LIBRARY_PATH",
-                    "value": "/home/phuwit/Dev/ProgrammingFundamentals-GameDev/build/SFML-2.6.0/lib"
+                    "value": "${workspaceFolder}/build/SFML-2.6.0/lib"
                 }
             ],
             "args": [],
@@ -34,6 +33,36 @@
                 }
             ],
             "preLaunchTask": "C/C++: clang++ build active file"
+        },
+        {
+            "name": "C/C++: g++ build and launch active file",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/Main",
+            "environment": [
+                {
+                    "name": "LD_LIBRARY_PATH",
+                    "value": "${workspaceFolder}/build/SFML-2.6.0/lib"
+                }
+            ],
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/build/",
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "C/C++: g++ build active file"
         }
     ]
 }

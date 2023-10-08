@@ -5,6 +5,9 @@
 no further information provided.
 incompetence is my greatest superpower.
 
+## i beg please work on windows someday
+[![CI](https://github.com/phuwit/KMITL-ProgrammingFundamentals-GameDev/actions/workflows/ci.yml/badge.svg)](https://github.com/phuwit/KMITL-ProgrammingFundamentals-GameDev/actions/workflows/ci.yml)
+
 ## Attributions
 many projects/ assets are used in this one. please see [attribution.md](attribution.md) for more info.
 

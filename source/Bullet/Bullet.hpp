@@ -9,7 +9,7 @@ class Bullet {
         Vector2f m_Position;
         float m_BulletRotationDegrees;
         float m_SpriteScaling = 1;
-        Uint8 m_SpriteAlpha = 0.75 * 255;
+        unsigned int m_SpriteAlpha = 0.75 * 255;
         Sprite m_Sprite;
         bool m_InFlight = false;
         float m_BulletSpeed = 500;

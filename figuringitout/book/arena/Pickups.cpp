@@ -37,9 +37,9 @@ void Pickups::setArena(IntRect arena) {
 
 void Pickups::spawn() {
     // spawn at random location
-    srand((uint)time(0) / ((uint)m_Type + 1));
+    srand((unsigned int)time(0) / ((unsigned int)m_Type + 1));
     int x = (rand() % m_Arena.width);
-    srand((uint)time(0) * ((uint)m_Type + 1));
+    srand((unsigned int)time(0) * ((unsigned int)m_Type + 1));
     int y = (rand() % m_Arena.height);
     m_Sprite.setPosition(x, y);
 

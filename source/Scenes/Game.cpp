@@ -46,7 +46,7 @@ Game::Game(Vector2f screenResolution, Vector2f levelSize) {
 SceneChange Game::run(RenderWindow &window) {
     Vector2f screenResolution = Vector2f(window.getSize());
 
-    srand((uint)time(0));
+    srand((unsigned int)time(0));
 
     // DEBUG STUFFS
 
@@ -195,7 +195,7 @@ SceneChange Game::run(RenderWindow &window) {
                 }
             }
 
-            uint pickuplistsize = sizeof(m_PickUpsList);
+            unsigned int pickuplistsize = sizeof(m_PickUpsList);
 
             for (int i = 0; i < sizeof(PickupsType); i++) {
                 if (m_PickUpsList[i].isSpawned()) {

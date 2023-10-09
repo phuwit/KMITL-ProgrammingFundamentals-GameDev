@@ -6,7 +6,7 @@
 #include "../Holders/TextureHolder.hpp"
 
 PickUps::PickUps(PickupsType type, bool isSpawnRandom, IntRect playArea) {
-    srand((uint)time(0) * (type + 1));
+    srand((unsigned int)time(0) * (type + 1));
     m_Type = type;
     m_SpawnRandom = isSpawnRandom;
     m_PlayArea = playArea;

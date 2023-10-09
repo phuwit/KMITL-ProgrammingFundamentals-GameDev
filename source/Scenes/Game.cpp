@@ -101,8 +101,9 @@ SceneChange Game::run(RenderWindow &window) {
         // HANDLE INPUTS
             Event event;
             while (window.pollEvent(event)) {
-                if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape) || event.type == Event::LostFocus) {
-                    // return SceneChange(ScenesList::SCENE_PAUSED);
+                // if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape) || event.type == Event::LostFocus) {
+                if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape)) {
+                    return SceneChange(ScenesList::SCENE_PAUSED);
                 }
             }
 
@@ -175,7 +176,7 @@ SceneChange Game::run(RenderWindow &window) {
                             // is zombie die after bullet hit
                             if (m_Bullets[i].isInFlight() && m_Zombies[j].isAlive()) {
                                 if (m_Zombies[j].hit()) {
-                                    m_Score++;
+                                    m_Score += (1 * m_ScoreMultiplier);
                                     m_NumZombiesAlive--;
                                     if (m_NumZombiesAlive <= 0) {
                                         return SceneChange(ScenesList::SCENE_LEVELUP, getScreenshot(window).copyToImage());
@@ -184,8 +185,10 @@ SceneChange Game::run(RenderWindow &window) {
                                     int randomNumber = (rand() % 5);
                                     if (randomNumber == 0) {
                                         m_PickUpsList[PickupsType::PICKUPS_SCORE].spawnAt(m_Zombies[j].getPosition());
+                                        m_BuffSprite = m_PickUpsList[PickupsType::PICKUPS_SCORE].getSprite();
                                     } else if (randomNumber == 1) {
                                         m_PickUpsList[PickupsType::PICKUPS_SPEED].spawnAt(m_Zombies[j].getPosition());
+                                        m_BuffSprite = m_PickUpsList[PickupsType::PICKUPS_SPEED].getSprite();
                                     }
                                 }
                                 m_Bullets[i].stop();
@@ -200,7 +203,7 @@ SceneChange Game::run(RenderWindow &window) {
             for (int i = 0; i < sizeof(PickupsType); i++) {
                 if (m_PickUpsList[i].isSpawned()) {
                     if (m_Player.getHitbox().intersects(m_PickUpsList[i].getPosition())) {
-                        // do something
+                        handlePickUps_((PickupsType)i, m_PickUpsList[i].take());
                     }
                 }
 
@@ -293,4 +296,27 @@ void Game::setPaused() {
 
 void Game::setPerks() {
 
+}
+
+void Game::handlePickUps_(PickupsType pickUpsType, int pickupValue) {
+    if (pickUpsType == PickupsType::PICKUPS_HEALTH) {
+        m_PlayerHealth += pickupValue;
+        if (m_PlayerHealth > M_PLAYER_BASE_HEALTH) {
+            m_PlayerHealth = M_PLAYER_BASE_HEALTH;
+        }
+    } else if (pickUpsType == PickupsType::PICKUPS_AMMO) {
+        m_BulletsSpare += pickupValue;
+    } else if (pickUpsType == PickupsType::PICKUPS_SPEED) {
+        m_Player.setSpeedWithMultiplier(pickupValue);
+    } else if (pickUpsType == PickupsType::PICKUPS_SCORE) {
+        m_ScoreMultiplier = pickupValue;
+    }
+}
+
+void Game::removeBuff_(PickupsType pickUpsType) {
+    if (pickUpsType == PickupsType::PICKUPS_SPEED) {
+        m_Player.setSpeedReset();
+    } else if (pickUpsType == PickupsType::PICKUPS_SCORE) {
+        m_ScoreMultiplier = 1;
+    }
 }

@@ -15,8 +15,9 @@ class Player {
         const Vector2f m_ARM_BASE_OFFSET = Vector2f((3.5 * m_SpriteScaling), (0.5 * m_SpriteScaling));
         Sprite m_Base, m_Arm, m_Gun;
 
-        float m_Speed = 250;
-        float m_SpeedDiagonal = 250 * sqrt(0.5);
+        float m_BaseSpeed = 250;
+        float m_Speed = m_BaseSpeed;
+        float m_SpeedDiagonal = m_Speed * sqrt(0.5);
         
         bool m_MovementKeyPressed[4] = {false};
         Vector2f m_Position;
@@ -42,6 +43,9 @@ class Player {
         // return arm's joint/origin global position 
         Vector2f getArmPosition();
         Vector2f getBarrelPosition();
+
+        void setSpeedWithMultiplier(float multiplier);
+        void setSpeedReset();
 
         void setMovementKeyPressed(int movementKey, bool isPressed);
 

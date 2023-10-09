@@ -74,6 +74,16 @@ void Player::setMovementKeyPressed(int movementKey, bool isPressed) {
     m_MovementKeyPressed[movementKey] = isPressed;
 }
 
+void Player::setSpeedWithMultiplier(float multiplier) {
+    float m_Speed = m_BaseSpeed * multiplier;
+    float m_SpeedDiagonal = m_Speed * sqrt(0.5);
+}
+
+void Player::setSpeedReset() {
+    float m_Speed = m_BaseSpeed;
+    float m_SpeedDiagonal = m_Speed * sqrt(0.5);
+}
+
 void Player::update(Vector2f mousePosition, Time frameTime) {
     // movement
     // detect diagonals

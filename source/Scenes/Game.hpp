@@ -33,6 +33,7 @@ class Game : public Scenes {
         int             m_PlayerHealth = M_PLAYER_BASE_HEALTH;
 
         int             m_Score = 0;
+        int             m_ScoreMultiplier = 1;
         const int       M_MAX_BULLETS = 100;
         Bullet          m_Bullets[100];
         int             m_CurrentBullet = 0;
@@ -44,6 +45,11 @@ class Game : public Scenes {
         const Time      M_BULLET_COOLDOWN = milliseconds(100);
 
         vector<PickUps> m_PickUpsList;
+        PickupsType     m_BuffType;
+        Time            m_BuffTimer;
+        Sprite          m_BuffSprite;
+        CircleShape     m_BuffVisualizer;
+        float           m_BuffVisualizerAnglePerSecond;
 
         bool            m_MovementKeyPressed[sizeof(MovementKey)];
         bool            m_MouseKeyPressed[sizeof(MouseButton)];
@@ -52,6 +58,8 @@ class Game : public Scenes {
         int             m_NumZombiesAlive = m_NumZombies;
         Zombie*         m_Zombies = nullptr;
 
+        void handlePickUps_(PickupsType pickUpsType, int pickupValue);
+        void removeBuff_(PickupsType pickUpsType);
     public:
         virtual SceneChange run(RenderWindow &window);
         Game(Vector2f screenResolution, Vector2f levelSize);

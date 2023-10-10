@@ -22,12 +22,15 @@ jobs:
         - { name: Static, flags: -DBUILD_SHARED_LIBS=FALSE }
 
     steps:
-    - name: Install Window Dependencies
+    - name: Install Windows Dependencies
       if: runner.os == 'Windows'
       uses: msys2/setup-msys2@v2
       with:
         msystem: mingw64
         install: mingw-w64-x86_64-gcc mingw-w64-x86_64-ninja mingw-w64-x86_64-cmake
+
+    - name: Set default Windows shell
+      shell: msys2 {0}
 
     - name: Install Linux Dependencies
       if: runner.os == 'Linux'

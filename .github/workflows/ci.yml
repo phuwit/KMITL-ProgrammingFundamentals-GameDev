@@ -74,7 +74,8 @@ jobs:
          build/
          !build/_deps/
 
-    - uses: Upload binary only artifact
+    - name: Upload binary only artifact
+      uses: actions/upload-artifact@v3
       with:
         name: ${{ matrix.platform.name }}-${{ matrix.config.name }}-binonly
         path: build/bin/

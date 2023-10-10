@@ -1,0 +1,3 @@
+[submodule "bookbundle"]
+	path = figuringitout/book/bundle
+	url = https://github.com/PacktPublishing/Beginning-Cpp-Game-Programming-Second-Edition.git

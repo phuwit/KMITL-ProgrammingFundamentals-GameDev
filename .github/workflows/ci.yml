@@ -3,7 +3,57 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  build:
+  build-nix:
+    name: ${{ matrix.platform.name }}-${{ matrix.config.name }}
+    runs-on: ${{ matrix.platform.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+        - { name: Linux GCC,              os: ubuntu-latest }
+        - { name: Linux Clang,            os: ubuntu-latest, flags: -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
+        # - { name: macOS,          os: macos-latest  }
+        config:
+        - { name: Dynamic, flags: -DBUILD_SHARED_LIBS=TRUE }
+        - { name: Static, flags: -DBUILD_SHARED_LIBS=FALSE }
+
+    steps:
+    - name: Install Dependencies
+      if: runner.os == 'Linux'
+      run: sudo apt-get update && sudo apt-get install libxrandr-dev libxcursor-dev libudev-dev libopenal-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure
+      shell: bash
+      run: cmake -S . -B build -DCMAKE_INSTALL_PREFIX=install ${{matrix.platform.flags}} ${{matrix.config.flags}}
+
+    - name: Build
+      shell: bash
+      run: cmake --build build --config Release
+
+    - name: Install
+      shell: bash
+      run: cmake --install build --config Release
+
+    - name : Upload full build artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ matrix.platform.name }}-${{ matrix.config.name }}-full
+        path:  |
+         build/
+         !build/_deps/
+
+    - name: Upload binary only artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ matrix.platform.name }}-${{ matrix.config.name }}-binonly
+        path: build/bin/
+
+
+  build-windows:
     name: ${{ matrix.platform.name }}-${{ matrix.config.name }}
     runs-on: ${{ matrix.platform.os }}
 
@@ -14,55 +64,30 @@ jobs:
         # - { name: Windows VS2019, os: windows-2019  }
         # - { name: Windows VS2022, os: windows-2022  }
         - { name: Windows MSYS2 MinGW64,  os: windows-2022,  flags: -GNinja -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ }
-        - { name: Linux GCC,              os: ubuntu-latest }
-        - { name: Linux Clang,            os: ubuntu-latest, flags: -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
-        # - { name: macOS,          os: macos-latest  }
         config:
-        - { name: Shared, flags: -DBUILD_SHARED_LIBS=TRUE }
+        - { name: Dynamic, flags: -DBUILD_SHARED_LIBS=TRUE }
         - { name: Static, flags: -DBUILD_SHARED_LIBS=FALSE }
 
     steps:
-    - name: Install MSYS2 on Windows
+    - name: Install MSYS2
       if: runner.os == 'Windows'
       uses: msys2/setup-msys2@v2
       with:
         msystem: mingw64
         install: mingw-w64-x86_64-gcc mingw-w64-x86_64-ninja mingw-w64-x86_64-cmake
 
-    - name: Install Dependencies on Linux
-      if: runner.os == 'Linux'
-      run: sudo apt-get update && sudo apt-get install libxrandr-dev libxcursor-dev libudev-dev libopenal-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev
-
     - name: Checkout
       uses: actions/checkout@v3
 
     - name: Configure
-      if: runner.os != 'Windows'
-      shell: bash
+      shell: msys2 {0}
       run: cmake -S . -B build -DCMAKE_INSTALL_PREFIX=install ${{matrix.platform.flags}} ${{matrix.config.flags}}
 
     - name: Build
-      if: runner.os != 'Windows'
-      shell: bash
+      shell: msys2 {0}
       run: cmake --build build --config Release
 
     - name: Install
-      if: runner.os != 'Windows'
-      shell: bash
-      run: cmake --install build --config Release
-
-    - name: Configure (Windows)
-      if: runner.os == 'Windows'
-      shell: msys2 {0}
-      run: cmake -S . -B build -DCMAKE_INSTALL_PREFIX=install ${{matrix.platform.flags}} ${{matrix.config.flags}}
-
-    - name: Build (Windows)
-      if: runner.os == 'Windows'
-      shell: msys2 {0}
-      run: cmake --build build --config Release
-
-    - name: Install (Windows)
-      if: runner.os == 'Windows'
       shell: msys2 {0}
       run: cmake --install build --config Release
 
@@ -71,8 +96,8 @@ jobs:
       with:
         name: ${{ matrix.platform.name }}-${{ matrix.config.name }}-full
         path:  |
-         build/
-         !build/_deps/
+          build/
+          !build/_deps/
 
     - name: Upload binary only artifact
       uses: actions/upload-artifact@v3

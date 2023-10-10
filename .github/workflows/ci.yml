@@ -52,17 +52,17 @@ jobs:
       run: cmake --install build --config Release
 
     - name: Configure (Windows)
-      if: runner.os != 'Windows'
+      if: runner.os == 'Windows'
       shell: msys2 {0}
       run: cmake -S . -B build -DCMAKE_INSTALL_PREFIX=install ${{matrix.platform.flags}} ${{matrix.config.flags}}
 
     - name: Build (Windows)
-      if: runner.os != 'Windows'
+      if: runner.os == 'Windows'
       shell: msys2 {0}
       run: cmake --build build --config Release
 
     - name: Install (Windows)
-      if: runner.os != 'Windows'
+      if: runner.os == 'Windows'
       shell: msys2 {0}
       run: cmake --install build --config Release
 

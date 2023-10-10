@@ -41,7 +41,7 @@ jobs:
     - name : Upload full build artifact
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ matrix.platform.name }}-${{ matrix.config.name }}-full
+        name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@${{ github.sha }}-full
         path:  |
          build/
          !build/_deps/
@@ -49,7 +49,7 @@ jobs:
     - name: Upload binary only artifact
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ matrix.platform.name }}-${{ matrix.config.name }}-binonly
+        name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@${{ github.sha }}-binonly
         path: build/bin/
 
 
@@ -94,7 +94,7 @@ jobs:
     - name : Upload full build artifact
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ matrix.platform.name }}-${{ matrix.config.name }}-full
+        name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@${{ github.sha }}-full
         path:  |
           build/
           !build/_deps/
@@ -102,5 +102,5 @@ jobs:
     - name: Upload binary only artifact
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ matrix.platform.name }}-${{ matrix.config.name }}-binonly
+        name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@${{ github.sha }}-binonly
         path: build/bin/

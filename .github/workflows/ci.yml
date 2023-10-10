@@ -22,15 +22,12 @@ jobs:
         - { name: Static, flags: -DBUILD_SHARED_LIBS=FALSE }
 
     steps:
-    - name: Install Windows Dependencies
+    - name: Install MSYS2 on Windows
       if: runner.os == 'Windows'
       uses: msys2/setup-msys2@v2
       with:
         msystem: mingw64
         install: mingw-w64-x86_64-gcc mingw-w64-x86_64-ninja mingw-w64-x86_64-cmake
-
-    - name: Set default Windows shell
-      shell: msys2 {0}
 
     - name: Install Linux Dependencies
       if: runner.os == 'Linux'
@@ -40,15 +37,33 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Configure
+      if: runner.os != 'Windows'
       shell: bash
       run: cmake -S . -B build -DCMAKE_INSTALL_PREFIX=install ${{matrix.platform.flags}} ${{matrix.config.flags}}
 
     - name: Build
+      if: runner.os != 'Windows'
       shell: bash
       run: cmake --build build --config Release
 
     - name: Install
+      if: runner.os != 'Windows'
       shell: bash
+      run: cmake --install build --config Release
+
+    - name: Configure (Windows)
+      if: runner.os != 'Windows'
+      shell: msys2 {0}
+      run: cmake -S . -B build -DCMAKE_INSTALL_PREFIX=install ${{matrix.platform.flags}} ${{matrix.config.flags}}
+
+    - name: Build (Windows)
+      if: runner.os != 'Windows'
+      shell: msys2 {0}
+      run: cmake --build build --config Release
+
+    - name: Install (Windows)
+      if: runner.os != 'Windows'
+      shell: msys2 {0}
       run: cmake --install build --config Release
 
     - uses: actions/upload-artifact@v3

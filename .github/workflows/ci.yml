@@ -24,11 +24,10 @@ jobs:
     steps:
     - name: Install Window Dependencies
       if: runner.os == 'Windows'
-      run: choco install ninja
       uses: msys2/setup-msys2@v2
       with:
         msystem: mingw64
-        install: mingw-w64-x86_64-gcc
+        install: mingw-w64-x86_64-gcc mingw-w64-x86_64-ninja mingw-w64-x86_64-cmake
 
     - name: Install Linux Dependencies
       if: runner.os == 'Linux'

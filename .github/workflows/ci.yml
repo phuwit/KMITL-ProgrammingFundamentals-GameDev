@@ -11,8 +11,8 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-        - { name: Linux GCC,              os: ubuntu-latest }
-        - { name: Linux Clang,            os: ubuntu-latest, flags: -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
+        - { name: Linux GCC,   os: ubuntu-latest }
+        - { name: Linux Clang, os: ubuntu-latest, flags: -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
         # - { name: macOS,          os: macos-latest  }
         config:
         - { name: Dynamic, flags: -DBUILD_SHARED_LIBS=TRUE }
@@ -61,15 +61,16 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-        # - { name: Windows VS2019, os: windows-2019  }
-        # - { name: Windows VS2022, os: windows-2022  }
-        - { name: Windows MSYS2 MinGW64,  os: windows-2022,  flags: -GNinja -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ }
+        - { name: Windows VS2019,         os: windows-2019, msys: false }
+        - { name: Windows VS2022,         os: windows-2022, msys: false }
+        - { name: Windows MSYS2 MinGW64,  os: windows-2022, msys: true  ,flags: -GNinja -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ }
         config:
         - { name: Dynamic, flags: -DBUILD_SHARED_LIBS=TRUE }
         - { name: Static, flags: -DBUILD_SHARED_LIBS=FALSE }
 
     steps:
     - name: Install MSYS2
+      if: ${{ matrix.platform.msys }} == true
       uses: msys2/setup-msys2@v2
       with:
         update: true

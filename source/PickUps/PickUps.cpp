@@ -13,6 +13,7 @@ PickUps::PickUps(PickupsType type, bool isSpawnRandom, IntRect playArea) {
 
     m_Sprite = Sprite(TextureHolder::GetTexture(TEXTURE_NAME[m_Type]));
     m_Value = BASE_VALUE[m_Type];
+    m_BuffDuration = BASE_BUFF_DURATION[m_Type];
     m_Sprite.setOrigin(m_Sprite.getLocalBounds().width / 2, m_Sprite.getLocalBounds().height / 2);
 
     m_SecondsToLive = BASE_SECONDS_TO_LIVE;
@@ -61,6 +62,10 @@ FloatRect PickUps::getPosition() {
 
 Sprite PickUps::getSprite() {
     return m_Sprite;
+}
+
+Time PickUps::getBuffDuration() {
+    return m_BuffDuration;
 }
 
 bool PickUps::isSpawned() {

@@ -15,6 +15,7 @@
 using namespace sf;
 
 Game::Game(Vector2f screenResolution, Vector2f levelSize) {
+    m_ScreenResolution = screenResolution;
     m_BackgroundSize = IntRect(0, 0, levelSize.x, levelSize.y);
     std::stringstream textureBackgroundFilename;
     textureBackgroundFilename << "./assets/sprites/dungeon/pixel-poem/Dungeon_Tileset-x" << M_BACKGROUND_SCALE << ".png";
@@ -44,13 +45,22 @@ Game::Game(Vector2f screenResolution, Vector2f levelSize) {
 }
 
 SceneChange Game::run(RenderWindow &window) {
-    Vector2f screenResolution = Vector2f(window.getSize());
-
     srand((unsigned int)time(0));
+
+    m_BuffVisualizerOutline.setRadius(25);
+    m_BuffVisualizerOutline.setOrigin(m_BuffVisualizerOutline.getRadius(), m_BuffVisualizerOutline.getRadius());
+    m_BuffVisualizerOutline.setFillColor(Color::Transparent);
+    m_BuffVisualizerOutline.setOutlineColor(Color::White);
+    m_BuffVisualizerOutline.setOutlineThickness(2);
+    m_BuffVisualizerOutline.setPosition(100, 100);
+
+    m_BuffVisualizerWiper.setSize(Vector2f(2, 20));
+    m_BuffVisualizerWiper.setOrigin(m_BuffVisualizerWiper.getLocalBounds().width / 2, m_BuffVisualizerWiper.getLocalBounds().height);
+    m_BuffVisualizerWiper.setPosition(m_BuffVisualizerOutline.getPosition());
 
     // DEBUG STUFFS
 
-    RectangleShape whiteBackground(screenResolution);
+    RectangleShape whiteBackground(m_ScreenResolution);
 
     CircleShape armJoint(5);
     armJoint.setOrigin(armJoint.getRadius(), armJoint.getRadius());
@@ -124,6 +134,11 @@ SceneChange Game::run(RenderWindow &window) {
 
         // UPDATE FRAME
             Time frameTime = m_FrameTimeClock.restart();
+
+            if (frameTime > seconds(2)) {
+                continue;
+            }
+
             m_LastShot += frameTime;
             m_LastHit += frameTime;
             // get mouse coords
@@ -185,10 +200,10 @@ SceneChange Game::run(RenderWindow &window) {
                                     int randomNumber = (rand() % 5);
                                     if (randomNumber == 0) {
                                         m_PickUpsList[PickupsType::PICKUPS_SCORE].spawnAt(m_Zombies[j].getPosition());
-                                        m_BuffSprite = m_PickUpsList[PickupsType::PICKUPS_SCORE].getSprite();
+                                        m_PickupsSprite = m_PickUpsList[PickupsType::PICKUPS_SCORE].getSprite();
                                     } else if (randomNumber == 1) {
                                         m_PickUpsList[PickupsType::PICKUPS_SPEED].spawnAt(m_Zombies[j].getPosition());
-                                        m_BuffSprite = m_PickUpsList[PickupsType::PICKUPS_SPEED].getSprite();
+                                        m_PickupsSprite = m_PickUpsList[PickupsType::PICKUPS_SPEED].getSprite();
                                     }
                                 }
                                 m_Bullets[i].stop();
@@ -203,11 +218,19 @@ SceneChange Game::run(RenderWindow &window) {
             for (int i = 0; i < sizeof(PickupsType); i++) {
                 if (m_PickUpsList[i].isSpawned()) {
                     if (m_Player.getHitbox().intersects(m_PickUpsList[i].getPosition())) {
-                        handlePickUps_((PickupsType)i, m_PickUpsList[i].take());
+                        handlePickUps_((PickupsType)i, m_PickUpsList[i].take(), m_PickUpsList[i].getBuffDuration());
                     }
                 }
 
                 m_PickUpsList[i].update(frameTime);
+            }
+
+            if (m_BuffTimer > seconds(0)) {
+                m_BuffTimer -= frameTime;
+                m_BuffVisualizerWiper.rotate(m_BuffVisualizerAnglePerSecond * frameTime.asSeconds());
+                if (m_BuffTimer <= seconds(0)) {
+                    removeBuff_(m_BuffType);
+                }
             }
 
             if (m_MouseKeyPressed[MouseButton::MOUSE_LEFT] && (m_LastShot > M_BULLET_COOLDOWN)) {
@@ -284,6 +307,12 @@ SceneChange Game::run(RenderWindow &window) {
                 window.draw(textScore);
                 // window.draw(centerHud);
 
+                if (m_BuffTimer > seconds(0)) {
+                    window.draw(m_BuffSprite);
+                    window.draw(m_BuffVisualizerOutline);
+                    window.draw(m_BuffVisualizerWiper);
+                }
+
             window.display();
     }
 
@@ -298,7 +327,7 @@ void Game::setPerks() {
 
 }
 
-void Game::handlePickUps_(PickupsType pickUpsType, int pickupValue) {
+void Game::handlePickUps_(PickupsType pickUpsType, int pickupValue, Time buffDuration) {
     if (pickUpsType == PickupsType::PICKUPS_HEALTH) {
         m_PlayerHealth += pickupValue;
         if (m_PlayerHealth > M_PLAYER_BASE_HEALTH) {
@@ -308,8 +337,22 @@ void Game::handlePickUps_(PickupsType pickUpsType, int pickupValue) {
         m_BulletsSpare += pickupValue;
     } else if (pickUpsType == PickupsType::PICKUPS_SPEED) {
         m_Player.setSpeedWithMultiplier(pickupValue);
+        m_BuffTimer = buffDuration;
+        m_BuffVisualizerAnglePerSecond = 360 / buffDuration.asSeconds();
+        m_BuffSprite = m_PickupsSprite;
+        m_BuffSprite.setScale(0.75, 0.75);
+        m_BuffSprite.setPosition(m_ScreenResolution.x - m_BuffSprite.getLocalBounds().width - 10, m_BuffSprite.getLocalBounds().height - 10);
+        m_BuffVisualizerOutline.setPosition(m_BuffSprite.getPosition() - Vector2f(m_BuffSprite.getLocalBounds().width + 10, 0));
+        m_BuffVisualizerWiper.setPosition(m_BuffVisualizerOutline.getPosition());
     } else if (pickUpsType == PickupsType::PICKUPS_SCORE) {
         m_ScoreMultiplier = pickupValue;
+        m_BuffTimer = buffDuration;
+        m_BuffVisualizerAnglePerSecond = 360 / buffDuration.asSeconds();
+        m_BuffSprite = m_PickupsSprite;
+        m_BuffSprite.setScale(0.75, 0.75);
+        m_BuffSprite.setPosition(m_ScreenResolution.x - m_BuffSprite.getLocalBounds().width - 10, m_BuffSprite.getLocalBounds().height - 10);
+        m_BuffVisualizerOutline.setPosition(m_BuffSprite.getPosition() - Vector2f(m_BuffSprite.getLocalBounds().width + 10, 0));
+        m_BuffVisualizerWiper.setPosition(m_BuffVisualizerOutline.getPosition());
     }
 }
 

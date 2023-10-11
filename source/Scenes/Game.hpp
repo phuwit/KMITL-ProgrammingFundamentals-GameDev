@@ -45,10 +45,12 @@ class Game : public Scenes {
         const Time      M_BULLET_COOLDOWN = milliseconds(100);
 
         vector<PickUps> m_PickUpsList;
+        Sprite          m_PickupsSprite;
         PickupsType     m_BuffType;
-        Time            m_BuffTimer;
+        Time            m_BuffTimer = seconds(0);
         Sprite          m_BuffSprite;
-        CircleShape     m_BuffVisualizer;
+        CircleShape     m_BuffVisualizerOutline;
+        RectangleShape  m_BuffVisualizerWiper;
         float           m_BuffVisualizerAnglePerSecond;
 
         bool            m_MovementKeyPressed[sizeof(MovementKey)];
@@ -58,7 +60,7 @@ class Game : public Scenes {
         int             m_NumZombiesAlive = m_NumZombies;
         Zombie*         m_Zombies = nullptr;
 
-        void handlePickUps_(PickupsType pickUpsType, int pickupValue);
+        void handlePickUps_(PickupsType pickUpsType, int pickupValue, Time buffDuration);
         void removeBuff_(PickupsType pickUpsType);
     public:
         virtual SceneChange run(RenderWindow &window);

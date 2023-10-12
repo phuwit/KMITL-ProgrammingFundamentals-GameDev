@@ -3,6 +3,11 @@ project(BrainBlast LANGUAGES CXX)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+set(CMAKE_COLOR_DIAGNOSTICS ON)
+
+set(CMAKE_COLOR_MAKEFILE ON)
+set(CMAKE_VERBOSE_MAKEFILE ON)
+
 include(FetchContent)
 FetchContent_Declare(SFML
     GIT_REPOSITORY https://github.com/SFML/SFML.git

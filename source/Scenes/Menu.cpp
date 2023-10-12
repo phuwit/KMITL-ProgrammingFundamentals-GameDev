@@ -30,23 +30,32 @@ SceneChange Menu::run(RenderWindow &window) {
     playText.setPosition(logo.getPosition() + Vector2f(0, 400));
     playButton.setPosition(playText.getPosition() + Vector2f(0, BUTTON_PADDING / 2));
 
-    Text exitText("Exit", fontBebas);
-    exitText.setFillColor(Color::Black);
-    exitText.setCharacterSize(60);
-    RectangleShape exitButton(Vector2f(exitText.getLocalBounds().width + BUTTON_PADDING, exitText.getLocalBounds().height + BUTTON_PADDING));
-    textSetOriginCenter(exitText);
-    shapeSetOriginCenter(exitButton);
-    exitText.setPosition(playText.getPosition() + Vector2f(0, 100));
-    exitButton.setPosition(exitText.getPosition() + Vector2f(0, BUTTON_PADDING / 2));
-
     Text infoText("Info", fontBebas);
     infoText.setFillColor(Color::Black);
     infoText.setCharacterSize(60);
     RectangleShape infoButton(Vector2f(infoText.getLocalBounds().width + BUTTON_PADDING, infoText.getLocalBounds().height + BUTTON_PADDING));
     textSetOriginCenter(infoText);
     shapeSetOriginCenter(infoButton);
-    infoText.setPosition(exitText.getPosition() + Vector2f(0, 100));
+    infoText.setPosition(playText.getPosition() + Vector2f(0, 100));
     infoButton.setPosition(infoText.getPosition() + Vector2f(0, BUTTON_PADDING / 2));
+
+    Text leaderboardText("Leaderboard", fontBebas);
+    leaderboardText.setFillColor(Color::Black);
+    leaderboardText.setCharacterSize(60);
+    RectangleShape leaderboardButton(Vector2f(leaderboardText.getLocalBounds().width + BUTTON_PADDING, leaderboardText.getLocalBounds().height + BUTTON_PADDING));
+    textSetOriginCenter(leaderboardText);
+    shapeSetOriginCenter(leaderboardButton);
+    leaderboardText.setPosition(infoText.getPosition() + Vector2f(0, 100));
+    leaderboardButton.setPosition(leaderboardText.getPosition() + Vector2f(0, BUTTON_PADDING / 2));
+
+    Text exitText("Exit", fontBebas);
+    exitText.setFillColor(Color::Black);
+    exitText.setCharacterSize(60);
+    RectangleShape exitButton(Vector2f(exitText.getLocalBounds().width + BUTTON_PADDING, exitText.getLocalBounds().height + BUTTON_PADDING));
+    textSetOriginCenter(exitText);
+    shapeSetOriginCenter(exitButton);
+    exitText.setPosition(leaderboardText.getPosition() + Vector2f(0, 100));
+    exitButton.setPosition(exitText.getPosition() + Vector2f(0, BUTTON_PADDING / 2));
 
     while (window.isOpen()) {
         // Update frame
@@ -56,18 +65,21 @@ SceneChange Menu::run(RenderWindow &window) {
                 Vector2f mouseScreenPosition = Vector2f(Mouse::getPosition(window));
 
                 setRectangleShapeColorOnMouseHover(playButton, mouseScreenPosition, Color(189, 189, 189), Color::White);
-                setRectangleShapeColorOnMouseHover(exitButton, mouseScreenPosition, Color(189, 189, 189), Color::White);
                 setRectangleShapeColorOnMouseHover(infoButton, mouseScreenPosition, Color(189, 189, 189), Color::White);
+                setRectangleShapeColorOnMouseHover(leaderboardButton, mouseScreenPosition, Color(189, 189, 189), Color::White);
+                setRectangleShapeColorOnMouseHover(exitButton, mouseScreenPosition, Color(189, 189, 189), Color::White);
             }
             if (event.type == Event::MouseButtonPressed) {
                 Vector2f mouseScreenPosition = Vector2f(Mouse::getPosition(window));
 
                 if (playButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
                     return SceneChange(ScenesList::SCENE_GAME);
-                } else if (exitButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
-                    return SceneChange(ScenesList::EXIT);
                 } else if (infoButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
                     return SceneChange(ScenesList::SCENE_INFO);
+                } else if (leaderboardButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
+                    return SceneChange(ScenesList::SCENE_LEADERBOARD);
+                } else if (exitButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
+                    return SceneChange(ScenesList::EXIT);
                 }
             }
         }
@@ -79,10 +91,12 @@ SceneChange Menu::run(RenderWindow &window) {
 
             window.draw(playButton);
             window.draw(playText);
-            window.draw(exitButton);
-            window.draw(exitText);
             window.draw(infoButton);
             window.draw(infoText);
+            window.draw(leaderboardButton);
+            window.draw(leaderboardText);
+            window.draw(exitButton);
+            window.draw(exitText);
 
         window.display();
     }

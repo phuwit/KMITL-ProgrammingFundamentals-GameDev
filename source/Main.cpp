@@ -9,6 +9,7 @@
 #include "Scenes/Paused.cpp"
 #include "Scenes/LevelUp.cpp"
 #include "Scenes/GameOver.cpp"
+#include "Scenes/Leaderboard.cpp"
 
 int main() {
     // instance THE singleton instance of texture holder
@@ -23,9 +24,9 @@ int main() {
     // VideoMode videoMode = VideoMode(allVideoModes[0]);
     VideoMode videoMode = VideoMode(1920, 1080); 
       
-    // RenderWindow window(videoMode, "Brain Blast!", Style::Fullscreen);
+    // RenderWindow window(videoMode, "Brain Blast!", ContextSettings(0, 0, 8));
     RenderWindow window(videoMode, "Brain Blast!", Style::None, ContextSettings(0, 0, 8));
-    // RenderWindow window(VideoMode(screenResolution.x, screenResolution.y), "Brain Blast!");
+    // RenderWindow window(videoMode, "Brain Blast!", Style::Fullscreen, ContextSettings(0, 0, 8));
 
     // window.setMouseCursorVisible(false);
 
@@ -39,9 +40,12 @@ int main() {
     Paused paused;
     Scenes.push_back(&paused);
     LevelUp levelUp;
+    levelUp.setGamePtr(&game);
     Scenes.push_back(&levelUp);
     GameOver gameOver;
     Scenes.push_back(&gameOver);
+    Leaderboard leaderboard;
+    Scenes.push_back(&leaderboard);
 
     // Main loop
     while (currentScene.getNextScreen() >= 0) {

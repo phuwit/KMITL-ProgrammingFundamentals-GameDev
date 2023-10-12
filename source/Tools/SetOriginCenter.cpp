@@ -16,6 +16,14 @@ void textSetOriginCenter (Text &text) {
     text.setOrigin(getFloatRectCenter(text.getLocalBounds()));
 }
 
+void textSetOriginYCenter (Text &text) {
+    text.setOrigin(Vector2f(text.getOrigin().x, text.getLocalBounds().height / 2));
+}
+
+void textSetOriginXCenter (Text &text) {
+    text.setOrigin(Vector2f(text.getLocalBounds().width / 2, text.getOrigin().y));
+}
+
 void shapeSetOriginCenter (Shape &shape) {
     shape.setOrigin(getFloatRectCenter(shape.getLocalBounds()));
 }

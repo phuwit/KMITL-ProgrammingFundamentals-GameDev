@@ -6,10 +6,11 @@
 
 #include "Score.cpp"
 
-void saveScore(std::vector<Score>& score) {
-    std::ofstream file("scores.bin", std::ios::binary);
-    for (int i = 0; i < score.size(); i++) {
-        file.write((char*)&score[i], sizeof(Score));
+void saveScore(std::vector<Score>& scores) {
+    std::ofstream file;
+    file.open("scores.csv", std::ios::out);
+    for (int i = 0; i < scores.size(); i++) {
+        file << scores[i].getName() << "," << scores[i].getScore() << std::endl;
     }
     file.close();
 }

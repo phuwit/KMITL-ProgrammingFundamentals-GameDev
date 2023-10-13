@@ -7,17 +7,17 @@
 #include "Score.cpp"
 
 std::vector<Score> readScore() {
-    std::vector<Score> score;
-    std::ifstream file("scores.bin", std::ios::binary);
-    if (file.is_open()) {
-        while (!file.eof()) {
-            Score tempScore;
-            file.read((char*)&tempScore, sizeof(Score));
-            score.push_back(tempScore);
-        }
-    } else {
-        std::cout << "Unable to open file" << std::endl;
+    std::vector<Score> scores;
+    std::ifstream file("scores.csv", std::ios::in);
+    while (file.good()) {
+        std::string name;
+        int score;
+        std::getline(file, name, ',');
+        file >> score;
+        file.ignore();
+        Score tempScore(name, score);
+        scores.push_back(tempScore);
     }
     file.close();
-    return score;
+    return scores;
 }

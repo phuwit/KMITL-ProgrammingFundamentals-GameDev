@@ -3,8 +3,8 @@
 #include "Score.hpp"
 
 Score::Score() {
-    m_Name = "no data";
-    m_Score = 123;
+    m_Name = "";
+    m_Score = 0;
 }
 
 Score::Score(std::string name, unsigned int score) {

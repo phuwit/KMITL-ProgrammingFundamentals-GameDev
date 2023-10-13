@@ -37,34 +37,45 @@ SceneChange Leaderboard::run(RenderWindow &window) {
     Text leaderboardHeader("Leaderboard", fontBebas);
     leaderboardHeader.setFillColor(Color::White);
     leaderboardHeader.setCharacterSize(72);
+    leaderboardHeader.setStyle(Text::Bold);
     textSetOriginCenter(leaderboardHeader);
     leaderboardHeader.setPosition(Vector2f(window.getSize().x / 2, 150));
 
     Text scoresHeader("Score", fontBebas);
     scoresHeader.setFillColor(Color::White);
-    scoresHeader.setCharacterSize(48);
-    scoresHeader.setPosition(Vector2f(200, 100));
+    scoresHeader.setCharacterSize(56);
+    scoresHeader.setStyle(Text::Bold);
+    scoresHeader.setPosition(Vector2f(leaderboardHeader.getPosition().x - (leaderboardHeader.getLocalBounds().width / 2), 300));
 
     Text namesHeader("Name", fontBebas);
-    scoresHeader.setFillColor(Color::White);
-    scoresHeader.setCharacterSize(48);
-    scoresHeader.setPosition(Vector2f(400, 100));
+    namesHeader.setFillColor(Color::White);
+    namesHeader.setCharacterSize(56);
+    namesHeader.setStyle(Text::Bold);
+    namesHeader.setPosition(Vector2f(scoresHeader.getPosition().x + 200, 300));
+
+    RectangleShape headerBackground(Vector2f(window.getSize().x, scoresHeader.getLocalBounds().height + 60));
+    headerBackground.setPosition(Vector2f(0, scoresHeader.getPosition().y - 20));
+    headerBackground.setFillColor(Color(0, 0, 0, 100));
 
     Text scoresText[SCORES_COUNT];
     Text namesText[SCORES_COUNT];
 
     for (int i = 0; i < SCORES_COUNT; i++) {
-        scoresText[i].setString(scores[i].getScore());
+        unsigned int score = scores[i].getScore();
+        if (score == 0) {
+            break;
+        }
+        scoresText[i].setString(std::to_string(score));
         scoresText[i].setFont(fontBebas);
         scoresText[i].setFillColor(Color::White);
         scoresText[i].setCharacterSize(48);
-        scoresText[i].setPosition(Vector2f(200, 200 + (i * 100)));
+        scoresText[i].setPosition(scoresHeader.getPosition() + Vector2f(0, ((i + 1) * 100)));
 
         namesText[i].setString(scores[i].getName());
         namesText[i].setFont(fontBebas);
         namesText[i].setFillColor(Color::White);
         namesText[i].setCharacterSize(48);
-        namesText[i].setPosition(Vector2f(400, 200 + (i * 100)));
+        namesText[i].setPosition(namesHeader.getPosition() + Vector2f(0, ((i + 1) * 100)));
     }
 
     while (window.isOpen()) {
@@ -91,6 +102,7 @@ SceneChange Leaderboard::run(RenderWindow &window) {
         window.clear(COLOR_BACKGROUND);
         window.draw(exitButton);
         window.draw(exitText);
+        window.draw(headerBackground);
         window.draw(leaderboardHeader);
         window.draw(scoresHeader);
         window.draw(namesHeader);

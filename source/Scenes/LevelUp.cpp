@@ -79,7 +79,7 @@ SceneChange LevelUp::run(RenderWindow &window) {
                     currentLevel++;
                     return SceneChange(ScenesList::SCENE_GAME);
                 } else if (exitButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
-                    return SceneChange(ScenesList::EXIT);
+                    return SceneChange(ScenesList::SCENE_GAMEOVER);
                 }
             }
         }

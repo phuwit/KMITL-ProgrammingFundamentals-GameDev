@@ -327,6 +327,10 @@ void Game::setPerks() {
 
 }
 
+unsigned int Game::getScore() {
+    return m_Score;
+}
+
 void Game::handlePickUps_(PickupsType pickUpsType, int pickupValue, Time buffDuration) {
     if (pickUpsType == PickupsType::PICKUPS_HEALTH) {
         m_PlayerHealth += pickupValue;

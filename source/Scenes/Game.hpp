@@ -12,7 +12,6 @@ using namespace sf;
 
 class Game : public Scenes {
     private: 
-        private:
         Clock           m_FrameTimeClock;
         const int       M_BACKGROUND_SCALE = 4;
         Vector2f        m_ScreenResolution;
@@ -32,7 +31,7 @@ class Game : public Scenes {
         const int       M_PLAYER_BASE_HEALTH = 5;
         int             m_PlayerHealth = M_PLAYER_BASE_HEALTH;
 
-        int             m_Score = 0;
+        unsigned int    m_Score = 0;
         int             m_ScoreMultiplier = 1;
         const int       M_MAX_BULLETS = 100;
         Bullet          m_Bullets[100];
@@ -67,9 +66,10 @@ class Game : public Scenes {
         Game(Vector2f screenResolution, Vector2f levelSize);
         void setPaused();
         void setPerks();
+        unsigned int getScore();
 };
 
-// prototype createBackground function, with a vertexarray reference parameter and intrect parameter
+// prototype createBackground function, with a vertex array reference parameter and intrect parameter
 int createBackground (VertexArray& rVA, IntRect playArea);
 
 // prototype createHorde function, returns a zombie pointer

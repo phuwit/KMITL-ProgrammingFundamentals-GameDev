@@ -9,7 +9,7 @@ using namespace sf;
 class SceneChange {
     private:
         Image m_Screenshot;
-        ScenesList m_nextScreen;
+        ScenesList m_NextScreen;
     public:
         SceneChange(ScenesList nextScreen, Image screenshot);
         SceneChange(ScenesList nextScreen);
@@ -19,7 +19,7 @@ class SceneChange {
 
 SceneChange::SceneChange(ScenesList nextScreen, Image screenshot) {
     m_Screenshot = screenshot;
-    m_nextScreen = nextScreen;
+    m_NextScreen = nextScreen;
 }
 
 SceneChange::SceneChange(ScenesList nextScreen) {
@@ -27,7 +27,7 @@ SceneChange::SceneChange(ScenesList nextScreen) {
     //     m_Screenshot = TextureHolder::GetTexture("assets/notexture.png");
     // }
     m_Screenshot.loadFromFile("assets/notexture.png");
-    m_nextScreen = nextScreen;
+    m_NextScreen = nextScreen;
 }
 
 Image SceneChange::getScreenShot() {
@@ -35,5 +35,5 @@ Image SceneChange::getScreenShot() {
 }
 
 ScenesList SceneChange::getNextScreen() {
-    return m_nextScreen;
+    return m_NextScreen;
 }

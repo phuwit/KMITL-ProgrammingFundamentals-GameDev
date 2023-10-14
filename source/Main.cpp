@@ -37,8 +37,8 @@ int main() {
     Scenes.push_back(&info);
     Game game(Vector2f(window.getSize()), Vector2f(window.getSize()));
     Scenes.push_back(&game);
-    Paused paused;
-    Scenes.push_back(&paused);
+    Paused scenePaused;
+    Scenes.push_back(&scenePaused);
     LevelUp levelUp;
     levelUp.setGamePtr(&game);
     Scenes.push_back(&levelUp);
@@ -46,6 +46,10 @@ int main() {
     Scenes.push_back(&gameOver);
     Leaderboard leaderboard;
     Scenes.push_back(&leaderboard);
+
+    for (auto & Scene : Scenes) {
+        Scene->setGamePtr(&game);
+    }
 
     // Main loop
     while (currentScene.getNextScreen() >= 0) {

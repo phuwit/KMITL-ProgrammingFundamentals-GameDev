@@ -9,5 +9,5 @@ class Paused : public Scenes {
 };
 
 SceneChange Paused::run(RenderWindow &window) {
-    return SceneChange(ScenesList::EXIT);
+    return SceneChange(ScenesList::SCENE_GAMEOVER);
 }

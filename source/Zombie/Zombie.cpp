@@ -53,7 +53,7 @@ bool Zombie::hit() {
     if (m_Health < 0) {
         // dead
         m_Alive = false;
-        m_Sprite.setTexture(TextureHolder::GetTexture("../assets/sprites/dungeon/pixel-poem/Dungeon_Tileset-x1.png"));
+        m_Sprite.setTexture(TextureHolder::GetTexture("assets/sprites/dungeon/pixel-poem/Dungeon_Tileset-x1.png"));
 
         return true;
     }

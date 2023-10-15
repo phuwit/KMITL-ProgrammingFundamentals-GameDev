@@ -35,12 +35,11 @@ int main() {
     Scenes.push_back(&menu);
     Info info;
     Scenes.push_back(&info);
-    Game game(Vector2f(window.getSize()), Vector2f(window.getSize()));
-    Scenes.push_back(&game);
+    Game* gamePtr = new Game(Vector2f(window.getSize()), Vector2f(window.getSize()));
+    Scenes.push_back(gamePtr);
     Paused scenePaused;
     Scenes.push_back(&scenePaused);
     LevelUp levelUp;
-    levelUp.setGamePtr(&game);
     Scenes.push_back(&levelUp);
     GameOver gameOver;
     Scenes.push_back(&gameOver);
@@ -48,7 +47,7 @@ int main() {
     Scenes.push_back(&leaderboard);
 
     for (auto & Scene : Scenes) {
-        Scene->setGamePtr(&game);
+        Scene->setGamePtr(gamePtr);
     }
 
     // Main loop

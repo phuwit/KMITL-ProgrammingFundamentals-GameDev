@@ -17,29 +17,32 @@ using namespace sf;
 Game::Game(Vector2f screenResolution, Vector2f levelSize) {
     m_ScreenResolution = screenResolution;
     m_BackgroundSize = IntRect(0, 0, levelSize.x, levelSize.y);
+    regenerate();
+}
+
+void Game::regenerate() {
     std::stringstream textureBackgroundFilename;
     textureBackgroundFilename << "./assets/sprites/dungeon/pixel-poem/Dungeon_Tileset-x" << M_BACKGROUND_SCALE << ".png";
     m_TextureBackground = TextureHolder::GetTexture(textureBackgroundFilename.str());
     m_TileSize = createBackground(m_Background, m_BackgroundSize, M_BACKGROUND_SCALE);
     m_PlayArea = IntRect(
-        m_BackgroundSize.top + m_TileSize, m_BackgroundSize.left + m_TileSize,
-        m_BackgroundSize.width - m_TileSize, m_BackgroundSize.height - (2 * m_TileSize));
+            m_BackgroundSize.top + m_TileSize, m_BackgroundSize.left + m_TileSize,
+            m_BackgroundSize.width - m_TileSize, m_BackgroundSize.height - (2 * m_TileSize));
 
-    m_Player.spawn(FloatRect(m_PlayArea), screenResolution);
+    m_Player.spawn(FloatRect(m_PlayArea), m_ScreenResolution);
 
     m_GameView.setSize(Vector2f(m_BackgroundSize.width, m_BackgroundSize.height));
     // m_GameView.setCenter(m_Player.getPosition());
-    m_HudView.setSize(Vector2f(screenResolution.x, screenResolution.y));
-    m_HudView.setCenter(Vector2f(screenResolution.x / 2, screenResolution.y / 2));
-
-    // Zombie zombie;
-    // zombie.spawn(Vector2f(200, 200), M_SPRITE_SCALING - 2, ZombieType::ZOMBIE_NORMAL, 1);
+    m_HudView.setSize(Vector2f(m_ScreenResolution.x, m_ScreenResolution.y));
+    m_HudView.setCenter(Vector2f(m_ScreenResolution.x / 2, m_ScreenResolution.y / 2));
 
     m_PickUpsList.push_back(PickUps(PickupsType::PICKUPS_HEALTH, true, m_PlayArea));
     m_PickUpsList.push_back(PickUps(PickupsType::PICKUPS_AMMO,   true, m_PlayArea));
     m_PickUpsList.push_back(PickUps(PickupsType::PICKUPS_SPEED, false, m_PlayArea));
     m_PickUpsList.push_back(PickUps(PickupsType::PICKUPS_SCORE, false, m_PlayArea));
 
+    m_NumZombies = 2 + (3 * currentLevel);
+    m_NumZombiesAlive = m_NumZombies;
     delete[] m_Zombies;
     m_Zombies = createHorde(m_NumZombies, (M_SPRITE_SCALING - 2), m_PlayArea);
 }

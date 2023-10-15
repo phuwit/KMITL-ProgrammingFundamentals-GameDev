@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Scenes.hpp"
+#include "Game.hpp"
 #include "../CommonEnum.hpp"
 #include "../Holders/FontHolder.cpp"
 #include "../Tools/SetOriginCenter.cpp"
@@ -77,6 +78,7 @@ SceneChange LevelUp::run(RenderWindow &window) {
 
                 if (nextLevelButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
                     currentLevel++;
+                    dynamic_cast<Game*>(getGamePtr())->regenerate();
                     return SceneChange(ScenesList::SCENE_GAME);
                 } else if (exitButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
                     return SceneChange(ScenesList::SCENE_GAMEOVER);

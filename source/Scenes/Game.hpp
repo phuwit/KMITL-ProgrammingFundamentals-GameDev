@@ -55,8 +55,8 @@ class Game : public Scenes {
         bool            m_MovementKeyPressed[sizeof(MovementKey)];
         bool            m_MouseKeyPressed[sizeof(MouseButton)];
         int             m_Stage = 0;
-        int             m_NumZombies = 2 + (3 * currentLevel);
-        int             m_NumZombiesAlive = m_NumZombies;
+        int             m_NumZombies;
+        int             m_NumZombiesAlive;
         Zombie*         m_Zombies = nullptr;
 
         void handlePickUps_(PickupsType pickUpsType, int pickupValue, Time buffDuration);
@@ -64,6 +64,7 @@ class Game : public Scenes {
     public:
         virtual SceneChange run(RenderWindow &window);
         Game(Vector2f screenResolution, Vector2f levelSize);
+        void regenerate();
         void setPaused();
         void setPerks();
         unsigned int getScore();

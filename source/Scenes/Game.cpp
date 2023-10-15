@@ -95,7 +95,7 @@ Game::Game(Vector2f screenResolution, Vector2f levelSize) {
     m_AmmoLabel.setCharacterSize(32);
     m_AmmoLabel.setFillColor(Color::White);
     m_AmmoLabel.setString("Ammo");
-    m_AmmoLabel.setPosition(m_CurrentAmmoText.getPosition() - Vector2f(m_CurrentAmmoText.getLocalBounds().width + m_AmmoLabel.getLocalBounds().width - m_HudBackgroundPadding * 2dd, m_CurrentAmmoText.getLocalBounds().height - m_HudBackgroundPadding * 2));
+    m_AmmoLabel.setPosition(m_CurrentAmmoText.getPosition() - Vector2f(m_CurrentAmmoText.getLocalBounds().width + m_AmmoLabel.getLocalBounds().width - m_HudBackgroundPadding * 2, m_CurrentAmmoText.getLocalBounds().height - m_HudBackgroundPadding * 2));
 
     regenerate();
 }

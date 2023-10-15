@@ -1,8 +1,8 @@
 .cache/**
 
-build/*
-!build/bin
-build/bin/*
-!build/bin/assets
+*build*/*
+!*build*/bin
+*build*/bin/*
+!*build*/bin/assets
 
 !**/assets/**

@@ -18,19 +18,19 @@ many projects/ assets are used in this one. please see [attribution.md](attribut
 - [x] import gun code
 - [x] background generation
 - [x] make a map
-- [ ] hud
 - [x] import zombies code
 - [x] vary zombies movement
 - [x] import zombies horde spawning code
-- [ ] rework spawn timing
 - [x] handle score
+- [x] handle scene change
+- [x] hud
+- [ ] rework spawn timing
 - [ ] level progression
 - [ ] handle menu screen
 - [ ] handle paused screen
 - [ ] handle gameover screen
 - [ ] handle levelup screen
 - [ ] handle leaderboard
-- [x] handle scene change
 - [ ] implement pickups
 - [ ] zombie dead animation?
 - [ ] animation

@@ -24,7 +24,19 @@ class Game : public Scenes {
 
         View            m_GameView;
         View            m_HudView;
-        
+
+        Font            m_FontBebas;
+        const float     m_HudBackgroundPadding = 10;
+        RectangleShape  m_HudBackground;
+        RectangleShape  m_HealthBar;
+        float           m_HealthBarSegmentSize;
+        Text            m_HealthLabel;
+        Text            m_ScoreText;
+        Text            m_AmmoLabel;
+        Text            m_CurrentAmmoText;
+        Text            m_SpareAmmoText;
+        Text            m_WaveText;
+
         Player          m_Player = Player(M_SPRITE_SCALING);
         const Time      M_LAST_HIT_COOLDOWN = milliseconds(300);
         Time            m_LastHit = seconds(0);
@@ -35,8 +47,8 @@ class Game : public Scenes {
         int             m_ScoreMultiplier = 1;
         const int       M_MAX_BULLETS = 100;
         Bullet          m_Bullets[100];
-        int             m_CurrentBullet = 0;
-        int             m_BulletsSpare = 24;
+        int             m_CurrentAmmo = 0;
+        int             m_SpareAmmo = 24;
         const int       m_ClipSize = 6;
         int             m_BulletsInClip = m_ClipSize;
         float           m_FireRate = 1;

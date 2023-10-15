@@ -11,16 +11,19 @@
 #include "../Zombie/ZombieHorde.cpp"
 #include "../Tools/CreateBackground.cpp"
 #include "../Tools/GetScreenshot.cpp"
+#include "../Tools/SetOriginCenter.cpp"
 
 using namespace sf;
 
 Game::Game(Vector2f screenResolution, Vector2f levelSize) {
     m_ScreenResolution = screenResolution;
     m_BackgroundSize = IntRect(0, 0, levelSize.x, levelSize.y);
-    regenerate();
-}
 
-void Game::regenerate() {
+    m_GameView.setSize(Vector2f(m_BackgroundSize.width, m_BackgroundSize.height));
+    // m_GameView.setCenter(m_Player.getPosition());
+    m_HudView.setSize(Vector2f(m_ScreenResolution.x, m_ScreenResolution.y));
+    m_HudView.setCenter(Vector2f(m_ScreenResolution.x / 2, m_ScreenResolution.y / 2));
+
     std::stringstream textureBackgroundFilename;
     textureBackgroundFilename << "./assets/sprites/dungeon/pixel-poem/Dungeon_Tileset-x" << M_BACKGROUND_SCALE << ".png";
     m_TextureBackground = TextureHolder::GetTexture(textureBackgroundFilename.str());
@@ -29,17 +32,76 @@ void Game::regenerate() {
             m_BackgroundSize.top + m_TileSize, m_BackgroundSize.left + m_TileSize,
             m_BackgroundSize.width - m_TileSize, m_BackgroundSize.height - (2 * m_TileSize));
 
-    m_Player.spawn(FloatRect(m_PlayArea), m_ScreenResolution);
-
-    m_GameView.setSize(Vector2f(m_BackgroundSize.width, m_BackgroundSize.height));
-    // m_GameView.setCenter(m_Player.getPosition());
-    m_HudView.setSize(Vector2f(m_ScreenResolution.x, m_ScreenResolution.y));
-    m_HudView.setCenter(Vector2f(m_ScreenResolution.x / 2, m_ScreenResolution.y / 2));
-
     m_PickUpsList.push_back(PickUps(PickupsType::PICKUPS_HEALTH, true, m_PlayArea));
     m_PickUpsList.push_back(PickUps(PickupsType::PICKUPS_AMMO,   true, m_PlayArea));
     m_PickUpsList.push_back(PickUps(PickupsType::PICKUPS_SPEED, false, m_PlayArea));
     m_PickUpsList.push_back(PickUps(PickupsType::PICKUPS_SCORE, false, m_PlayArea));
+
+    m_FontBebas = FontHolder::GetFont("assets/fonts/BebasNeue-Regular.otf");
+
+    m_HudBackground.setSize(Vector2f(600, 150));
+    shapeSetOriginCenter(m_HudBackground);
+    m_HudBackground.setPosition(screenResolution.x / 2, screenResolution.y - m_HudBackground.getSize().y / 2);
+    m_HudBackground.setFillColor(Color(0, 0, 0, 128));
+
+    m_HealthLabel.setFont(m_FontBebas);
+    m_HealthLabel.setCharacterSize(32);
+    m_HealthLabel.setFillColor(Color::White);
+    m_HealthLabel.setString("Health");
+    m_HealthLabel.setPosition(m_HudBackground.getPosition().x - m_HudBackground.getSize().x / 2 + m_HudBackgroundPadding,
+                              m_HudBackground.getPosition().y + m_HudBackground.getSize().y / 2 - m_HudBackgroundPadding * 2 - m_HealthLabel.getLocalBounds().height);
+
+    m_HealthBar.setSize(Vector2f(m_HudBackground.getSize().x - m_HudBackgroundPadding * 3 - m_HealthLabel.getLocalBounds().width,
+                                 m_HealthLabel.getLocalBounds().height));
+    m_HealthBar.setPosition(m_HealthLabel.getPosition() + Vector2f(m_HudBackgroundPadding + m_HealthLabel.getLocalBounds().width, m_HudBackgroundPadding));
+    m_HealthBar.setFillColor(Color(244, 67, 54));
+    m_HealthBarSegmentSize = m_HealthBar.getSize().x / M_PLAYER_BASE_HEALTH;
+
+    m_WaveText.setFont(m_FontBebas);
+    m_WaveText.setCharacterSize(40);
+    m_WaveText.setFillColor(Color(3, 169, 244));
+    stringstream waveStringStream;
+    waveStringStream << "Wave  : " << currentLevel;
+    m_WaveText.setString(waveStringStream.str());
+    m_WaveText.setPosition(m_HudBackground.getPosition().x - m_HudBackground.getSize().x / 2 + m_HudBackgroundPadding,
+                           m_HudBackground.getPosition().y - m_HudBackground.getSize().y / 2 + m_HudBackgroundPadding);
+
+    m_ScoreText.setFont(m_FontBebas);
+    m_ScoreText.setCharacterSize(40);
+    m_ScoreText.setFillColor(Color(38, 166, 154));
+    stringstream scoreStringStream;
+    scoreStringStream << "Score : " << m_Score;
+    m_ScoreText.setString(scoreStringStream.str());
+    m_ScoreText.setPosition(m_WaveText.getPosition() + Vector2f(0, m_WaveText.getLocalBounds().height + m_HudBackgroundPadding));
+
+    m_SpareAmmoText.setFont(m_FontBebas);
+    m_SpareAmmoText.setCharacterSize(52);
+    m_SpareAmmoText.setFillColor(Color(255, 152, 0));
+    m_SpareAmmoText.setString(to_string(m_SpareAmmo));
+    m_SpareAmmoText.setOrigin(0, m_SpareAmmoText.getLocalBounds().height);
+//    m_SpareAmmoText.setPosition(m_HudBackground.getPosition().x + m_HudBackground.getSize().x / 2 - m_HudBackgroundPadding - m_SpareAmmoText.getLocalBounds().width,
+//                                m_HudBackground.getPosition().y - m_HudBackground.getSize().y / 2 + m_HudBackgroundPadding + m_HudBackground.getSize().y * 0.2);
+    m_SpareAmmoText.setPosition(m_HudBackground.getPosition().x + m_HudBackground.getSize().x / 2 - m_HudBackgroundPadding - m_SpareAmmoText.getLocalBounds().width,
+                                m_HudBackground.getPosition().y - m_HudBackground.getSize().y / 2 + m_HudBackgroundPadding + m_HudBackground.getSize().y * 0.1 + m_SpareAmmoText.getLocalBounds().height);
+
+    m_CurrentAmmoText.setFont(m_FontBebas);
+    m_CurrentAmmoText.setCharacterSize(96);
+    m_CurrentAmmoText.setFillColor(Color(255, 193, 7));
+    m_CurrentAmmoText.setString(to_string(m_BulletsInClip));
+    m_CurrentAmmoText.setOrigin(0, m_CurrentAmmoText.getLocalBounds().height);
+    m_CurrentAmmoText.setPosition(m_SpareAmmoText.getPosition() - Vector2f(m_SpareAmmoText.getLocalBounds().width + m_HudBackgroundPadding, 0));
+
+    m_AmmoLabel.setFont(m_FontBebas);
+    m_AmmoLabel.setCharacterSize(32);
+    m_AmmoLabel.setFillColor(Color::White);
+    m_AmmoLabel.setString("Ammo");
+    m_AmmoLabel.setPosition(m_CurrentAmmoText.getPosition() - Vector2f(m_CurrentAmmoText.getLocalBounds().width + m_AmmoLabel.getLocalBounds().width - m_HudBackgroundPadding * 2dd, m_CurrentAmmoText.getLocalBounds().height - m_HudBackgroundPadding * 2));
+
+    regenerate();
+}
+
+void Game::regenerate() {
+    m_Player.spawn(FloatRect(m_PlayArea), m_ScreenResolution);
 
     m_NumZombies = 2 + (3 * currentLevel);
     m_NumZombiesAlive = m_NumZombies;
@@ -60,6 +122,15 @@ SceneChange Game::run(RenderWindow &window) {
     m_BuffVisualizerWiper.setSize(Vector2f(2, 20));
     m_BuffVisualizerWiper.setOrigin(m_BuffVisualizerWiper.getLocalBounds().width / 2, m_BuffVisualizerWiper.getLocalBounds().height);
     m_BuffVisualizerWiper.setPosition(m_BuffVisualizerOutline.getPosition());
+
+    stringstream waveStringStream;
+    waveStringStream << "Wave  : " << currentLevel;
+    m_WaveText.setString(waveStringStream.str());
+    stringstream scoreStringStream;
+    scoreStringStream << "Score : " << m_Score;
+    m_ScoreText.setString(scoreStringStream.str());
+    m_SpareAmmoText.setString(to_string(m_SpareAmmo));
+    m_CurrentAmmoText.setString(to_string(m_BulletsInClip));
 
     // DEBUG STUFFS
 
@@ -88,22 +159,20 @@ SceneChange Game::run(RenderWindow &window) {
     barrel.setFillColor(Color::Red);
     barrel.setOrigin(barrel.getRadius(), barrel.getRadius());
 
-    Font fontBebas = FontHolder::GetFont("assets/fonts/BebasNeue-Regular.otf");
-    
     Text textArmAngle;
-    textArmAngle.setFont(fontBebas);
+    textArmAngle.setFont(m_FontBebas);
     textArmAngle.setCharacterSize(48);
     textArmAngle.setFillColor(Color::White);
     textArmAngle.setPosition(Vector2f(0, 0));
 
     Text textHealth;
-    textHealth.setFont(fontBebas);
+    textHealth.setFont(m_FontBebas);
     textHealth.setCharacterSize(32);
     textHealth.setFillColor(Color::White);
     textHealth.setPosition(0, 48);
 
     Text textScore;
-    textScore.setFont(fontBebas);
+    textScore.setFont(m_FontBebas);
     textScore.setCharacterSize(32);
     textScore.setFillColor(Color::White);
     textScore.setPosition(0, 80);
@@ -150,9 +219,9 @@ SceneChange Game::run(RenderWindow &window) {
             // convert mouse coords to world coords
             Vector2f mouseWorldPosition = window.mapPixelToCoords(mouseScreenPosition, m_GameView);
             m_Player.update((mouseWorldPosition), frameTime);
-            float angle = (atan2(mouseWorldPosition.y - ((m_Player.getArmPosition().y)),
-                         mouseWorldPosition.x - ((m_Player.getArmPosition().x) - (15)))
-                   * 180 / M_PI);
+            float angle = atan2(mouseWorldPosition.y - ((m_Player.getArmPosition().y)),
+                                mouseWorldPosition.x - ((m_Player.getArmPosition().x) - (15)))
+                          * 180 / M_PI;
             armRay.setRotation(angle);
             armRay.setPosition(m_Player.getArmPosition());
 
@@ -175,6 +244,8 @@ SceneChange Game::run(RenderWindow &window) {
                     if (m_Zombies[i].getHitBox().intersects(m_Player.getHitbox())) {
                         m_PlayerHealth--;
                         m_LastHit = seconds(0);
+
+                        m_HealthBar.setSize(Vector2f(m_HealthBarSegmentSize * m_PlayerHealth, m_HealthBar.getSize().y));
                         if (m_PlayerHealth <= 0) {
                             // game over idk
                             // return SceneChange(ScenesList::SCENE_GAMEOVER);
@@ -208,6 +279,10 @@ SceneChange Game::run(RenderWindow &window) {
                                         m_PickUpsList[PickupsType::PICKUPS_SPEED].spawnAt(m_Zombies[j].getPosition());
                                         m_PickupsSprite = m_PickUpsList[PickupsType::PICKUPS_SPEED].getSprite();
                                     }
+
+                                    stringstream scoreStringStream;
+                                    scoreStringStream << "Score  : " << m_Score;
+                                    m_ScoreText.setString(scoreStringStream.str());
                                 }
                                 m_Bullets[i].stop();
                             }
@@ -237,10 +312,10 @@ SceneChange Game::run(RenderWindow &window) {
             }
 
             if (m_MouseKeyPressed[MouseButton::MOUSE_LEFT] && (m_LastShot > M_BULLET_COOLDOWN)) {
-                m_Bullets[m_CurrentBullet].shoot(m_Player.getArmPosition(), mouseWorldPosition, m_Player.getBarrelPosition(), m_PlayArea, M_SPRITE_SCALING - 1);
-                m_CurrentBullet++;
-                if (m_CurrentBullet >= M_MAX_BULLETS - 1) {
-                    m_CurrentBullet = 0;
+                m_Bullets[m_CurrentAmmo].shoot(m_Player.getArmPosition(), mouseWorldPosition, m_Player.getBarrelPosition(), m_PlayArea, M_SPRITE_SCALING - 1);
+                m_CurrentAmmo++;
+                if (m_CurrentAmmo >= M_MAX_BULLETS - 1) {
+                    m_CurrentAmmo = 0;
                 }
                 m_LastShot = seconds(0);
             }
@@ -305,10 +380,19 @@ SceneChange Game::run(RenderWindow &window) {
             
             window.setView(m_HudView);
                 // window.draw(textArmAngle);
-                window.draw(textArmAngle);
-                window.draw(textHealth);
-                window.draw(textScore);
+                // window.draw(textArmAngle);
+                // window.draw(textHealth);
+                // window.draw(textScore);
                 // window.draw(centerHud);
+
+                window.draw(m_HudBackground);
+                window.draw(m_HealthBar);
+                window.draw(m_HealthLabel);
+                window.draw(m_ScoreText);
+                window.draw(m_AmmoLabel);
+                window.draw(m_CurrentAmmoText);
+                window.draw(m_SpareAmmoText);
+                window.draw(m_WaveText);
 
                 if (m_BuffTimer > seconds(0)) {
                     window.draw(m_BuffSprite);
@@ -341,7 +425,7 @@ void Game::handlePickUps_(PickupsType pickUpsType, int pickupValue, Time buffDur
             m_PlayerHealth = M_PLAYER_BASE_HEALTH;
         }
     } else if (pickUpsType == PickupsType::PICKUPS_AMMO) {
-        m_BulletsSpare += pickupValue;
+        m_SpareAmmo += pickupValue;
     } else if (pickUpsType == PickupsType::PICKUPS_SPEED) {
         m_Player.setSpeedWithMultiplier(pickupValue);
         m_BuffTimer = buffDuration;

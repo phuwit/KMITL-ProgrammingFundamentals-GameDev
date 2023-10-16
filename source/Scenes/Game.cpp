@@ -185,7 +185,7 @@ SceneChange Game::run(RenderWindow &window) {
             while (window.pollEvent(event)) {
                 // if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape) || event.type == Event::LostFocus) {
                 if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape)) {
-                    return SceneChange(ScenesList::SCENE_PAUSED);
+                    return {ScenesList::SCENE_PAUSED, getScreenshot(window).copyToImage()};
                 }
             }
 

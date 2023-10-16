@@ -79,8 +79,6 @@ SceneChange Paused::run(RenderWindow &window) {
                 Vector2f mouseScreenPosition = Vector2f(Mouse::getPosition(window));
 
                 if (continueButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
-                    currentLevel++;
-                    dynamic_cast<Game *>(getGamePtr())->regenerate();
                     return {ScenesList::SCENE_GAME};
                 } else if (exitButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
                     return {ScenesList::SCENE_GAMEOVER};

@@ -18,7 +18,6 @@ jobs:
   build-nix:
     name: ${{ matrix.platform.name }}-${{ matrix.config.name }}
     runs-on: ${{ matrix.platform.os }}
-    needs: get-commit-hash-time
 
     strategy:
       fail-fast: false
@@ -69,7 +68,6 @@ jobs:
   build-windows-msys2:
     name: ${{ matrix.platform.name }}-${{ matrix.config.name }}
     runs-on: ${{ matrix.platform.os }}
-    needs: get-commit-hash-time
 
     strategy:
       fail-fast: false
@@ -121,7 +119,6 @@ jobs:
 #  build-windows-msvc:
 #    name: ${{ matrix.platform.name }}-${{ matrix.config.name }}
 #    runs-on: ${{ matrix.platform.os }}
-#    needs: get-commit-hash-time
 #
 #    strategy:
 #      fail-fast: false

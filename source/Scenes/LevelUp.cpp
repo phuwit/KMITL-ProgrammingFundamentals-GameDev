@@ -12,8 +12,6 @@ public:
     virtual SceneChange run(RenderWindow &window);
 };
 
-void setRectangleShapeColorWhenMouseHover(sf::RectangleShape &rectangleShape, sf::Vector2f &mousePos);
-
 SceneChange LevelUp::run(RenderWindow &window) {
     const int TEXT_BOX_PADDING = 50;
     const int BUTTON_PADDING = 30;
@@ -59,6 +57,7 @@ SceneChange LevelUp::run(RenderWindow &window) {
     exitText.setCharacterSize(48);
     RectangleShape exitButton(Vector2f(exitText.getLocalBounds().width + BUTTON_PADDING,
                                        exitText.getLocalBounds().height + BUTTON_PADDING));
+    exitButton.setFillColor(Color(0xE57373FF));
     textSetOriginCenter(exitText);
     shapeSetOriginCenter(exitButton);
     exitText.setOrigin(Vector2f(0, exitText.getOrigin().y));
@@ -107,7 +106,7 @@ SceneChange LevelUp::run(RenderWindow &window) {
 
                 setRectangleShapeColorOnMouseHover(nextLevelButton, mouseScreenPosition, Color(189, 189, 189),
                                                    Color::White);
-                setRectangleShapeColorOnMouseHover(exitButton, mouseScreenPosition, Color(189, 189, 189), Color::White);
+                setRectangleShapeColorOnMouseHover(exitButton, mouseScreenPosition, Color(0xEF5350FF), Color(0xE57373FF));
 
                 for (int i = 0; i < NUM_UPGRADES; i++) {
                     Color hoverColor = Color(189, 189, 189);

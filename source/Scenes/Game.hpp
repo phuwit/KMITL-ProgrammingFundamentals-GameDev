@@ -74,7 +74,7 @@ class Game : public Scenes {
         void handlePickUps_(PickupsType pickUpsType, int pickupValue, Time buffDuration);
         void removeBuff_(PickupsType pickUpsType);
     public:
-        virtual SceneChange run(RenderWindow &window);
+        SceneChange run(RenderWindow &window) override;
         Game(Vector2f screenResolution, Vector2f levelSize);
         void regenerate();
         void setPaused();

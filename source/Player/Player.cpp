@@ -21,6 +21,8 @@ Player::Player(float spriteScaling) {
     m_Arm.setScale(m_SpriteScaling, m_SpriteScaling);
     m_Gun.setScale(m_SpriteScaling, m_SpriteScaling);
     m_MovementKeyPressed[MovementKey::MOVEMENT_DOWN] = true;
+
+    m_ArmAngle = 0;
 }
 
 void Player::spawn(FloatRect playArea, Vector2f screenResolution) {
@@ -55,7 +57,7 @@ FloatRect Player::getHitbox() {
     return m_Base.getGlobalBounds();
 }
 
-float Player::getArmAngle() {
+float Player::getArmAngle() const {
     return m_ArmAngle;
 }
 

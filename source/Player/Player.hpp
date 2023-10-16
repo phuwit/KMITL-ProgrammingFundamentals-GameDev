@@ -22,7 +22,7 @@ class Player {
         bool m_MovementKeyPressed[4] = {false};
         Vector2f m_Position;
         void m_SetSpritesPosition();
-        float m_ArmAngle;
+        float m_ArmAngle{};
 //        bool m_Flipped = false;
         void m_Flip();
         void m_UnFlip();
@@ -31,7 +31,7 @@ class Player {
         FloatRect m_PlayArea;
    
     public:
-        Player(float spriteScaling);
+        explicit Player(float spriteScaling);
         void spawn(FloatRect playArea, Vector2f screenResolution);
 
         Sprite getSpriteBase();
@@ -39,7 +39,7 @@ class Player {
         Sprite getSpriteGun();
         Vector2f getPosition();
         FloatRect getHitbox();
-        float getArmAngle();
+        float getArmAngle() const;
         // return arm's joint/origin global position 
         Vector2f getArmPosition();
         Vector2f getBarrelPosition();

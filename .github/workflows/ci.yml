@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Get commit hash time
         id: hash_time
-        run: echo "::set-output name=hash_time::$(git show --no-patch --format="%h(%ci)")"
+        run: echo "hash_time=$(git show --no-patch --format="%h(%ci)")" >> $GITHUB_OUTPUT
 
   build-nix:
     name: ${{ matrix.platform.name }}-${{ matrix.config.name }}

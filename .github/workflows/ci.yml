@@ -3,6 +3,16 @@ name: CI
 on: [push, pull_request]
 
 jobs:
+  get-commit-hash-time:
+    name: Get commit hash time
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Get commit hash time
+        id: hash_time
+        run: echo "::set-output name=hash_time::$(git show --no-patch --format="%h(%ci)")"
+
   build-nix:
     name: ${{ matrix.platform.name }}-${{ matrix.config.name }}
     runs-on: ${{ matrix.platform.os }}
@@ -41,7 +51,7 @@ jobs:
     - name : Upload full build artifact
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@${{ github.sha }}-full
+        name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@${{ steps.hash_time.outputs.hash_time }}-full
         path:  |
          build/
          !build/_deps/
@@ -49,7 +59,7 @@ jobs:
     # - name: Upload binary only artifact
     #   uses: actions/upload-artifact@v3
     #   with:
-    #     name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@${{ github.sha }}-binonly
+    #     name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@${{ steps.hash_time.outputs.hash_time }}-binonly
     #     path: build/bin/
 
 
@@ -93,7 +103,7 @@ jobs:
     - name : Upload full build artifact
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@${{ github.sha }}-full
+        name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@${{ steps.hash_time.outputs.hash_time }}-full
         path:  |
           build/
           !build/_deps/
@@ -101,7 +111,7 @@ jobs:
     # - name: Upload binary only artifact
     #   uses: actions/upload-artifact@v3
     #   with:
-    #     name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@${{ github.sha }}-binonly
+    #     name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@${{ steps.hash_time.outputs.hash_time }}-binonly
     #     path: build/bin/
 
 #  build-windows-msvc:
@@ -134,7 +144,7 @@ jobs:
 #      - name : Upload full build artifact
 #        uses: actions/upload-artifact@v3
 #        with:
-#          name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@${{ github.sha }}-full
+#          name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@${{ steps.hash_time.outputs.hash_time }}-full
 #          path:  |
 #            build/
 #            !build/_deps/
@@ -142,5 +152,5 @@ jobs:
 #    # - name: Upload binary only artifact
 #    #   uses: actions/upload-artifact@v3
 #    #   with:
-#    #     name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@${{ github.sha }}-binonly
+#    #     name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@${{ steps.hash_time.outputs.hash_time }}-binonly
 #    #     path: build/bin/

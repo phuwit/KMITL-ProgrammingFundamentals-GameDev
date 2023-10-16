@@ -13,7 +13,7 @@ jobs:
         id: hash_time
         run: echo "HASH_TIME=$(git show --no-patch --format="%h(%ci)")" >> "$GITHUB_ENV"
       - name: Print commit hash time
-        run: echo "$HASH_TIME"
+        run: echo "${{ env.HASH_TIME }}"
 
   build-nix:
     name: ${{ matrix.platform.name }}-${{ matrix.config.name }}
@@ -54,7 +54,7 @@ jobs:
     - name : Upload full build artifact
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@$HASH_TIME-full
+        name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@${{ env.HASH_TIME }}-full
         path:  |
          build/
          !build/_deps/
@@ -62,7 +62,7 @@ jobs:
     # - name: Upload binary only artifact
     #   uses: actions/upload-artifact@v3
     #   with:
-    #     name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@$HASH_TIME-binonly
+    #     name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@${{ env.HASH_TIME }}-binonly
     #     path: build/bin/
 
 
@@ -107,7 +107,7 @@ jobs:
     - name : Upload full build artifact
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@$HASH_TIME-full
+        name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@${{ env.HASH_TIME }}-full
         path:  |
           build/
           !build/_deps/
@@ -115,7 +115,7 @@ jobs:
     # - name: Upload binary only artifact
     #   uses: actions/upload-artifact@v3
     #   with:
-    #     name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@$HASH_TIME-binonly
+    #     name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@${{ env.HASH_TIME }}-binonly
     #     path: build/bin/
 
 #  build-windows-msvc:
@@ -149,7 +149,7 @@ jobs:
 #      - name : Upload full build artifact
 #        uses: actions/upload-artifact@v3
 #        with:
-#          name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@$HASH_TIME-full
+#          name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@${{ env.HASH_TIME }}-full
 #          path:  |
 #            build/
 #            !build/_deps/
@@ -157,5 +157,5 @@ jobs:
 #    # - name: Upload binary only artifact
 #    #   uses: actions/upload-artifact@v3
 #    #   with:
-#    #     name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@$HASH_TIME-binonly
+#    #     name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@${{ env.HASH_TIME }}-binonly
 #    #     path: build/bin/

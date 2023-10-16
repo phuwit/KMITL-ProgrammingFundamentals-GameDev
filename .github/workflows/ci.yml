@@ -3,18 +3,6 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  get-commit-hash-time:
-    name: Get commit hash time
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Get commit hash time
-        id: hash_time
-        run: echo "HASH_TIME=$(git show --no-patch --format="@%h(%ci)")" >> "$GITHUB_ENV"
-      - name: Print commit hash time
-        run: echo "${{ env.HASH_TIME }}"
-
   build-nix:
     name: ${{ matrix.platform.name }}-${{ matrix.config.name }}
     runs-on: ${{ matrix.platform.os }}
@@ -38,6 +26,7 @@ jobs:
 
     - name: Checkout
       uses: actions/checkout@v3
+      run: echo "HASH_TIME=$(git show --no-patch --format="@%h(%ci)")" >> "$GITHUB_ENV"
 
     - name: Configure
       shell: bash
@@ -91,6 +80,7 @@ jobs:
 
     - name: Checkout
       uses: actions/checkout@v3
+      run: echo "HASH_TIME=$(git show --no-patch --format="@%h(%ci)")" >> "$GITHUB_ENV"
 
     - name: Configure
       shell: msys2 {0}
@@ -136,6 +126,7 @@ jobs:
 #    steps:
 #      - name: Checkout
 #        uses: actions/checkout@v3
+#        run: echo "HASH_TIME=$(git show --no-patch --format="@%h(%ci)")" >> "$GITHUB_ENV"
 #
 #      - name: Configure
 #        run: cmake -S . -B build -DCMAKE_INSTALL_PREFIX=install ${{matrix.platform.flags}} ${{matrix.config.flags}}

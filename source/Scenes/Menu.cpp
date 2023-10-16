@@ -77,7 +77,7 @@ SceneChange Menu::run(RenderWindow &window) {
                 } else if (infoButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
                     return SceneChange(ScenesList::SCENE_INFO);
                 } else if (leaderboardButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
-                    return SceneChange(ScenesList::SCENE_LEADERBOARD);
+                    return SceneChange(ScenesList::SCENE_LEVELUP);
                 } else if (exitButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
                     return SceneChange(ScenesList::EXIT);
                 }

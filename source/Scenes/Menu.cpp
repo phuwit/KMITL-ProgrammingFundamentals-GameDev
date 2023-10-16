@@ -69,6 +69,7 @@ SceneChange Menu::run(RenderWindow &window) {
                 setRectangleShapeColorOnMouseHover(leaderboardButton, mouseScreenPosition, Color(189, 189, 189), Color::White);
                 setRectangleShapeColorOnMouseHover(exitButton, mouseScreenPosition, Color(189, 189, 189), Color::White);
             }
+
             if (event.type == Event::MouseButtonPressed) {
                 Vector2f mouseScreenPosition = Vector2f(Mouse::getPosition(window));
 
@@ -81,6 +82,10 @@ SceneChange Menu::run(RenderWindow &window) {
                 } else if (exitButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
                     return SceneChange(ScenesList::EXIT);
                 }
+            }
+
+            if (event.type == Event::Closed || (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape)) {
+                return SceneChange(ScenesList::EXIT);
             }
         }
 

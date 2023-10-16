@@ -62,6 +62,15 @@ SceneChange Info::run(RenderWindow &window) {
     attributionText.setPosition(githubText.getPosition() + Vector2f((githubText.getLocalBounds().width / 2) + (attributionText.getLocalBounds().width / 2) + BUTTON_PADDING + 50, 0));
     attributionButton.setPosition(attributionText.getPosition() + Vector2f(0, BUTTON_PADDING / 2));
 
+    Text downloadText("Download Latest Build", fontBebas);
+    downloadText.setFillColor(Color::Black);
+    downloadText.setCharacterSize(60);
+    RectangleShape downloadButton(Vector2f(downloadText.getLocalBounds().width + BUTTON_PADDING, downloadText.getLocalBounds().height + BUTTON_PADDING));
+    textSetOriginCenter(downloadText);
+    shapeSetOriginCenter(downloadButton);
+    downloadText.setPosition(attributionText.getPosition() + Vector2f((attributionText.getLocalBounds().width / 2) + (downloadText.getLocalBounds().width / 2) + BUTTON_PADDING + 50, 0));
+    downloadButton.setPosition(downloadText.getPosition() + Vector2f(0, BUTTON_PADDING / 2));
+
     while (window.isOpen()) {
         // Update frame
         Event event;
@@ -72,6 +81,7 @@ SceneChange Info::run(RenderWindow &window) {
                 setRectangleShapeColorOnMouseHover(exitButton, mouseScreenPosition, Color(189, 189, 189), Color::White);
                 setRectangleShapeColorOnMouseHover(githubButton, mouseScreenPosition, Color(189, 189, 189), Color::White);
                 setRectangleShapeColorOnMouseHover(attributionButton, mouseScreenPosition, Color(189, 189, 189), Color::White);
+                setRectangleShapeColorOnMouseHover(downloadButton, mouseScreenPosition, Color(189, 189, 189), Color::White);
             } else if (event.type == Event::MouseButtonPressed) {
                 Vector2f mouseScreenPosition = Vector2f(Mouse::getPosition(window));
 
@@ -81,6 +91,8 @@ SceneChange Info::run(RenderWindow &window) {
                     openURL("https://github.com/phuwit/KMITL-ProgrammingFundamentals-GameDev");
                 } else if (attributionButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
                     openURL("https://github.com/phuwit/KMITL-ProgrammingFundamentals-GameDev/blob/main/attribution.md");
+                } else if (downloadButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
+                    openURL("https://github.com/phuwit/KMITL-ProgrammingFundamentals-GameDev/actions/workflows/ci.yml\?query=branch%3Amain+is%3Asuccess");
                 }
             } else if (event.type == Event::KeyPressed) {
                 if (Keyboard::isKeyPressed(Keyboard::Escape)) {
@@ -97,6 +109,8 @@ SceneChange Info::run(RenderWindow &window) {
         window.draw(githubText);
         window.draw(attributionButton);
         window.draw(attributionText);
+        window.draw(downloadButton);
+        window.draw(downloadText);
         window.display();
     }
 

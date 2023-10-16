@@ -16,7 +16,7 @@ void Zombie::spawn(Vector2f spawnLoaction, float spriteScaling, ZombieType type,
     m_SpriteScaling = spriteScaling;
 
     Texture &texture = TextureHolder::GetTexture(M_SPRITE_FILENAME[type]);
-    Vector2f textureSize = (Vector2f)texture.getSize();
+//    Vector2f textureSize = (Vector2f)texture.getSize();
     m_Sprite = Sprite(texture, M_SPRITE_CROP[type]);
     m_Sprite.setScale(Vector2f(m_SpriteScaling, m_SpriteScaling));
     m_CenterOffset = Vector2f((m_Sprite.getLocalBounds().width * m_SpriteScaling) / 2, ((m_Sprite.getLocalBounds().height * m_SpriteScaling) / 2));

@@ -24,14 +24,14 @@ many projects/ assets are used in this one. please see [attribution.md](attribut
 - [x] handle score
 - [x] handle scene change
 - [x] hud
-- [ ] rework spawn timing
-- [ ] level progression
-- [ ] handle menu screen
+- [x] level progression
+- [x] handle menu screen
 - [ ] handle paused screen
-- [ ] handle gameover screen
-- [ ] handle levelup screen
-- [ ] handle leaderboard
-- [ ] implement pickups
+- [x] handle gameover screen
+- [x] handle levelup screen
+- [x] handle leaderboard
+- [x] implement pickups
+- [ ] rework spawn timing
 - [ ] zombie dead animation?
 - [ ] animation
 

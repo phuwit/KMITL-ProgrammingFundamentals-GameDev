@@ -51,7 +51,7 @@ class Game : public Scenes {
         int             m_SpareAmmo = 24;
         const int       m_ClipSize = 6;
         int             m_BulletsInClip = m_ClipSize;
-        float           m_FireRate = 1;
+//        float           m_FireRate = 1;
         Time            m_LastShot;
         const Time      M_BULLET_COOLDOWN = milliseconds(100);
 
@@ -66,7 +66,7 @@ class Game : public Scenes {
 
         bool            m_MovementKeyPressed[sizeof(MovementKey)];
         bool            m_MouseKeyPressed[sizeof(MouseButton)];
-        int             m_Stage = 0;
+//        int             m_Stage = 0;
         int             m_NumZombies;
         int             m_NumZombiesAlive;
         Zombie*         m_Zombies = nullptr;

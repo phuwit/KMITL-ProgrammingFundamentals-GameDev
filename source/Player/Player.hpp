@@ -17,13 +17,13 @@ class Player {
 
         float m_BaseSpeed = 250;
         float m_Speed = m_BaseSpeed;
-        float m_SpeedDiagonal = m_Speed * sqrt(0.5);
+        float m_SpeedDiagonal = m_Speed * std::sqrt(0.5);
         
         bool m_MovementKeyPressed[4] = {false};
         Vector2f m_Position;
         void m_SetSpritesPosition();
         float m_ArmAngle;
-        bool m_Flipped = false;
+//        bool m_Flipped = false;
         void m_Flip();
         void m_UnFlip();
         

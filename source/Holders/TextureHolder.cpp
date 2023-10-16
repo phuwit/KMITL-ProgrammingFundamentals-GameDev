@@ -1,6 +1,6 @@
 #pragma once
 
-#include <assert.h>
+#include <cassert>
 #include "TextureHolder.hpp"
 
 TextureHolder* TextureHolder::m_s_Instance = nullptr;

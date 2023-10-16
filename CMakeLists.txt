@@ -19,6 +19,16 @@ add_executable(BrainBlast source/Main.cpp)
 target_link_libraries(BrainBlast PRIVATE sfml-graphics)
 target_compile_features(BrainBlast PRIVATE cxx_std_17)
 
+if(MSVC)
+    target_compile_options(BrainBlast PRIVATE /W4 /WX)
+else()
+    target_compile_options(BrainBlast PRIVATE -Wall -Wextra -pedantic -Werror)
+endif()
+
+if(UNIX)
+    target_link_libraries(BrainBlast PRIVATE m)
+endif()
+
 if(WIN32)
     add_custom_command(
         TARGET BrainBlast

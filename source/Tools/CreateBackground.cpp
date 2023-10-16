@@ -170,7 +170,7 @@ int createBackground (VertexArray& rVA, IntRect playArea, int scale) {
             // south wall
             else if (h == worldHeight - 1) {
                 // use a random wall texture
-                int randomTileIndex = (rand() % WALL_NORTH_TILE_TYPES);
+                int randomTileIndex = (rand() % WALL_SOUTH_TILE_TYPES);
                 int xOffset = (randomTileIndex % SPRITESHEET_FLOOR_TILE_PER_ROW) * TILE_SIZE;
                 int yOffset = (randomTileIndex / SPRITESHEET_FLOOR_TILE_PER_ROW) * TILE_SIZE;
                 // use wall texture

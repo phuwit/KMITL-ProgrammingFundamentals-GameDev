@@ -26,8 +26,6 @@ class Zombie {
         Vector2i m_SpeedInverse = Vector2i(1, 1);
         Vector2i M_BASE_INVERSE_CHANCE = Vector2i(10000, 10000);
         ZombieMoveStyle m_MoveStyle;
-        float m_Peroid = 0;
-        float m_SinAmplitude = 20;
         float m_Health;
         bool m_Alive;
 

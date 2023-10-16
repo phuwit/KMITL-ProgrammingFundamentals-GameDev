@@ -291,9 +291,9 @@ SceneChange Game::run(RenderWindow &window) {
                 }
             }
 
-            unsigned int pickuplistsize = sizeof(m_PickUpsList);
+            unsigned int pickuplistsize = m_PickUpsList.size();
 
-            for (int i = 0; i < sizeof(PickupsType); i++) {
+            for (unsigned int i = 0; i < pickuplistsize; i++) {
                 if (m_PickUpsList[i].isSpawned()) {
                     if (m_Player.getHitbox().intersects(m_PickUpsList[i].getPosition())) {
                         handlePickUps_((PickupsType)i, m_PickUpsList[i].take(), m_PickUpsList[i].getBuffDuration());
@@ -320,7 +320,7 @@ SceneChange Game::run(RenderWindow &window) {
                 m_LastShot = seconds(0);
             }
 
-            for (int i = 0; i < sizeof(MovementKey); i++) {
+            for (unsigned int i = 0; i < (unsigned int)sizeof(MovementKey); i++) {
                 m_Player.setMovementKeyPressed(i, m_MovementKeyPressed[i]);
             }
 
@@ -349,7 +349,7 @@ SceneChange Game::run(RenderWindow &window) {
                     // window.draw(m_Zombies[i].getDrawableHitbox());
                 }
 
-                for (int i = 0; i < sizeof(PickupsType); i++) {
+                for (unsigned int i = 0; i < (unsigned int)sizeof(PickupsType); i++) {
                     if (m_PickUpsList[i].isSpawned()) {
                         window.draw(m_PickUpsList[i].getSprite());
                     }

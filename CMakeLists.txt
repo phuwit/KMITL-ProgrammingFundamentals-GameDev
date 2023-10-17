@@ -35,6 +35,12 @@ if(WIN32)
         COMMENT "Copy OpenAL DLL"
         PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${SFML_SOURCE_DIR}/extlibs/bin/$<IF:$<EQUAL:${CMAKE_SIZEOF_VOID_P},8>,x64,x86>/openal32.dll $<TARGET_FILE_DIR:BrainBlast>
         VERBATIM)
+
+    add_custom_command(
+        TARGET BrainBlast
+        COMMENT "Copy DLLs"
+        POST_BUILD COMMAND ldd build/* | grep -vi system32 | grep -vi windows | grep -vi sfml | grep -v :$ | cut -f2 -d\> | cut -f1 -d\( | tr \\ / | while read a; do ! [ -e "build/`basename $a`" ] && cp -v "$a" build/; done
+        VERBATIM)
 endif()
 
 if(NOT BUILD_SHARED_LIBS AND WIN32)

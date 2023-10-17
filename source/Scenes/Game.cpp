@@ -122,7 +122,7 @@ void Game::regenerate() {
     m_NumZombies = 2 + (3 * currentLevel);
     m_NumZombiesAlive = m_NumZombies;
     delete[] m_Zombies;
-    m_Zombies = createHorde(m_NumZombies, (M_SPRITE_SCALING - 2), m_PlayArea);
+    m_Zombies = createHorde(m_NumZombies, (M_SPRITE_SCALING - 1), m_PlayArea);
 }
 
 SceneChange Game::run(RenderWindow &window) {
@@ -228,7 +228,12 @@ SceneChange Game::run(RenderWindow &window) {
                                 if (m_Zombies[j].hit()) {
                                     m_SoundKilled.play();
 
-                                    m_Score += (1 * m_ScoreMultiplier);
+                                    m_Score += (100 * m_ScoreMultiplier);
+                                    if(m_Zombies[j].getTimeSinceSpawned() < M_SCORE_BONUS_MAX_TIME) {
+                                        float timeToKill = M_SCORE_BONUS_MAX_TIME.asSeconds() - m_Zombies[j].getTimeSinceSpawned().asSeconds();
+                                        m_Score += ceil(timeToKill * 10);
+                                    }
+
                                     m_NumZombiesAlive--;
                                     if (m_NumZombiesAlive <= 0) {
                                         return SceneChange(ScenesList::SCENE_LEVELUP, getScreenshot(window).copyToImage());
@@ -280,7 +285,7 @@ SceneChange Game::run(RenderWindow &window) {
                 if (m_BulletsInClip > 0) {
                     m_Bullets[m_CurrentBulletIndex].shoot(m_Player.getArmPosition(), mouseWorldPosition,
                                                           m_Player.getBarrelPosition(), m_PlayArea,
-                                                          M_SPRITE_SCALING - 1);
+                                                          M_SPRITE_SCALING);
                     m_BulletsInClip -= 1;
                     m_CurrentBulletIndex++;
                     if (m_CurrentBulletIndex >= M_MAX_BULLETS - 1) {

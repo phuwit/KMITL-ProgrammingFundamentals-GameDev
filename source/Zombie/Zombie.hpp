@@ -31,6 +31,7 @@ class Zombie {
         ZombieMoveStyle m_MoveStyle;
         float m_Health;
         bool m_Alive;
+        Time m_TimeSinceSpawn;
 
     public:
         Zombie();
@@ -45,6 +46,7 @@ class Zombie {
         RectangleShape getDrawableHitbox();
         Sprite getSprite();
         Vector2f getPosition();
+        Time getTimeSinceSpawned();
 
         void update(Time frameTime, Vector2f playerLocation);
 };

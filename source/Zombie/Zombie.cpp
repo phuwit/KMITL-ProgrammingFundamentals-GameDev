@@ -96,8 +96,14 @@ Vector2f Zombie::getPosition() {
     return m_Position;
 }
 
+Time Zombie::getTimeSinceSpawned() {
+    return m_TimeSinceSpawn;
+}
+
 void Zombie::update(Time frameTime, Vector2f playerLocation) {
     if(m_Alive){
+        m_TimeSinceSpawn += frameTime;
+
         float distanceX = (playerLocation.x - m_Position.x);
         float distanceY = (playerLocation.y - m_Position.y);
 

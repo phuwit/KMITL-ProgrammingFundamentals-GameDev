@@ -20,7 +20,7 @@ class Game : public Scenes {
         VertexArray     m_Background;
         int             m_TileSize;
         IntRect         m_PlayArea;
-        float           M_SPRITE_SCALING = 4;
+        float           M_SPRITE_SCALING = 3;
 
         View            m_GameView;
         View            m_HudView;
@@ -80,6 +80,7 @@ class Game : public Scenes {
         int             m_NumZombies;
         int             m_NumZombiesAlive;
         Zombie*         m_Zombies = nullptr;
+        const Time      M_SCORE_BONUS_MAX_TIME = seconds(5);
 
         void handlePickUps_(PickupsType pickUpsType, int pickupValue, Time buffDuration);
         void removeBuff_(PickupsType pickUpsType);

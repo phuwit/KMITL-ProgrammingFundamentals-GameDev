@@ -80,7 +80,7 @@ SceneChange Menu::run(RenderWindow &window) {
                 Vector2f mouseScreenPosition = Vector2f(Mouse::getPosition(window));
 
                 if (playButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
-                    dynamic_cast<Game *>(getGamePtr())->regenerate();
+                    dynamic_cast<Game *>(getGamePtr())->newGame();
                     return {ScenesList::SCENE_GAME};
                 } else if (infoButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
                     return {ScenesList::SCENE_INFO};

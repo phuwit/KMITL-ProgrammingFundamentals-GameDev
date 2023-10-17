@@ -94,11 +94,11 @@ SceneChange Leaderboard::run(RenderWindow &window) {
                 Vector2f mouseScreenPosition = Vector2f(Mouse::getPosition(window));
 
                 if (exitButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
-                    return SceneChange(ScenesList::SCENE_MENU);
+                    return {ScenesList::SCENE_MENU};
                 }
             } else if (event.type == Event::KeyPressed) {
                 if (Keyboard::isKeyPressed(Keyboard::Escape)) {
-                    return SceneChange(ScenesList::SCENE_MENU);
+                    return {ScenesList::SCENE_MENU};
                 }
             }
         }

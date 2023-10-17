@@ -125,6 +125,13 @@ void Game::regenerate() {
     m_Zombies = createHorde(m_NumZombies, (M_SPRITE_SCALING - 1), m_PlayArea);
 }
 
+void Game::newGame() {
+    currentLevel = 1;
+    m_Score = 0;
+
+    regenerate();
+}
+
 SceneChange Game::run(RenderWindow &window) {
     srand((unsigned int)time(0));
 

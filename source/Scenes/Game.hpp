@@ -88,6 +88,7 @@ class Game : public Scenes {
         SceneChange run(RenderWindow &window) override;
         Game(Vector2f screenResolution, Vector2f levelSize);
         void regenerate();
+        void newGame();
         void setPaused();
         void setPerks(int perks);
         unsigned int getScore();

@@ -14,7 +14,8 @@ FetchContent_Declare(SFML
     GIT_TAG 2.6.x)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(BrainBlast source/Main.cpp)
+add_executable(BrainBlast source/Main.cpp
+        source/Collision/Collision.cpp)
 
 target_link_libraries(BrainBlast PRIVATE sfml-graphics)
 target_link_libraries(BrainBlast PRIVATE sfml-audio)

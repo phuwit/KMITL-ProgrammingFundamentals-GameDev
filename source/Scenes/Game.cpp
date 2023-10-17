@@ -14,6 +14,7 @@
 #include "../Tools/CreateBackground.cpp"
 #include "../Tools/GetScreenshot.cpp"
 #include "../Tools/SetOriginCenter.cpp"
+#include "../Collision/Collision.hpp"
 
 using namespace sf;
 
@@ -209,14 +210,17 @@ SceneChange Game::run(RenderWindow &window) {
             for(int i = 0; i < m_NumZombies; i++) {
                 if (m_Zombies[i].isAlive() && (m_LastHit > M_LAST_HIT_COOLDOWN)) {
                     if (m_Zombies[i].getHitBox().intersects(m_Player.getHitbox())) {
-                        m_PlayerHealth--;
-                        m_LastHit = seconds(0);
-                        m_SoundHit.play();
+                        if(Collision::pixelPerfectTest(m_Zombies[i].getSprite(), m_Player.getSpriteBase())) {
+                            m_PlayerHealth--;
+                            m_LastHit = seconds(0);
+                            m_SoundHit.play();
 
-                        m_HealthBar.setSize(Vector2f(m_HealthBarSegmentSize * m_PlayerHealth, m_HealthBar.getSize().y));
-                        if (m_PlayerHealth <= 0) {
-                            // game over idk
-                             return SceneChange(ScenesList::SCENE_GAMEOVER);
+                            m_HealthBar.setSize(
+                                    Vector2f(m_HealthBarSegmentSize * m_PlayerHealth, m_HealthBar.getSize().y));
+                            if (m_PlayerHealth <= 0) {
+                                // game over idk
+                                return SceneChange(ScenesList::SCENE_GAMEOVER);
+                            }
                         }
                     }
                 }
@@ -230,38 +234,44 @@ SceneChange Game::run(RenderWindow &window) {
                     // TODO: FIX THIS, THIS IS HORRIBLE
                     for (int j = 0; j < m_NumZombies; j++) {
                         if (m_Zombies[j].getHitBox().contains(m_Bullets[i].getPosition())) {
-                            // is zombie die after bullet hit
-                            if (m_Bullets[i].isInFlight() && m_Zombies[j].isAlive()) {
-                                if (m_Zombies[j].hit()) {
-                                    m_SoundKilled.play();
+                            if (Collision::pixelPerfectTest(m_Zombies[j].getSprite(), m_Bullets[i].getSprite())) {
+                                // is zombie die after bullet hit
+                                if (m_Bullets[i].isInFlight() && m_Zombies[j].isAlive()) {
+                                    if (m_Zombies[j].hit()) {
+                                        m_SoundKilled.play();
 
-                                    m_Score += (100 * m_ScoreMultiplier);
-                                    if(m_Zombies[j].getTimeSinceSpawned() < M_SCORE_BONUS_MAX_TIME) {
-                                        float timeToKill = M_SCORE_BONUS_MAX_TIME.asSeconds() - m_Zombies[j].getTimeSinceSpawned().asSeconds();
-                                        m_Score += ceil(timeToKill * 10);
+                                        m_Score += (100 * m_ScoreMultiplier);
+                                        if (m_Zombies[j].getTimeSinceSpawned() < M_SCORE_BONUS_MAX_TIME) {
+                                            float timeToKill = M_SCORE_BONUS_MAX_TIME.asSeconds() -
+                                                               m_Zombies[j].getTimeSinceSpawned().asSeconds();
+                                            m_Score += ceil(timeToKill * 10);
+                                        }
+
+                                        m_NumZombiesAlive--;
+                                        if (m_NumZombiesAlive <= 0) {
+                                            return SceneChange(ScenesList::SCENE_LEVELUP,
+                                                               getScreenshot(window).copyToImage());
+                                        }
+
+                                        int randomNumber = (rand() % 8);
+                                        if (randomNumber == 0) {
+                                            m_PickUpsList[PickupsType::PICKUPS_SCORE].spawnAt(
+                                                    m_Zombies[j].getPosition());
+                                            m_PickupsSprite = m_PickUpsList[PickupsType::PICKUPS_SCORE].getSprite();
+                                        } else if (randomNumber == 1) {
+                                            m_PickUpsList[PickupsType::PICKUPS_SPEED].spawnAt(
+                                                    m_Zombies[j].getPosition());
+                                            m_PickupsSprite = m_PickUpsList[PickupsType::PICKUPS_SPEED].getSprite();
+                                        }
+
+                                        scoreStringStream.str("");
+                                        scoreStringStream << "Score  : " << m_Score;
+                                        m_ScoreText.setString(scoreStringStream.str());
                                     }
+                                    m_Bullets[i].stop();
 
-                                    m_NumZombiesAlive--;
-                                    if (m_NumZombiesAlive <= 0) {
-                                        return SceneChange(ScenesList::SCENE_LEVELUP, getScreenshot(window).copyToImage());
-                                    }
-
-                                    int randomNumber = (rand() % 8);
-                                    if (randomNumber == 0) {
-                                        m_PickUpsList[PickupsType::PICKUPS_SCORE].spawnAt(m_Zombies[j].getPosition());
-                                        m_PickupsSprite = m_PickUpsList[PickupsType::PICKUPS_SCORE].getSprite();
-                                    } else if (randomNumber == 1) {
-                                        m_PickUpsList[PickupsType::PICKUPS_SPEED].spawnAt(m_Zombies[j].getPosition());
-                                        m_PickupsSprite = m_PickUpsList[PickupsType::PICKUPS_SPEED].getSprite();
-                                    }
-
-                                    scoreStringStream.str("");
-                                    scoreStringStream << "Score  : " << m_Score;
-                                    m_ScoreText.setString(scoreStringStream.str());
+                                    m_SoundHit.play();
                                 }
-                                m_Bullets[i].stop();
-
-                                m_SoundHit.play();
                             }
                         }
                     }

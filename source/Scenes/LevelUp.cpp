@@ -1,9 +1,11 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #include "Scenes.hpp"
 #include "Game.hpp"
 #include "../CommonEnum.hpp"
 #include "../Holders/FontHolder.cpp"
+#include "../Holders/SoundHolder.hpp"
 #include "../Tools/SetOriginCenter.cpp"
 #include "../Tools/SetRectangleShapeOnMouseHover.cpp"
 
@@ -96,6 +98,8 @@ SceneChange LevelUp::run(RenderWindow &window) {
         upgradeButton[i].setPosition(upgradeText[i].getPosition() + Vector2f(BUTTON_PADDING / 2, BUTTON_PADDING / 2));
     }
 
+    Sound soundClick(SoundHolder::GetSound("assets/sfx/click.ogg"));
+    Sound soundHover(SoundHolder::GetSound("assets/sfx/hover.ogg"));
 
     while (window.isOpen()) {
         // Update frame
@@ -133,6 +137,7 @@ SceneChange LevelUp::run(RenderWindow &window) {
                 for (int i = 0; i < NUM_UPGRADES; i++) {
                     if (upgradeButton[i].getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
                         upgradeIndex = i;
+                        soundClick.play();
 
                         for (auto & j : upgradeButton) {
                             j.setFillColor(Color::White);

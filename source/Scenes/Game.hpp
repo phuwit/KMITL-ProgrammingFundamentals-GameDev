@@ -37,6 +37,14 @@ class Game : public Scenes {
         Text            m_SpareAmmoText;
         Text            m_WaveText;
 
+        Sound           m_SoundLoaded;
+        Sound           m_SoundHit;
+        Sound           m_SoundKilled;
+        Sound           m_SoundShoot;
+        Sound           m_SoundReload;
+        Sound           m_SoundPickupLow;
+        Sound           m_SoundPickupHigh;
+
         Player          m_Player = Player(M_SPRITE_SCALING);
         const Time      M_LAST_HIT_COOLDOWN = milliseconds(300);
         Time            m_LastHit = seconds(0);

@@ -1,6 +1,7 @@
 #include "CommonEnum.hpp"
-#include "Holders/TextureHolder.hpp"
+#include "Holders/TextureHolder.cpp"
 #include "Holders/FontHolder.cpp"
+#include "Holders/SoundHolder.cpp"
 
 #include "Scenes/Scenes.hpp"
 #include "Scenes/Menu.cpp"
@@ -15,6 +16,7 @@ int main() {
     // instance THE singleton instance of texture holder
     TextureHolder textureHolder;
     FontHolder fontHolder;
+    SoundHolder soundHolder;
 
     // Applications variables
     std::vector<Scenes*> Scenes;

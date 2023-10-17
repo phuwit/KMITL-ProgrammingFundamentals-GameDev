@@ -17,6 +17,7 @@ FetchContent_MakeAvailable(SFML)
 add_executable(BrainBlast source/Main.cpp)
 
 target_link_libraries(BrainBlast PRIVATE sfml-graphics)
+target_link_libraries(BrainBlast PRIVATE sfml-audio)
 target_compile_features(BrainBlast PRIVATE cxx_std_17)
 
 if(MSVC)
@@ -36,11 +37,11 @@ if(WIN32)
         PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${SFML_SOURCE_DIR}/extlibs/bin/$<IF:$<EQUAL:${CMAKE_SIZEOF_VOID_P},8>,x64,x86>/openal32.dll $<TARGET_FILE_DIR:BrainBlast>
         VERBATIM)
 
-    add_custom_command(
-        TARGET BrainBlast
-        COMMENT "Copy DLLs"
-        POST_BUILD COMMAND ldd BrainBlast.exe | grep -vi system32 | grep -vi windows | grep -vi sfml | grep -v :$ | cut -f2 -d\> | cut -f1 -d\( | tr \\ / | while read a; do ! [ -e "build/`basename $a`" ] && cp -v "$a" .; done
-        VERBATIM)
+    # add_custom_command(
+    #     TARGET BrainBlast
+    #     COMMENT "Copy DLLs"
+    #     POST_BUILD COMMAND ldd BrainBlast.exe | grep -vi system32 | grep -vi windows | grep -vi sfml | grep -v :$ | cut -f2 -d\> | cut -f1 -d\( | tr \\ / | while read a; do ! [ -e "build/`basename $a`" ] && cp -v "$a" .; done
+    #     VERBATIM)
 endif()
 
 if(NOT BUILD_SHARED_LIBS AND WIN32)

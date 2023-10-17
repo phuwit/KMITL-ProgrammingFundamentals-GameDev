@@ -2,11 +2,13 @@
 #include <array>
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #include "Game.hpp"
 #include "../CommonEnum.hpp"
 #include "../Holders/TextureHolder.cpp"
 #include "../Holders/FontHolder.cpp"
+#include "../Holders/SoundHolder.cpp"
 #include "../Zombie/Zombie.cpp"
 #include "../Zombie/ZombieHorde.cpp"
 #include "../Tools/CreateBackground.cpp"
@@ -97,6 +99,13 @@ Game::Game(Vector2f screenResolution, Vector2f levelSize) {
     m_AmmoLabel.setString("Ammo");
     m_AmmoLabel.setPosition(m_CurrentAmmoText.getPosition() - Vector2f(m_CurrentAmmoText.getLocalBounds().width + m_AmmoLabel.getLocalBounds().width - m_HudBackgroundPadding * 2, m_CurrentAmmoText.getLocalBounds().height - m_HudBackgroundPadding * 2));
 
+    m_SoundLoaded.setBuffer(SoundHolder::GetSound("assets/sfx/synth.ogg"));
+    m_SoundHit.setBuffer(SoundHolder::GetSound("assets/sfx/hit.ogg"));
+    m_SoundKilled.setBuffer(SoundHolder::GetSound("assets/sfx/killed.ogg"));
+    m_SoundShoot.setBuffer(SoundHolder::GetSound("assets/sfx/shoot.ogg"));
+    m_SoundPickupLow.setBuffer(SoundHolder::GetSound("assets/sfx/pickup1.ogg"));
+    m_SoundPickupHigh.setBuffer(SoundHolder::GetSound("assets/sfx/pickup2.ogg"));
+
     regenerate();
 }
 
@@ -136,6 +145,8 @@ SceneChange Game::run(RenderWindow &window) {
     m_ScoreText.setString(scoreStringStream.str());
     m_SpareAmmoText.setString(to_string(m_SpareAmmo));
     m_CurrentAmmoText.setString(to_string(m_BulletsInClip));
+
+    m_SoundLoaded.play();
 
     while (!paused) {
         // HANDLE INPUTS
@@ -195,7 +206,7 @@ SceneChange Game::run(RenderWindow &window) {
                         m_HealthBar.setSize(Vector2f(m_HealthBarSegmentSize * m_PlayerHealth, m_HealthBar.getSize().y));
                         if (m_PlayerHealth <= 0) {
                             // game over idk
-                            // return SceneChange(ScenesList::SCENE_GAMEOVER);
+                             return SceneChange(ScenesList::SCENE_GAMEOVER);
                         }
                     }
                 }
@@ -212,13 +223,15 @@ SceneChange Game::run(RenderWindow &window) {
                             // is zombie die after bullet hit
                             if (m_Bullets[i].isInFlight() && m_Zombies[j].isAlive()) {
                                 if (m_Zombies[j].hit()) {
+                                    m_SoundKilled.play();
+
                                     m_Score += (1 * m_ScoreMultiplier);
                                     m_NumZombiesAlive--;
                                     if (m_NumZombiesAlive <= 0) {
                                         return SceneChange(ScenesList::SCENE_LEVELUP, getScreenshot(window).copyToImage());
                                     }
 
-                                    int randomNumber = (rand() % 5);
+                                    int randomNumber = (rand() % 8);
                                     if (randomNumber == 0) {
                                         m_PickUpsList[PickupsType::PICKUPS_SCORE].spawnAt(m_Zombies[j].getPosition());
                                         m_PickupsSprite = m_PickUpsList[PickupsType::PICKUPS_SCORE].getSprite();
@@ -232,6 +245,8 @@ SceneChange Game::run(RenderWindow &window) {
                                     m_ScoreText.setString(scoreStringStream.str());
                                 }
                                 m_Bullets[i].stop();
+
+                                m_SoundHit.play();
                             }
                         }
                     }
@@ -346,8 +361,10 @@ void Game::handlePickUps_(PickupsType pickUpsType, int pickupValue, Time buffDur
         if (m_PlayerHealth > M_PLAYER_BASE_HEALTH) {
             m_PlayerHealth = M_PLAYER_BASE_HEALTH;
         }
+        m_SoundPickupLow.play();
     } else if (pickUpsType == PickupsType::PICKUPS_AMMO) {
         m_SpareAmmo += pickupValue;
+        m_SoundPickupLow.play();
     } else if (pickUpsType == PickupsType::PICKUPS_SPEED) {
         m_Player.setSpeedWithMultiplier(pickupValue);
         m_BuffTimer = buffDuration;
@@ -357,6 +374,7 @@ void Game::handlePickUps_(PickupsType pickUpsType, int pickupValue, Time buffDur
         m_BuffSprite.setPosition(m_ScreenResolution.x - m_BuffSprite.getLocalBounds().width - 10, m_BuffSprite.getLocalBounds().height - 10);
         m_BuffVisualizerOutline.setPosition(m_BuffSprite.getPosition() - Vector2f(m_BuffSprite.getLocalBounds().width + 10, 0));
         m_BuffVisualizerWiper.setPosition(m_BuffVisualizerOutline.getPosition());
+        m_SoundPickupHigh.play();
     } else if (pickUpsType == PickupsType::PICKUPS_SCORE) {
         m_ScoreMultiplier = pickupValue;
         m_BuffTimer = buffDuration;
@@ -366,6 +384,7 @@ void Game::handlePickUps_(PickupsType pickUpsType, int pickupValue, Time buffDur
         m_BuffSprite.setPosition(m_ScreenResolution.x - m_BuffSprite.getLocalBounds().width - 10, m_BuffSprite.getLocalBounds().height - 10);
         m_BuffVisualizerOutline.setPosition(m_BuffSprite.getPosition() - Vector2f(m_BuffSprite.getLocalBounds().width + 10, 0));
         m_BuffVisualizerWiper.setPosition(m_BuffVisualizerOutline.getPosition());
+        m_SoundPickupHigh.play();
     }
 }
 

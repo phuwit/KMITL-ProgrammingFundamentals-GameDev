@@ -1,9 +1,11 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #include "Scenes.hpp"
 #include "../CommonEnum.hpp"
 #include "../Holders/TextureHolder.hpp"
 #include "../Holders/FontHolder.cpp"
+#include "../Holders/SoundHolder.hpp"
 #include "../Tools/SetOriginCenter.cpp"
 #include "../Tools/SetRectangleShapeOnMouseHover.cpp"
 
@@ -57,6 +59,9 @@ SceneChange Menu::run(RenderWindow &window) {
     exitText.setPosition(leaderboardText.getPosition() + Vector2f(0, 100));
     exitButton.setPosition(exitText.getPosition() + Vector2f(0, BUTTON_PADDING / 2));
 
+//    Sound soundClick(SoundHolder::GetSound("assets/sfx/click.ogg"));
+//    Sound soundHover(SoundHolder::GetSound("assets/sfx/hover.ogg"));
+
     while (window.isOpen()) {
         // Update frame
         Event event;
@@ -74,18 +79,19 @@ SceneChange Menu::run(RenderWindow &window) {
                 Vector2f mouseScreenPosition = Vector2f(Mouse::getPosition(window));
 
                 if (playButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
-                    return SceneChange(ScenesList::SCENE_GAME);
+//                    soundClick.play();
+                    return {ScenesList::SCENE_GAME};
                 } else if (infoButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
-                    return SceneChange(ScenesList::SCENE_INFO);
+                    return {ScenesList::SCENE_INFO};
                 } else if (leaderboardButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
-                    return SceneChange(ScenesList::SCENE_LEVELUP);
+                    return {ScenesList::SCENE_LEVELUP};
                 } else if (exitButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
-                    return SceneChange(ScenesList::EXIT);
+                    return {ScenesList::EXIT};
                 }
             }
 
             if (event.type == Event::Closed || (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape)) {
-                return SceneChange(ScenesList::EXIT);
+                return {ScenesList::EXIT};
             }
         }
 

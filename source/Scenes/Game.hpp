@@ -57,7 +57,7 @@ class Game : public Scenes {
         const int       M_MAX_BULLETS = 100;
         Bullet          m_Bullets[100];
         int             m_CurrentBulletIndex = 0;
-        int             m_SpareAmmo = 24;
+        int             m_SpareAmmo = 48;
         int             m_ClipSize = 6;
         int             m_BulletsInClip;
 //        float           m_FireRate = 1;

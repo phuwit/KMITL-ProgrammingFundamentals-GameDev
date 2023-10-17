@@ -55,6 +55,7 @@ bool Zombie::hit() {
     if (m_Health < 0) {
         // dead
         m_Alive = false;
+        m_Sprite.setOrigin(Vector2f(m_Sprite.getLocalBounds().width / 2, -m_Sprite.getLocalBounds().height / 2));
         m_Sprite.setTexture(TextureHolder::GetTexture(M_SPRITE_DEATH_FILENAME[m_Type]));
         m_Sprite.setTextureRect(M_SPRITE_DEATH_CROP[m_Type]);
         return true;

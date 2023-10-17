@@ -74,7 +74,6 @@ SceneChange LevelUp::run(RenderWindow &window) {
             "Increased rate of fire",
             "Increased clip size (next reload)",
             "Increased max health",
-            "Increased run speed",
             "More and better health pickups",
             "More and better ammo pickups"
     };
@@ -129,6 +128,7 @@ SceneChange LevelUp::run(RenderWindow &window) {
                 if (nextLevelButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
                     currentLevel++;
                     dynamic_cast<Game *>(getGamePtr())->regenerate();
+                    if (upgradeIndex != -1) dynamic_cast<Game *>(getGamePtr())->setPerks(upgradeIndex);
                     return {ScenesList::SCENE_GAME};
                 } else if (exitButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
                     return {ScenesList::SCENE_GAMEOVER};

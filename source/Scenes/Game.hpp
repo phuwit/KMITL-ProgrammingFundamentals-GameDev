@@ -49,6 +49,7 @@ class Game : public Scenes {
         const Time      M_LAST_HIT_COOLDOWN = milliseconds(300);
         Time            m_LastHit = seconds(0);
         const int       M_PLAYER_BASE_HEALTH = 5;
+        int             m_PlayerMaxHealth = M_PLAYER_BASE_HEALTH;
         int             m_PlayerHealth = M_PLAYER_BASE_HEALTH;
 
         unsigned int    m_Score = 0;
@@ -57,11 +58,12 @@ class Game : public Scenes {
         Bullet          m_Bullets[100];
         int             m_CurrentBulletIndex = 0;
         int             m_SpareAmmo = 24;
-        const int       m_ClipSize = 6;
+        int             m_ClipSize = 6;
         int             m_BulletsInClip;
 //        float           m_FireRate = 1;
         Time            m_LastShot;
-        const Time      M_BULLET_COOLDOWN = milliseconds(100);
+        const Time      m_BASE_BULLET_COOLDOWN = milliseconds(300);
+        Time            m_BulletCooldown = m_BASE_BULLET_COOLDOWN;
 
         vector<PickUps> m_PickUpsList;
         Sprite          m_PickupsSprite;
@@ -86,7 +88,7 @@ class Game : public Scenes {
         Game(Vector2f screenResolution, Vector2f levelSize);
         void regenerate();
         void setPaused();
-        void setPerks();
+        void setPerks(int perks);
         unsigned int getScore();
 };
 

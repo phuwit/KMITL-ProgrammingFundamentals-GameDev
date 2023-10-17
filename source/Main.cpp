@@ -23,12 +23,12 @@ int main() {
     SceneChange currentScene = SceneChange(ScenesList::SCENE_MENU);
 
     std::vector<sf::VideoMode> allVideoModes = VideoMode::getFullscreenModes();
-    // VideoMode videoMode = VideoMode(allVideoModes[0]);
-    VideoMode videoMode = VideoMode(1920, 1080); 
+     VideoMode videoMode = VideoMode(allVideoModes[0]);
+//    VideoMode videoMode = VideoMode(1920, 1080);
       
     // RenderWindow window(videoMode, "Brain Blast!", ContextSettings(0, 0, 8));
-    RenderWindow window(videoMode, "Brain Blast!", Style::None, ContextSettings(0, 0, 8));
-    // RenderWindow window(videoMode, "Brain Blast!", Style::Fullscreen, ContextSettings(0, 0, 8));
+//    RenderWindow window(videoMode, "Brain Blast!", Style::None, ContextSettings(0, 0, 8));
+     RenderWindow window(videoMode, "Brain Blast!", Style::Fullscreen, ContextSettings(0, 0, 8));
 
     // window.setMouseCursorVisible(false);
 
@@ -37,7 +37,7 @@ int main() {
     Scenes.push_back(&menu);
     Info info;
     Scenes.push_back(&info);
-    Game* gamePtr = new Game(Vector2f(window.getSize()), Vector2f(window.getSize()));
+    Game* gamePtr = new Game(Vector2f(window.getSize()), Vector2f(1920, 1080));
     Scenes.push_back(gamePtr);
     Paused scenePaused;
     Scenes.push_back(&scenePaused);

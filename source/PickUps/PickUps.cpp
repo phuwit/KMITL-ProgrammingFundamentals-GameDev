@@ -45,10 +45,10 @@ float PickUps::take() {
 
 void PickUps::upgrade() {
     if (m_Type == PickupsType::PICKUPS_HEALTH) {
-        m_Value += (BASE_VALUE[m_Type] * 0.5);
+        m_Value += (BASE_VALUE[m_Type] * 0.1);
     }
     else if (m_Type == PickupsType::PICKUPS_AMMO) {
-        m_Value += (BASE_VALUE[m_Type] * 0.5);
+        m_Value += (BASE_VALUE[m_Type] * 0.1);
     }
 
     // reduce spawn timer and increase time to despawn
@@ -77,7 +77,13 @@ void PickUps::update(Time frameTime) {
     if (m_Spawned)  m_SecondsSinceSpawned += frameTime.asSeconds();
     else            m_SecondsSinceDespawned += frameTime.asSeconds();
 
-    // hide the pcikup if timeout
+    if (m_Spawned && (m_SecondsSinceSpawned > m_SecondsToLive * 0.8)) {
+        m_Sprite.setColor(Color(255, 128, 128, 192));
+    } else {
+        m_Sprite.setColor(Color(255, 255, 255, 255));
+    }
+
+    // hide the pickup if timeout
     if ((m_SecondsSinceSpawned > m_SecondsToLive) && m_Spawned) {
         m_Spawned = false;
         m_SecondsSinceDespawned = 0;

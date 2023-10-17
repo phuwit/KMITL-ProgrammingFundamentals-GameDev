@@ -276,7 +276,7 @@ SceneChange Game::run(RenderWindow &window) {
                 }
             }
 
-            if (m_MouseKeyPressed[MouseButton::MOUSE_LEFT] && (m_LastShot > M_BULLET_COOLDOWN)) {
+            if (m_MouseKeyPressed[MouseButton::MOUSE_LEFT] && (m_LastShot > m_BulletCooldown)) {
                 if (m_BulletsInClip > 0) {
                     m_Bullets[m_CurrentBulletIndex].shoot(m_Player.getArmPosition(), mouseWorldPosition,
                                                           m_Player.getBarrelPosition(), m_PlayArea,
@@ -373,8 +373,27 @@ void Game::setPaused() {
 
 }
 
-void Game::setPerks() {
-
+void Game::setPerks(int perks) {
+//    const std::string UPGRADE_TEXT[NUM_UPGRADES] = {
+//            "Increased rate of fire",
+//            "Increased clip size (next reload)",
+//            "Increased max health",
+//            "More and better health pickups",
+//            "More and better ammo pickups"
+//    };
+    if (perks == 0) {
+        m_BulletCooldown -= milliseconds(m_BASE_BULLET_COOLDOWN.asMilliseconds() / 10);
+    } else if (perks == 1) {
+        m_ClipSize += 2;
+    } else if (perks == 2) {
+        m_PlayerHealth = m_PlayerMaxHealth + 1;
+        m_HealthBarSegmentSize = m_HealthBar.getSize().x / m_PlayerMaxHealth;
+        m_HealthBar.setSize(Vector2f(m_HealthBarSegmentSize * m_PlayerHealth, m_HealthBar.getSize().y));
+    } else if (perks == 3) {
+        m_PickUpsList[PickupsType::PICKUPS_HEALTH].upgrade();
+    } else if (perks == 4) {
+        m_PickUpsList[PickupsType::PICKUPS_AMMO].upgrade();
+    }
 }
 
 unsigned int Game::getScore() {
@@ -384,8 +403,8 @@ unsigned int Game::getScore() {
 void Game::handlePickUps_(PickupsType pickUpsType, int pickupValue, Time buffDuration) {
     if (pickUpsType == PickupsType::PICKUPS_HEALTH) {
         m_PlayerHealth += pickupValue;
-        if (m_PlayerHealth > M_PLAYER_BASE_HEALTH) {
-            m_PlayerHealth = M_PLAYER_BASE_HEALTH;
+        if (m_PlayerHealth > m_PlayerMaxHealth) {
+            m_PlayerHealth = m_PlayerMaxHealth;
         }
         m_HealthBar.setSize(Vector2f(m_HealthBarSegmentSize * m_PlayerHealth, m_HealthBar.getSize().y));
         m_SoundPickupLow.play();

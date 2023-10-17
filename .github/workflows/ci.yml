@@ -83,7 +83,7 @@ jobs:
 
     - name: Get commit hash and time
       shell: msys2 {0}
-      run: echo "HASH_TIME=$(git show -s --format="%h(%cd)" --date=format:"%Y-%m-%d %H.%M.%S %z")" >> "$GITHUB_ENV"
+      run: echo "HASH_TIME=$(git show -s --format="%h(%cd)" --date=format:"%Y-%m-%d %H.%M.%S %z")" >> $env:GITHUB_ENV
 
     - name: Configure
       shell: msys2 {0}
@@ -132,7 +132,7 @@ jobs:
 #
 #      - name: Get commit hash and time
 #        shell: msys2 {0}
-#        run: echo "HASH_TIME=$(git show -s --format="%h(%cd)" --date=format:"%Y-%m-%d %H.%M.%S %z")" >> "$GITHUB_ENV"
+#        run: echo "HASH_TIME=$(git show -s --format="%h(%cd)" --date=format:"%Y-%m-%d %H.%M.%S %z")" >> $env:GITHUB_ENV
 #
 #      - name: Configure
 #        run: cmake -S . -B build -DCMAKE_INSTALL_PREFIX=install ${{matrix.platform.flags}} ${{matrix.config.flags}}

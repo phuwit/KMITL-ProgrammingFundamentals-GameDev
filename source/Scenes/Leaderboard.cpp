@@ -61,6 +61,10 @@ SceneChange Leaderboard::run(RenderWindow &window) {
     Text namesText[SCORES_COUNT];
 
     for (int i = 0; i < SCORES_COUNT; i++) {
+        if (scores.empty()) {
+            break;
+        }
+
         unsigned int score = scores[i].getScore();
         if (score == 0) {
             break;

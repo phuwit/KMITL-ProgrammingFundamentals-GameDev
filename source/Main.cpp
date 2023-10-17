@@ -27,8 +27,8 @@ int main() {
 //    VideoMode videoMode = VideoMode(1920, 1080);
       
     // RenderWindow window(videoMode, "Brain Blast!", ContextSettings(0, 0, 8));
-//    RenderWindow window(videoMode, "Brain Blast!", Style::None, ContextSettings(0, 0, 8));
-     RenderWindow window(videoMode, "Brain Blast!", Style::Fullscreen, ContextSettings(0, 0, 8));
+    RenderWindow window(videoMode, "Brain Blast!", Style::None, ContextSettings(0, 0, 8));
+//     RenderWindow window(videoMode, "Brain Blast!", Style::Fullscreen, ContextSettings(0, 0, 8));
 
     // window.setMouseCursorVisible(false);
 

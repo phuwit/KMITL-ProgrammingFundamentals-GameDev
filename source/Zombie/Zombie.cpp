@@ -12,16 +12,16 @@ using namespace std;
 Zombie::Zombie(){}
 
 void Zombie::spawn(Vector2f spawnLoaction, float spriteScaling, ZombieType type, ZombieMoveStyle moveStyle, int seed, FloatRect playArea) {
-
+    m_Type = type;
     m_SpriteScaling = spriteScaling;
 
-    Texture &texture = TextureHolder::GetTexture(M_SPRITE_FILENAME[type]);
+    Texture &texture = TextureHolder::GetTexture(M_SPRITE_RUN_FILENAME[m_Type]);
 //    Vector2f textureSize = (Vector2f)texture.getSize();
-    m_Sprite = Sprite(texture, M_SPRITE_CROP[type]);
+    m_Sprite = Sprite(texture, M_SPRITE_RUN_CROP[m_Type]);
     m_Sprite.setScale(Vector2f(m_SpriteScaling, m_SpriteScaling));
     m_CenterOffset = Vector2f((m_Sprite.getLocalBounds().width * m_SpriteScaling) / 2, ((m_Sprite.getLocalBounds().height * m_SpriteScaling) / 2));
-    m_Health = M_HEALTH_BASE[type];
-    m_Sprite.setColor(M_COLOR_BASE[type]);
+    m_Health = M_HEALTH_BASE[m_Type];
+    m_Sprite.setColor(M_COLOR_BASE[m_Type]);
 
     // vary speed to make each one unique
     srand((int)(time(0)) * seed);
@@ -31,7 +31,7 @@ void Zombie::spawn(Vector2f spawnLoaction, float spriteScaling, ZombieType type,
     // convert to a fraction of 1; range 0.7-1
     modifierX /= 100;
     modifierY /= 100;
-    m_Speed = Vector2f(M_SPEED_BASE[type] * modifierX, M_SPEED_BASE[type] * modifierY);
+    m_Speed = Vector2f(M_SPEED_BASE[m_Type] * modifierX, M_SPEED_BASE[m_Type] * modifierY);
 
     // initialize locatio
     m_Position = spawnLoaction;
@@ -53,8 +53,8 @@ bool Zombie::hit() {
     if (m_Health < 0) {
         // dead
         m_Alive = false;
-        m_Sprite.setTexture(TextureHolder::GetTexture("assets/sprites/dungeon/pixel-poem/Dungeon_Tileset-x1.png"));
-
+        m_Sprite.setTexture(TextureHolder::GetTexture(M_SPRITE_DEATH_FILENAME[m_Type]));
+        m_Sprite.setTextureRect(M_SPRITE_DEATH_CROP[m_Type]);
         return true;
     }
     else {

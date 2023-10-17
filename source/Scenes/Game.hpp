@@ -47,7 +47,7 @@ class Game : public Scenes {
         int             m_ScoreMultiplier = 1;
         const int       M_MAX_BULLETS = 100;
         Bullet          m_Bullets[100];
-        int             m_CurrentAmmo = 0;
+        int             m_CurrentBulletIndex = 0;
         int             m_SpareAmmo = 24;
         const int       m_ClipSize = 6;
         int             m_BulletsInClip = m_ClipSize;

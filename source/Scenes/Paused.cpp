@@ -101,5 +101,5 @@ SceneChange Paused::run(RenderWindow &window) {
     }
 
 
-    return SceneChange(ScenesList::EXIT);
+    return {ScenesList::EXIT};
 }

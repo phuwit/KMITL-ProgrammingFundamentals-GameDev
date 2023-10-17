@@ -103,6 +103,11 @@ Game::Game(Vector2f screenResolution, Vector2f levelSize) {
 void Game::regenerate() {
     m_Player.spawn(FloatRect(m_PlayArea), m_ScreenResolution);
 
+    for (int i = 0; i < M_MAX_BULLETS; i++) {
+        m_Bullets[i].stop();
+    }
+    m_CurrentBulletIndex = 0;
+
     m_NumZombies = 2 + (3 * currentLevel);
     m_NumZombiesAlive = m_NumZombies;
     delete[] m_Zombies;
@@ -131,53 +136,6 @@ SceneChange Game::run(RenderWindow &window) {
     m_ScoreText.setString(scoreStringStream.str());
     m_SpareAmmoText.setString(to_string(m_SpareAmmo));
     m_CurrentAmmoText.setString(to_string(m_BulletsInClip));
-
-    // DEBUG STUFFS
-
-    RectangleShape whiteBackground(m_ScreenResolution);
-
-    CircleShape armJoint(5);
-    armJoint.setOrigin(armJoint.getRadius(), armJoint.getRadius());
-    // armJoint.setFillColor(Color(0, 255, 0, 50));
-    armJoint.setFillColor(Color::Green);
-    armJoint.setPosition(m_Player.getArmPosition());
-
-    CircleShape playerPosition(5);
-    playerPosition.setOrigin(armJoint.getRadius(), armJoint.getRadius());
-    // armJoint.setFillColor(Color(0, 255, 0, 50));
-    playerPosition.setFillColor(Color::Magenta);
-
-    CircleShape cursor(7);
-    cursor.setFillColor(Color::Green);
-    
-    RectangleShape armRay(Vector2f(300, 4));
-    armRay.setPosition(m_Player.getArmPosition());
-    armRay.setOrigin(Vector2f(0, 2));
-    armRay.setFillColor(Color::Magenta);
-
-    CircleShape barrel(5);
-    barrel.setFillColor(Color::Red);
-    barrel.setOrigin(barrel.getRadius(), barrel.getRadius());
-
-    Text textArmAngle;
-    textArmAngle.setFont(m_FontBebas);
-    textArmAngle.setCharacterSize(48);
-    textArmAngle.setFillColor(Color::White);
-    textArmAngle.setPosition(Vector2f(0, 0));
-
-    Text textHealth;
-    textHealth.setFont(m_FontBebas);
-    textHealth.setCharacterSize(32);
-    textHealth.setFillColor(Color::White);
-    textHealth.setPosition(0, 48);
-
-    Text textScore;
-    textScore.setFont(m_FontBebas);
-    textScore.setCharacterSize(32);
-    textScore.setFillColor(Color::White);
-    textScore.setPosition(0, 80);
-
-    // END DEBUG STUFFS
 
     while (!paused) {
         // HANDLE INPUTS
@@ -219,18 +177,7 @@ SceneChange Game::run(RenderWindow &window) {
             // convert mouse coords to world coords
             Vector2f mouseWorldPosition = window.mapPixelToCoords(mouseScreenPosition, m_GameView);
             m_Player.update((mouseWorldPosition), frameTime);
-            float angle = atan2(mouseWorldPosition.y - ((m_Player.getArmPosition().y)),
-                                mouseWorldPosition.x - ((m_Player.getArmPosition().x) - (15)))
-                          * 180 / M_PI;
-            armRay.setRotation(angle);
-            armRay.setPosition(m_Player.getArmPosition());
 
-            cursor.setPosition(Vector2f(mouseWorldPosition.x, mouseWorldPosition.y));
-
-            barrel.setPosition(m_Player.getBarrelPosition());
-
-            armJoint.setPosition(m_Player.getArmPosition());
-            playerPosition.setPosition(m_Player.getPosition());
             // std::cout << m_Player.getPosition().x << ", " << m_Player.getPosition().y << std::endl;
             // std::cout << m_PlayArea.top << ", " << m_PlayArea.left << ", " << m_PlayArea.width << ", " << m_PlayArea.height << std::endl;
             m_GameView.setCenter(m_Player.getPosition());
@@ -280,7 +227,7 @@ SceneChange Game::run(RenderWindow &window) {
                                         m_PickupsSprite = m_PickUpsList[PickupsType::PICKUPS_SPEED].getSprite();
                                     }
 
-                                    stringstream scoreStringStream;
+                                    scoreStringStream.str("");
                                     scoreStringStream << "Score  : " << m_Score;
                                     m_ScoreText.setString(scoreStringStream.str());
                                 }
@@ -292,7 +239,6 @@ SceneChange Game::run(RenderWindow &window) {
             }
 
             unsigned int pickuplistsize = m_PickUpsList.size();
-
             for (unsigned int i = 0; i < pickuplistsize; i++) {
                 if (m_PickUpsList[i].isSpawned()) {
                     if (m_Player.getHitbox().intersects(m_PickUpsList[i].getPosition())) {
@@ -312,10 +258,10 @@ SceneChange Game::run(RenderWindow &window) {
             }
 
             if (m_MouseKeyPressed[MouseButton::MOUSE_LEFT] && (m_LastShot > M_BULLET_COOLDOWN)) {
-                m_Bullets[m_CurrentAmmo].shoot(m_Player.getArmPosition(), mouseWorldPosition, m_Player.getBarrelPosition(), m_PlayArea, M_SPRITE_SCALING - 1);
-                m_CurrentAmmo++;
-                if (m_CurrentAmmo >= M_MAX_BULLETS - 1) {
-                    m_CurrentAmmo = 0;
+                m_Bullets[m_CurrentBulletIndex].shoot(m_Player.getArmPosition(), mouseWorldPosition, m_Player.getBarrelPosition(), m_PlayArea, M_SPRITE_SCALING - 1);
+                m_CurrentBulletIndex++;
+                if (m_CurrentBulletIndex >= M_MAX_BULLETS - 1) {
+                    m_CurrentBulletIndex = 0;
                 }
                 m_LastShot = seconds(0);
             }
@@ -323,18 +269,6 @@ SceneChange Game::run(RenderWindow &window) {
             for (unsigned int i = 0; i < (unsigned int)sizeof(MovementKey); i++) {
                 m_Player.setMovementKeyPressed(i, m_MovementKeyPressed[i]);
             }
-
-            std::stringstream streamTextArmAngle;
-            streamTextArmAngle << "armAngle : " << m_Player.getArmAngle();
-            textArmAngle.setString(streamTextArmAngle.str());
-            
-            std::stringstream streamTextHealth;
-            streamTextHealth << "health : " << m_PlayerHealth;
-            textHealth.setString(streamTextHealth.str());
-
-            std::stringstream streamTextScore;
-            streamTextScore << "score : " << m_Score;
-            textScore.setString(streamTextScore.str());
 
         // DRAW SCENE
             window.clear(COLOR_BACKGROUND);
@@ -371,20 +305,8 @@ SceneChange Game::run(RenderWindow &window) {
                 window.draw(m_Player.getSpriteBase());
                 window.draw(m_Player.getSpriteGun());
                 window.draw(m_Player.getSpriteArm());
-
-                // window.draw(armJoint);
-                window.draw(playerPosition);
-                // window.draw(armRay);
-                window.draw(cursor);
-                // window.draw(barrel);
             
             window.setView(m_HudView);
-                // window.draw(textArmAngle);
-                // window.draw(textArmAngle);
-                // window.draw(textHealth);
-                // window.draw(textScore);
-                // window.draw(centerHud);
-
                 window.draw(m_HudBackground);
                 window.draw(m_HealthBar);
                 window.draw(m_HealthLabel);

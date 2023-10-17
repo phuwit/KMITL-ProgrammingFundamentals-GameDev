@@ -27,6 +27,7 @@ endif()
 
 if(UNIX)
     target_link_libraries(BrainBlast PRIVATE m)
+    target_link_libraries(BrainBlast PRIVATE X11)
 endif()
 
 if(WIN32)
@@ -37,14 +38,13 @@ if(WIN32)
         VERBATIM)
 endif()
 
-if(NOT BUILD_SHARED_LIBS)
+if(NOT BUILD_SHARED_LIBS AND WIN32)
     set(CMAKE_CXX_STANDARD_LIBRARIES "-static-libgcc -static-libstdc++ ${CMAKE_CXX_STANDARD_LIBRARIES}")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-static,--whole-archive -Wl,--no-whole-archive")
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -static")
-    if(WIN32)
-        set(CMAKE_CXX_STANDARD_LIBRARIES "-lwsock32 -lws2_32 ${CMAKE_CXX_STANDARD_LIBRARIES}")
-        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lwinpthread")
-    endif()
+
+    set(CMAKE_CXX_STANDARD_LIBRARIES "-lwsock32 -lws2_32 ${CMAKE_CXX_STANDARD_LIBRARIES}")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lwinpthread")
 endif()
 
 install(TARGETS BrainBlast)

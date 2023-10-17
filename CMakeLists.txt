@@ -37,4 +37,8 @@ if(WIN32)
         VERBATIM)
 endif()
 
+if(NOT BUILD_SHARED_LIBS)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
+endif()
+
 install(TARGETS BrainBlast)

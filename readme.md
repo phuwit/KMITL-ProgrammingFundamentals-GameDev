@@ -26,7 +26,7 @@ many projects/ assets are used in this one. please see [attribution.md](attribut
 - [x] hud
 - [x] level progression
 - [x] handle menu screen
-- [ ] handle paused screen
+- [x] handle paused screen
 - [x] handle gameover screen
 - [x] handle levelup screen
 - [x] handle leaderboard

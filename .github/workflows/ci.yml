@@ -82,6 +82,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Get commit hash and time
+      shell: msys2 {0}
       run: echo "HASH_TIME=$(git show -s --format="%h(%cd)" --date=format:"%Y-%m-%d %H.%M.%S %z")" >> "$GITHUB_ENV"
 
     - name: Configure
@@ -99,7 +100,7 @@ jobs:
     - name : Upload full build artifact
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ env.HASH_TIME }}-full
+        name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@${{ env.HASH_TIME }}-full
         path:  |
           build/
           !build/_deps/
@@ -130,6 +131,7 @@ jobs:
 #        uses: actions/checkout@v3
 #
 #      - name: Get commit hash and time
+#        shell: msys2 {0}
 #        run: echo "HASH_TIME=$(git show -s --format="%h(%cd)" --date=format:"%Y-%m-%d %H.%M.%S %z")" >> "$GITHUB_ENV"
 #
 #      - name: Configure
@@ -144,7 +146,7 @@ jobs:
 #      - name : Upload full build artifact
 #        uses: actions/upload-artifact@v3
 #        with:
-#          name: ${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ env.HASH_TIME }}-full
+#          name: ${{ matrix.platform.name }}-${{ matrix.config.name }}@${{ env.HASH_TIME }}-full
 #          path:  |
 #            build/
 #            !build/_deps/

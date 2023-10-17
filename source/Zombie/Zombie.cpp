@@ -131,6 +131,13 @@ void Zombie::update(Time frameTime, Vector2f playerLocation) {
             moveY = true;
         }
 
+//        if (distanceX < 0) {
+//            m_Sprite.setScale(Vector2f(-m_SpriteScaling, m_SpriteScaling));
+//        }
+//        else {
+//            m_Sprite.setScale(Vector2f(m_SpriteScaling, m_SpriteScaling));
+//        }
+
 
         if (m_MoveStyle == ZombieMoveStyle::ZOMBIE_MOVESTYLE_XFIRST) {
             if (abs(distanceX) >= 50) {

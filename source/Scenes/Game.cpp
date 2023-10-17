@@ -116,6 +116,8 @@ void Game::regenerate() {
         m_Bullets[i].stop();
     }
     m_CurrentBulletIndex = 0;
+    m_BulletsInClip = m_ClipSize;
+    m_SpareAmmo = 24;
 
     m_NumZombies = 2 + (3 * currentLevel);
     m_NumZombiesAlive = m_NumZombies;
@@ -202,6 +204,7 @@ SceneChange Game::run(RenderWindow &window) {
                     if (m_Zombies[i].getHitBox().intersects(m_Player.getHitbox())) {
                         m_PlayerHealth--;
                         m_LastHit = seconds(0);
+                        m_SoundHit.play();
 
                         m_HealthBar.setSize(Vector2f(m_HealthBarSegmentSize * m_PlayerHealth, m_HealthBar.getSize().y));
                         if (m_PlayerHealth <= 0) {
@@ -257,6 +260,7 @@ SceneChange Game::run(RenderWindow &window) {
             for (unsigned int i = 0; i < pickuplistsize; i++) {
                 if (m_PickUpsList[i].isSpawned()) {
                     if (m_Player.getHitbox().intersects(m_PickUpsList[i].getPosition())) {
+                        m_BuffType = (PickupsType)i;
                         handlePickUps_((PickupsType)i, m_PickUpsList[i].take(), m_PickUpsList[i].getBuffDuration());
                     }
                 }
@@ -273,12 +277,34 @@ SceneChange Game::run(RenderWindow &window) {
             }
 
             if (m_MouseKeyPressed[MouseButton::MOUSE_LEFT] && (m_LastShot > M_BULLET_COOLDOWN)) {
-                m_Bullets[m_CurrentBulletIndex].shoot(m_Player.getArmPosition(), mouseWorldPosition, m_Player.getBarrelPosition(), m_PlayArea, M_SPRITE_SCALING - 1);
-                m_CurrentBulletIndex++;
-                if (m_CurrentBulletIndex >= M_MAX_BULLETS - 1) {
-                    m_CurrentBulletIndex = 0;
+                if (m_BulletsInClip > 0) {
+                    m_Bullets[m_CurrentBulletIndex].shoot(m_Player.getArmPosition(), mouseWorldPosition,
+                                                          m_Player.getBarrelPosition(), m_PlayArea,
+                                                          M_SPRITE_SCALING - 1);
+                    m_BulletsInClip -= 1;
+                    m_CurrentBulletIndex++;
+                    if (m_CurrentBulletIndex >= M_MAX_BULLETS - 1) {
+                        m_CurrentBulletIndex = 0;
+                    }
+                    m_LastShot = seconds(0);
+
+                    m_SoundShoot.play();
                 }
-                m_LastShot = seconds(0);
+
+                m_CurrentAmmoText.setString(to_string(m_BulletsInClip));
+            }
+
+            if (Keyboard::isKeyPressed(Keyboard::R) && (m_BulletsInClip < m_ClipSize)) {
+                // can reload to max clip size
+                int bulletsDelta = m_ClipSize - m_BulletsInClip;
+                if (bulletsDelta > m_SpareAmmo) {
+                    bulletsDelta = m_SpareAmmo;
+                }
+                m_BulletsInClip += bulletsDelta;
+                m_SpareAmmo -= bulletsDelta;
+
+                m_CurrentAmmoText.setString(to_string(m_BulletsInClip));
+                m_SpareAmmoText.setString(to_string(m_SpareAmmo));
             }
 
             for (unsigned int i = 0; i < (unsigned int)sizeof(MovementKey); i++) {
@@ -340,7 +366,7 @@ SceneChange Game::run(RenderWindow &window) {
             window.display();
     }
 
-    return SceneChange(EXIT);
+    return {EXIT};
 }
 
 void Game::setPaused() {
@@ -361,9 +387,11 @@ void Game::handlePickUps_(PickupsType pickUpsType, int pickupValue, Time buffDur
         if (m_PlayerHealth > M_PLAYER_BASE_HEALTH) {
             m_PlayerHealth = M_PLAYER_BASE_HEALTH;
         }
+        m_HealthBar.setSize(Vector2f(m_HealthBarSegmentSize * m_PlayerHealth, m_HealthBar.getSize().y));
         m_SoundPickupLow.play();
     } else if (pickUpsType == PickupsType::PICKUPS_AMMO) {
         m_SpareAmmo += pickupValue;
+        m_SpareAmmoText.setString(to_string(m_SpareAmmo));
         m_SoundPickupLow.play();
     } else if (pickUpsType == PickupsType::PICKUPS_SPEED) {
         m_Player.setSpeedWithMultiplier(pickupValue);

@@ -37,7 +37,7 @@ void PickUps::spawnAt(Vector2f location) {
     m_Spawned = true;
 }
 
-int PickUps::take() {
+float PickUps::take() {
     m_Spawned = false;
     m_SecondsSinceDespawned = 0;
     return m_Value;

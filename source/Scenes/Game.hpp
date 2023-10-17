@@ -58,7 +58,7 @@ class Game : public Scenes {
         int             m_CurrentBulletIndex = 0;
         int             m_SpareAmmo = 24;
         const int       m_ClipSize = 6;
-        int             m_BulletsInClip = m_ClipSize;
+        int             m_BulletsInClip;
 //        float           m_FireRate = 1;
         Time            m_LastShot;
         const Time      M_BULLET_COOLDOWN = milliseconds(100);

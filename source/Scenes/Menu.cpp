@@ -2,6 +2,7 @@
 #include <SFML/Audio.hpp>
 
 #include "Scenes.hpp"
+#include "Game.hpp"
 #include "../CommonEnum.hpp"
 #include "../Holders/TextureHolder.hpp"
 #include "../Holders/FontHolder.cpp"
@@ -79,12 +80,12 @@ SceneChange Menu::run(RenderWindow &window) {
                 Vector2f mouseScreenPosition = Vector2f(Mouse::getPosition(window));
 
                 if (playButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
-//                    soundClick.play();
+                    dynamic_cast<Game *>(getGamePtr())->regenerate();
                     return {ScenesList::SCENE_GAME};
                 } else if (infoButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
                     return {ScenesList::SCENE_INFO};
                 } else if (leaderboardButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
-                    return {ScenesList::SCENE_LEVELUP};
+                    return {ScenesList::SCENE_LEADERBOARD};
                 } else if (exitButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
                     return {ScenesList::EXIT};
                 }

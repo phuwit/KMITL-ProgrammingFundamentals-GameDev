@@ -9,7 +9,7 @@ using namespace sf;
 class PickUps {
     private:
         // base values
-        const int BASE_VALUE[sizeof(PickupsType)] = {5, 12, 2, 2};
+        const float BASE_VALUE[sizeof(PickupsType)] = {5, 12, 1.5, 2};
         const Time BASE_BUFF_DURATION[sizeof(PickupsType)] = {seconds(0), seconds(0), seconds(5), seconds(5)};
         const String TEXTURE_NAME[sizeof(PickupsType)] = {"assets/sprites/pickups/health.png", "assets/sprites/pickups/ammo.png", "assets/sprites/pickups/speed.png", "assets/sprites/pickups/score.png"};
         const int BASE_SECONDS_TO_WAIT = 10;
@@ -18,7 +18,7 @@ class PickUps {
         Sprite m_Sprite;
         IntRect m_PlayArea;
         // pickup resource value
-        int m_Value;
+        float m_Value;
         Time m_BuffDuration;
         // pickup type
         PickupsType m_Type;
@@ -37,7 +37,7 @@ class PickUps {
         void spawnAt(Vector2f location);
 
         // pick up the... pickups and return the pickup value
-        int take();
+        float take();
         void upgrade();
 
         // getters

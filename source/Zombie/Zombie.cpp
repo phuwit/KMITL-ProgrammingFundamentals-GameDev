@@ -6,6 +6,7 @@
 #include "Zombie.hpp"
 #include "../CommonEnum.hpp"
 #include "../Holders/TextureHolder.hpp"
+#include "../Tools/SetOriginCenter.cpp"
 
 using namespace std;
 
@@ -19,7 +20,7 @@ void Zombie::spawn(Vector2f spawnLoaction, float spriteScaling, ZombieType type,
 //    Vector2f textureSize = (Vector2f)texture.getSize();
     m_Sprite = Sprite(texture, M_SPRITE_RUN_CROP[m_Type]);
     m_Sprite.setScale(Vector2f(m_SpriteScaling, m_SpriteScaling));
-    m_CenterOffset = Vector2f((m_Sprite.getLocalBounds().width * m_SpriteScaling) / 2, ((m_Sprite.getLocalBounds().height * m_SpriteScaling) / 2));
+//    m_CenterOffset = Vector2f((m_Sprite.getLocalBounds().width * m_SpriteScaling) / 2, ((m_Sprite.getLocalBounds().height * m_SpriteScaling) / 2));
     m_Health = M_HEALTH_BASE[m_Type];
     m_Sprite.setColor(M_COLOR_BASE[m_Type]);
 
@@ -38,7 +39,8 @@ void Zombie::spawn(Vector2f spawnLoaction, float spriteScaling, ZombieType type,
     m_PlayArea = playArea;
     m_MoveStyle = moveStyle;
     // set origin to center
-    m_Sprite.setOrigin(m_CenterOffset);
+//    m_Sprite.setOrigin(m_CenterOffset);
+    spriteSetOriginCenter(m_Sprite);
     // set position
     m_Sprite.setPosition(m_Position);
     // set bounds size
@@ -67,12 +69,13 @@ bool Zombie::isAlive() {
 }
 
 FloatRect Zombie::getHitBox() {
-    FloatRect bounds(
-        m_Position.x - (m_CenterOffset.x * m_SpriteScaling),
-        m_Position.y - (m_CenterOffset.y * m_SpriteScaling),
-        m_Bounds.width * m_SpriteScaling,
-        m_Bounds.height * m_SpriteScaling);
-    return bounds;
+//    FloatRect bounds(
+//        m_Position.x - (m_CenterOffset.x * m_SpriteScaling),
+//        m_Position.y - (m_CenterOffset.y * m_SpriteScaling),
+//        m_Bounds.width * m_SpriteScaling,
+//        m_Bounds.height * m_SpriteScaling);
+//    return bounds;
+    return m_Sprite.getGlobalBounds();
 }
 
 RectangleShape Zombie::getDrawableHitbox() {
@@ -137,12 +140,12 @@ void Zombie::update(Time frameTime, Vector2f playerLocation) {
             moveY = true;
         }
 
-//        if (distanceX < 0) {
-//            m_Sprite.setScale(Vector2f(-m_SpriteScaling, m_SpriteScaling));
-//        }
-//        else {
-//            m_Sprite.setScale(Vector2f(m_SpriteScaling, m_SpriteScaling));
-//        }
+        if (distanceX < 0) {
+            m_Sprite.setScale(Vector2f(-m_SpriteScaling, m_SpriteScaling));
+        }
+        else {
+            m_Sprite.setScale(Vector2f(m_SpriteScaling, m_SpriteScaling));
+        }
 
 
         if (m_MoveStyle == ZombieMoveStyle::ZOMBIE_MOVESTYLE_XFIRST) {
@@ -178,13 +181,6 @@ void Zombie::update(Time frameTime, Vector2f playerLocation) {
         }
 
         // flip zombie if facing in -x direction
-        // if ((playerLocation.x - m_Position.x ) < 0) {
-        //     m_Sprite.setScale(Vector2f(-m_SpriteScaling, m_SpriteScaling));
-        // }
-        // else {
-        //     m_Sprite.setScale(Vector2f(-m_SpriteScaling, m_SpriteScaling));
-        // }
-
         // set new position
         m_Sprite.setPosition(m_Position);
 
@@ -193,5 +189,29 @@ void Zombie::update(Time frameTime, Vector2f playerLocation) {
         //                     playerX - m_Position.x)
         //                * 180) / M_PI;
         // m_Sprite.setRotation(angle);
+    }
+}
+
+//void Player::animate() {
+//    if (m_MovementButtonPressed > 0) {
+//        m_Base.setTexture(TextureHolder::GetTexture("assets/sprites/player/base/Run2.png"));
+//    } else {
+//        m_Base.setTexture(TextureHolder::GetTexture("assets/sprites/player/base/Idle2.png"));
+//    }
+//    IntRect newCrop = IntRect(m_Base.getTextureRect().left + SPRITE_SIZE, m_TEXTURE_SHEET_OFFSET.top, m_TEXTURE_SHEET_OFFSET.width, m_TEXTURE_SHEET_OFFSET.height);
+//    if ((unsigned int)newCrop.left > m_Base.getTexture()->getSize().x) {
+//        newCrop.left = m_TEXTURE_SHEET_OFFSET.left;
+//    }
+//    m_Base.setTextureRect(newCrop);
+//}
+
+void Zombie::animate() {
+    if (m_Alive) {
+        IntRect newCrop = IntRect(m_Sprite.getTextureRect().left + 96, m_Sprite.getTextureRect().top,
+                                  m_Sprite.getTextureRect().width, m_Sprite.getTextureRect().height);
+        if ((unsigned int) newCrop.left >= m_Sprite.getTexture()->getSize().x) {
+            newCrop.left = 0;
+        }
+        m_Sprite.setTextureRect(newCrop);
     }
 }

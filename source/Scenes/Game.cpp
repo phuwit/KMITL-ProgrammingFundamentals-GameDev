@@ -185,6 +185,7 @@ SceneChange Game::run(RenderWindow &window) {
 
         // UPDATE FRAME
             Time frameTime = m_FrameTimeClock.restart();
+            m_AnimationTimer += frameTime;
 
             if (frameTime > seconds(2)) {
                 continue;
@@ -219,7 +220,7 @@ SceneChange Game::run(RenderWindow &window) {
                                     Vector2f(m_HealthBarSegmentSize * m_PlayerHealth, m_HealthBar.getSize().y));
                             if (m_PlayerHealth <= 0) {
                                 // game over idk
-                                return SceneChange(ScenesList::SCENE_GAMEOVER);
+                                return {ScenesList::SCENE_GAMEOVER};
                             }
                         }
                     }
@@ -333,6 +334,14 @@ SceneChange Game::run(RenderWindow &window) {
                 m_Player.setMovementKeyPressed(i, m_MovementKeyPressed[i]);
             }
 
+            if (m_AnimationTimer > M_TIME_BETWEEN_ANIMATION) {
+                m_Player.animate();
+                for (int i = 0; i < m_NumZombies; i++) {
+                    m_Zombies[i].animate();
+                }
+                m_AnimationTimer = seconds(0);
+            }
+
         // DRAW SCENE
             window.clear(COLOR_BACKGROUND);
 
@@ -343,7 +352,7 @@ SceneChange Game::run(RenderWindow &window) {
 
                 for(int i = 0; i < m_NumZombies; i++) {
                     window.draw(m_Zombies[i].getSprite());
-                    // window.draw(m_Zombies[i].getDrawableHitbox());
+//                     window.draw(m_Zombies[i].getDrawableHitbox());
                 }
 
                 for (unsigned int i = 0; i < (unsigned int)sizeof(PickupsType); i++) {

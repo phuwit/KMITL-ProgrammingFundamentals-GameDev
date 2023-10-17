@@ -6,6 +6,7 @@ using namespace sf;
 class Player {
     private:
         const IntRect m_TEXTURE_SHEET_OFFSET = IntRect(3, 13, 20, 35);
+        const int SPRITE_SIZE = 48;
         // Texture textureBase, textureArm, textureGun;
         float m_SpriteScaling = 1;
         // const Vector2f m_ARM_BASE_OFFSET = Vector2f(10.5 * m_SpriteScaling, 29.5 * m_SpriteScaling);
@@ -20,6 +21,7 @@ class Player {
         float m_SpeedDiagonal = m_Speed * std::sqrt(0.5);
         
         bool m_MovementKeyPressed[4] = {false};
+        int m_MovementButtonPressed = 0;
         Vector2f m_Position;
         void m_SetSpritesPosition();
         float m_ArmAngle{};
@@ -50,4 +52,5 @@ class Player {
         void setMovementKeyPressed(int movementKey, bool isPressed);
 
         void update(Vector2f mousePosition, Time deltaTime);
+        void animate();
 };

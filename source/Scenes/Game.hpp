@@ -82,6 +82,9 @@ class Game : public Scenes {
         Zombie*         m_Zombies = nullptr;
         const Time      M_SCORE_BONUS_MAX_TIME = seconds(5);
 
+        const Time      M_TIME_BETWEEN_ANIMATION = milliseconds(100);
+        Time            m_AnimationTimer;
+
         void handlePickUps_(PickupsType pickUpsType, int pickupValue, Time buffDuration);
         void removeBuff_(PickupsType pickUpsType);
     public:

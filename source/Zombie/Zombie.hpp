@@ -12,7 +12,8 @@ class Zombie {
         const Color M_COLOR_BASE[sizeof(ZombieType)] = {Color(255, 255, 0, 255), Color(0, 255, 255, 255), Color(255, 0, 255, 255)};
         const String M_SPRITE_RUN_FILENAME[sizeof(ZombieType)] = {"assets/sprites/zombies/wild/Run.png", "assets/sprites/zombies/male/Run.png", "assets/sprites/zombies/female/Run.png"};
         const String M_SPRITE_DEATH_FILENAME[sizeof(ZombieType)] = {"assets/sprites/zombies/wild/Dead.png", "assets/sprites/zombies/male/Dead.png","assets/sprites/zombies/female/Dead.png"};
-        const IntRect M_SPRITE_RUN_CROP[sizeof(ZombieType)] = {IntRect(26 + 96, 40, 50, 56), IntRect(18, 32, 68, 64) , IntRect(31, 33, 57, 63)};
+//        const IntRect M_SPRITE_RUN_CROP[sizeof(ZombieType)] = {IntRect(26, 40, 50, 56), IntRect(18, 32, 68, 64) , IntRect(31, 33, 57, 63)};
+        const IntRect M_SPRITE_RUN_CROP[sizeof(ZombieType)] = {IntRect(0, 0, 96, 96), IntRect(0, 0, 96, 96) , IntRect(0, 0, 96, 96)};
         const IntRect M_SPRITE_DEATH_CROP[sizeof(ZombieType)] = {IntRect(406, 86, 74, 10), IntRect(416, 86, 64, 10) , IntRect(389, 86, 64, 10)};
         // make each zombie speed varies slightly to prevent bunching up
         const int M_MAX_VARIANCE = 30;
@@ -49,4 +50,5 @@ class Zombie {
         Time getTimeSinceSpawned();
 
         void update(Time frameTime, Vector2f playerLocation);
+        void animate();
 };

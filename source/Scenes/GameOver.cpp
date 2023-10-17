@@ -19,9 +19,9 @@ class GameOver : public Scenes {
 SceneChange GameOver::run(RenderWindow &window) {
     Font fontBebas = FontHolder::GetFont("assets/fonts/BebasNeue-Regular.otf");
 
-    Text gameOverText("Game Over", fontBebas);
+    Text gameOverText("Game Over!", fontBebas);
     gameOverText.setFillColor(Color::White);
-    gameOverText.setCharacterSize(72);
+    gameOverText.setCharacterSize(80);
     gameOverText.setStyle(Text::Bold);
     gameOverText.setPosition(Vector2f(window.getSize().x / 2, 150));
     textSetOriginCenter(gameOverText);
@@ -40,7 +40,7 @@ SceneChange GameOver::run(RenderWindow &window) {
     enterYourNameText.setCharacterSize(56);
     enterYourNameText.setStyle(Text::Bold);
     textSetOriginCenter(enterYourNameText);
-    enterYourNameText.setPosition(Vector2f(window.getSize().x / 2, 300));
+    enterYourNameText.setPosition(Vector2f(window.getSize().x / 2, 500));
 
     string nameString = "";
 

@@ -89,21 +89,21 @@ void Player::setSpeedReset() {
 void Player::update(Vector2f mousePosition, Time frameTime) {
     // movement
     // detect diagonals
-    int buttonPressed = 0;
+    m_MovementButtonPressed = 0;
     for (unsigned int i = 0; i < (unsigned int)(sizeof(MovementKey)); i++) {
         if (m_MovementKeyPressed[i] == true) {
-            buttonPressed++;
+            m_MovementButtonPressed++;
         }
     }
 
     // actually move
-    if (buttonPressed == 1) {
+    if (m_MovementButtonPressed == 1) {
         if (m_MovementKeyPressed[MovementKey::MOVEMENT_LEFT])  m_Position.x -= m_Speed * frameTime.asSeconds();
         if (m_MovementKeyPressed[MovementKey::MOVEMENT_RIGHT]) m_Position.x += m_Speed * frameTime.asSeconds();
         if (m_MovementKeyPressed[MovementKey::MOVEMENT_UP])    m_Position.y -= m_Speed * frameTime.asSeconds();
         if (m_MovementKeyPressed[MovementKey::MOVEMENT_DOWN])  m_Position.y += m_Speed * frameTime.asSeconds();
     }
-    else if (buttonPressed > 1) {
+    else if (m_MovementButtonPressed > 1) {
         if (m_MovementKeyPressed[MovementKey::MOVEMENT_LEFT])  m_Position.x -= m_SpeedDiagonal * frameTime.asSeconds();
         if (m_MovementKeyPressed[MovementKey::MOVEMENT_RIGHT]) m_Position.x += m_SpeedDiagonal * frameTime.asSeconds();
         if (m_MovementKeyPressed[MovementKey::MOVEMENT_UP])    m_Position.y -= m_SpeedDiagonal * frameTime.asSeconds();
@@ -130,6 +130,19 @@ void Player::update(Vector2f mousePosition, Time frameTime) {
     }
     
     m_SetSpritesPosition();
+}
+
+void Player::animate() {
+    if (m_MovementButtonPressed > 0) {
+        m_Base.setTexture(TextureHolder::GetTexture("assets/sprites/player/base/Run2.png"));
+    } else {
+        m_Base.setTexture(TextureHolder::GetTexture("assets/sprites/player/base/Idle2.png"));
+    }
+    IntRect newCrop = IntRect(m_Base.getTextureRect().left + SPRITE_SIZE, m_TEXTURE_SHEET_OFFSET.top, m_TEXTURE_SHEET_OFFSET.width, m_TEXTURE_SHEET_OFFSET.height);
+    if ((unsigned int)newCrop.left > m_Base.getTexture()->getSize().x) {
+        newCrop.left = m_TEXTURE_SHEET_OFFSET.left;
+    }
+    m_Base.setTextureRect(newCrop);
 }
 
 void Player::m_SetSpritesPosition() {

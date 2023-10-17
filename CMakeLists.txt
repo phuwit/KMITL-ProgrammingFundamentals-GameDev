@@ -27,7 +27,6 @@ endif()
 
 if(UNIX)
     target_link_libraries(BrainBlast PRIVATE m)
-    target_link_libraries(BrainBlast PRIVATE X11)
 endif()
 
 if(WIN32)

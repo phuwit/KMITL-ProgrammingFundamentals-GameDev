@@ -39,7 +39,7 @@ if(WIN32)
     add_custom_command(
         TARGET BrainBlast
         COMMENT "Copy DLLs"
-        POST_BUILD COMMAND ldd build/* | grep -vi system32 | grep -vi windows | grep -vi sfml | grep -v :$ | cut -f2 -d\> | cut -f1 -d\( | tr \\ / | while read a; do ! [ -e "build/`basename $a`" ] && cp -v "$a" build/; done
+        POST_BUILD COMMAND ldd BrainBlast.exe | grep -vi system32 | grep -vi windows | grep -vi sfml | grep -v :$ | cut -f2 -d\> | cut -f1 -d\( | tr \\ / | while read a; do ! [ -e "build/`basename $a`" ] && cp -v "$a" .; done
         VERBATIM)
 endif()
 

@@ -95,7 +95,11 @@ jobs:
 
     - name: Install
       shell: msys2 {0}
-      run: cmake --install build --config Release
+      run: |
+        cmake --install build --config Release
+        cp /mingw64/bin/libgcc_s_seh-*.dll build/bin/
+        cp /mingw64/bin/libwinpthread-*.dll build/bin/
+        cp /mingw64/bin/libstdc++-*.dll build/bin/
 
     - name : Upload full build artifact
       uses: actions/upload-artifact@v3

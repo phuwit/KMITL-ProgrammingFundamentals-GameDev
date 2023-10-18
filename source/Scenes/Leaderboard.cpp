@@ -60,6 +60,11 @@ SceneChange Leaderboard::run(RenderWindow &window) {
     Text scoresText[SCORES_COUNT];
     Text namesText[SCORES_COUNT];
 
+    Music* musicPtr = &MusicHolder::GetMusic("assets/music/Votely.ogg");
+    musicPtr->setLoop(true);
+    musicPtr->setVolume(20);
+    musicPtr->play();
+
     for (int i = 0; i < SCORES_COUNT; i++) {
         if (scores.empty()) {
             break;

@@ -2,6 +2,7 @@
  * File:   collision.cpp
  * Author: Nick (original version), ahnonay (SFML2 compatibility), Paweł Syska (C++17 refactor + naming convention)
  */
+
 #include <SFML/Graphics.hpp>
 #include <map>
 #include <vector>

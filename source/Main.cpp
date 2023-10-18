@@ -2,6 +2,7 @@
 #include "Holders/TextureHolder.cpp"
 #include "Holders/FontHolder.cpp"
 #include "Holders/SoundHolder.cpp"
+#include "Holders/MusicHolder.hpp"
 
 #include "Scenes/Scenes.hpp"
 #include "Scenes/Menu.cpp"
@@ -17,6 +18,7 @@ int main() {
     TextureHolder textureHolder;
     FontHolder fontHolder;
     SoundHolder soundHolder;
+    MusicHolder musicHolder;
 
     // Applications variables
     std::vector<Scenes*> Scenes;
@@ -55,6 +57,7 @@ int main() {
     // Main loop
     while (currentScene.getNextScreen() >= 0) {
         Scenes[currentScene.getNextScreen()]->setScreenShot(currentScene.getScreenShot());
+        MusicHolder::PauseAll();
         currentScene = Scenes[currentScene.getNextScreen()]->run(window);
     }
 

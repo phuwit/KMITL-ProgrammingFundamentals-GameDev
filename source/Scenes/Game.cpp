@@ -107,6 +107,13 @@ Game::Game(Vector2f screenResolution, Vector2f levelSize) {
     m_SoundPickupLow.setBuffer(SoundHolder::GetSound("assets/sfx/pickup1.ogg"));
     m_SoundPickupHigh.setBuffer(SoundHolder::GetSound("assets/sfx/pickup2.ogg"));
 
+    m_SoundLoaded.setVolume(50);
+    m_SoundHit.setVolume(50);
+    m_SoundKilled.setVolume(50);
+    m_SoundShoot.setVolume(50);
+    m_SoundPickupLow.setVolume(50);
+    m_SoundPickupHigh.setVolume(50);
+
     regenerate();
 }
 
@@ -157,6 +164,11 @@ SceneChange Game::run(RenderWindow &window) {
     m_CurrentAmmoText.setString(to_string(m_BulletsInClip));
 
     m_SoundLoaded.play();
+
+    Music* musicPtr = &MusicHolder::GetMusic("assets/music/TheCyberGrind.ogg");
+    musicPtr->setLoop(true);
+    musicPtr->setVolume(5);
+    musicPtr->play();
 
     while (!paused) {
         // HANDLE INPUTS

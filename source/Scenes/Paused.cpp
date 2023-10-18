@@ -65,6 +65,9 @@ SceneChange Paused::run(RenderWindow &window) {
     exitText.setPosition(continueText.getPosition() + Vector2f(0, 100));
     exitButton.setPosition(exitText.getPosition() + Vector2f(-BUTTON_PADDING / 2, BUTTON_PADDING / 2));
 
+    Sound soundPaused(SoundHolder::GetSound("assets/sfx/paused.ogg"));
+    soundPaused.play();
+
     while (window.isOpen()) {
         // Update frame
         Event event;

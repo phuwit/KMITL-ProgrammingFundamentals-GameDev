@@ -69,7 +69,7 @@ SceneChange LevelUp::run(RenderWindow &window) {
 
     // Make buttons for selecting upgrades from this list
     const int UPGRADE_BUTTON_FONT_SIZE = 36;
-    const int NUM_UPGRADES = 6;
+    const int NUM_UPGRADES = 5;
     const std::string UPGRADE_TEXT[NUM_UPGRADES] = {
             "Increased rate of fire",
             "Increased clip size (next reload)",
@@ -99,6 +99,13 @@ SceneChange LevelUp::run(RenderWindow &window) {
 
     Sound soundClick(SoundHolder::GetSound("assets/sfx/click.ogg"));
     Sound soundHover(SoundHolder::GetSound("assets/sfx/hover.ogg"));
+    Sound soundLevelUp(SoundHolder::GetSound("assets/sfx/levelup.ogg"));
+
+    soundLevelUp.play();
+
+    Music* musicPtr = &MusicHolder::GetMusic("assets/music/TheCyberGrind.ogg");
+    musicPtr->play();
+
 
     while (window.isOpen()) {
         // Update frame

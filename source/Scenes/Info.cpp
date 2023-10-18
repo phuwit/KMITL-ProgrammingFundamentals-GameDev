@@ -71,6 +71,9 @@ SceneChange Info::run(RenderWindow &window) {
     downloadText.setPosition(attributionText.getPosition() + Vector2f((attributionText.getLocalBounds().width / 2) + (downloadText.getLocalBounds().width / 2) + BUTTON_PADDING + 50, 0));
     downloadButton.setPosition(downloadText.getPosition() + Vector2f(0, BUTTON_PADDING / 2));
 
+    Music* musicPtr = &MusicHolder::GetMusic("assets/music/Spow.ogg");
+    musicPtr->play();
+
     while (window.isOpen()) {
         // Update frame
         Event event;

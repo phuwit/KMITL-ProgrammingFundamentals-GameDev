@@ -5,8 +5,9 @@
 #include "Game.hpp"
 #include "../CommonEnum.hpp"
 #include "../Holders/TextureHolder.hpp"
-#include "../Holders/FontHolder.cpp"
+#include "../Holders/FontHolder.hpp"
 #include "../Holders/SoundHolder.hpp"
+#include "../Holders/MusicHolder.cpp"
 #include "../Tools/SetOriginCenter.cpp"
 #include "../Tools/SetRectangleShapeOnMouseHover.cpp"
 
@@ -28,19 +29,11 @@ SceneChange Menu::run(RenderWindow &window) {
     playText.setFillColor(Color::Black);
     playText.setCharacterSize(60);
     RectangleShape playButton(Vector2f(playText.getLocalBounds().width + BUTTON_PADDING, playText.getLocalBounds().height + BUTTON_PADDING));
+    playButton.setFillColor(Color(0x4DB6ACFF));
     textSetOriginCenter(playText);
     shapeSetOriginCenter(playButton);
     playText.setPosition(logo.getPosition() + Vector2f(0, 400));
     playButton.setPosition(playText.getPosition() + Vector2f(0, BUTTON_PADDING / 2));
-
-    Text infoText("Info", fontBebas);
-    infoText.setFillColor(Color::Black);
-    infoText.setCharacterSize(60);
-    RectangleShape infoButton(Vector2f(infoText.getLocalBounds().width + BUTTON_PADDING, infoText.getLocalBounds().height + BUTTON_PADDING));
-    textSetOriginCenter(infoText);
-    shapeSetOriginCenter(infoButton);
-    infoText.setPosition(playText.getPosition() + Vector2f(0, 100));
-    infoButton.setPosition(infoText.getPosition() + Vector2f(0, BUTTON_PADDING / 2));
 
     Text leaderboardText("Leaderboard", fontBebas);
     leaderboardText.setFillColor(Color::Black);
@@ -48,20 +41,35 @@ SceneChange Menu::run(RenderWindow &window) {
     RectangleShape leaderboardButton(Vector2f(leaderboardText.getLocalBounds().width + BUTTON_PADDING, leaderboardText.getLocalBounds().height + BUTTON_PADDING));
     textSetOriginCenter(leaderboardText);
     shapeSetOriginCenter(leaderboardButton);
-    leaderboardText.setPosition(infoText.getPosition() + Vector2f(0, 100));
+    leaderboardText.setPosition(playText.getPosition() + Vector2f(0, 100));
     leaderboardButton.setPosition(leaderboardText.getPosition() + Vector2f(0, BUTTON_PADDING / 2));
+
+    Text infoText("Info", fontBebas);
+    infoText.setFillColor(Color::Black);
+    infoText.setCharacterSize(60);
+    RectangleShape infoButton(Vector2f(infoText.getLocalBounds().width + BUTTON_PADDING, infoText.getLocalBounds().height + BUTTON_PADDING));
+    textSetOriginCenter(infoText);
+    shapeSetOriginCenter(infoButton);
+    infoText.setPosition(leaderboardText.getPosition() + Vector2f(0, 100));
+    infoButton.setPosition(infoText.getPosition() + Vector2f(0, BUTTON_PADDING / 2));
 
     Text exitText("Exit", fontBebas);
     exitText.setFillColor(Color::Black);
     exitText.setCharacterSize(60);
     RectangleShape exitButton(Vector2f(exitText.getLocalBounds().width + BUTTON_PADDING, exitText.getLocalBounds().height + BUTTON_PADDING));
+    exitButton.setFillColor(Color(0xE57373FF));
     textSetOriginCenter(exitText);
     shapeSetOriginCenter(exitButton);
-    exitText.setPosition(leaderboardText.getPosition() + Vector2f(0, 100));
+    exitText.setPosition(infoText.getPosition() + Vector2f(0, 100));
     exitButton.setPosition(exitText.getPosition() + Vector2f(0, BUTTON_PADDING / 2));
 
 //    Sound soundClick(SoundHolder::GetSound("assets/sfx/click.ogg"));
 //    Sound soundHover(SoundHolder::GetSound("assets/sfx/hover.ogg"));
+
+    Music* musicPtr = &MusicHolder::GetMusic("assets/music/Spow.ogg");
+    musicPtr->setLoop(true);
+    musicPtr->setVolume(10);
+    musicPtr->play();
 
     while (window.isOpen()) {
         // Update frame
@@ -70,10 +78,10 @@ SceneChange Menu::run(RenderWindow &window) {
             if (event.type == Event::MouseMoved) {
                 Vector2f mouseScreenPosition = Vector2f(Mouse::getPosition(window));
 
-                setRectangleShapeColorOnMouseHover(playButton, mouseScreenPosition, Color(189, 189, 189), Color::White);
+                setRectangleShapeColorOnMouseHover(playButton, mouseScreenPosition, Color(0x26A69AFF), Color(0x4DB6ACFF));
                 setRectangleShapeColorOnMouseHover(infoButton, mouseScreenPosition, Color(189, 189, 189), Color::White);
                 setRectangleShapeColorOnMouseHover(leaderboardButton, mouseScreenPosition, Color(189, 189, 189), Color::White);
-                setRectangleShapeColorOnMouseHover(exitButton, mouseScreenPosition, Color(189, 189, 189), Color::White);
+                setRectangleShapeColorOnMouseHover(exitButton, mouseScreenPosition, Color(0xEF5350FF), Color(0xE57373FF));
             }
 
             if (event.type == Event::MouseButtonPressed) {

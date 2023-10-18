@@ -61,6 +61,12 @@ SceneChange GameOver::run(RenderWindow &window) {
     saveButton.setPosition(saveText.getPosition() + Vector2f(0, 15));
 
     std::vector<Score> scores = readScore();
+
+    Music* musicPtr = &MusicHolder::GetMusic("assets/music/Votely.ogg");
+    musicPtr->stop();
+    musicPtr->setLoop(true);
+    musicPtr->setVolume(5);
+    musicPtr->play();
     
     while (window.isOpen()) {
         // Update frame

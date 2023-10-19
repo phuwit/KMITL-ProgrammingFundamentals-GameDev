@@ -39,16 +39,16 @@ int createBackground (VertexArray& rVA, IntRect playArea, int scale) {
         for (int h = 0; h < worldHeight; h++) {
             // position each vertex in current quad
             rVA[currentVertex + 0].position = 
-                Vector2f(w * TILE_SIZE, h * TILE_SIZE);
+                Vector2f(w * TILE_SIZE - 1, h * TILE_SIZE - 1);
 
             rVA[currentVertex + 1].position = 
-                Vector2f((w * TILE_SIZE) + TILE_SIZE, h * TILE_SIZE);
+                Vector2f((w * TILE_SIZE) + TILE_SIZE + 1, h * TILE_SIZE - 1);
 
             rVA[currentVertex + 2].position = 
-                Vector2f((w * TILE_SIZE) + TILE_SIZE, (h * TILE_SIZE) + TILE_SIZE);
+                Vector2f((w * TILE_SIZE) + TILE_SIZE + 1, (h * TILE_SIZE) + TILE_SIZE + 1);
 
             rVA[currentVertex + 3].position = 
-                Vector2f(w * TILE_SIZE, (h * TILE_SIZE) + TILE_SIZE);
+                Vector2f(w * TILE_SIZE - 1, (h * TILE_SIZE) + TILE_SIZE + 1);
 
             // define possition in the texture for current quad
             // either grass, stone, bush, or wall

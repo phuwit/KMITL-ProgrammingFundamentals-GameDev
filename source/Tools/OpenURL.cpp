@@ -1,8 +1,4 @@
-#pragma once
-
-#include <iostream>
-#include "../CommonEnum.hpp"
-#include "GetOS.cpp"
+#include "OpenURL.hpp"
 
 void openURL(std::string url) {
 	std::string str;

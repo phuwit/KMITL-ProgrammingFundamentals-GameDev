@@ -14,8 +14,38 @@ FetchContent_Declare(SFML
     GIT_TAG 2.6.x)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(BrainBlast source/Main.cpp
-        source/Collision/Collision.cpp)
+add_executable(BrainBlast 
+    source/Main.cpp
+    source/CommonEnum.cpp
+    source/Bullet/Bullet.cpp
+    source/Collision/Collision.cpp
+    source/Holders/FontHolder.cpp
+    source/Holders/MusicHolder.cpp
+    source/Holders/SoundHolder.cpp
+    source/Holders/TextureHolder.cpp
+    source/PickUps/PickUps.cpp
+    source/Player/Player.cpp
+    source/Scenes/Scenes.cpp
+    source/Scenes/SceneChange.cpp
+    source/Scenes/Game.cpp
+    source/Scenes/GameOver.cpp
+    source/Scenes/Info.cpp
+    source/Scenes/Leaderboard.cpp
+    source/Scenes/LevelUp.cpp
+    source/Scenes/Menu.cpp
+    source/Scenes/Paused.cpp
+    source/Scores/ReadScores.cpp
+    source/Scores/SaveScores.cpp
+    source/Scores/Score.cpp
+    source/Scores/SortScores.cpp
+    source/Tools/GetOS.cpp
+    source/Tools/GetScreenshot.cpp
+    source/Tools/OpenURL.cpp
+    source/Tools/SetOriginCenter.cpp
+    source/Tools/SetRectangleShapeOnMouseHover.cpp
+    source/Tools/CreateBackground.cpp
+    source/Zombie/Zombie.cpp
+    source/Zombie/ZombieHorde.cpp)
 
 target_link_libraries(BrainBlast PRIVATE sfml-graphics)
 target_link_libraries(BrainBlast PRIVATE sfml-audio)

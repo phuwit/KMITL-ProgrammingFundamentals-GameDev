@@ -1,18 +1,4 @@
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
-
-#include "Scenes.hpp"
-#include "Game.hpp"
-#include "../CommonEnum.hpp"
-#include "../Holders/FontHolder.cpp"
-#include "../Holders/SoundHolder.hpp"
-#include "../Tools/SetOriginCenter.cpp"
-#include "../Tools/SetRectangleShapeOnMouseHover.cpp"
-
-class LevelUp : public Scenes {
-public:
-    virtual SceneChange run(RenderWindow &window);
-};
+#include "LevelUp.hpp"
 
 SceneChange LevelUp::run(RenderWindow &window) {
     const int TEXT_BOX_PADDING = 50;

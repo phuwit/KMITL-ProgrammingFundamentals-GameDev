@@ -1,18 +1,4 @@
-#include <SFML/Graphics.hpp>
-
-#include "Scenes.hpp"
-#include "../CommonEnum.hpp"
-#include "../Holders/FontHolder.cpp"
-#include "../Tools/SetOriginCenter.cpp"
-#include "../Tools/SetRectangleShapeOnMouseHover.cpp"
-#include "../Tools/OpenURL.cpp"
-
-using namespace sf;
-
-class Info : public Scenes {
-    public:
-        virtual SceneChange run(RenderWindow &window);
-};
+#include "Info.hpp"
 
 SceneChange Info::run(RenderWindow &window) {
     int BUTTON_PADDING = 30;

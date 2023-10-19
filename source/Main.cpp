@@ -1,17 +1,17 @@
 #include "CommonEnum.hpp"
-#include "Holders/TextureHolder.cpp"
-#include "Holders/FontHolder.cpp"
-#include "Holders/SoundHolder.cpp"
+#include "Holders/TextureHolder.hpp"
+#include "Holders/FontHolder.hpp"
+#include "Holders/SoundHolder.hpp"
 #include "Holders/MusicHolder.hpp"
 
 #include "Scenes/Scenes.hpp"
-#include "Scenes/Menu.cpp"
-#include "Scenes/Info.cpp"
-#include "Scenes/Game.cpp"
-#include "Scenes/Paused.cpp"
-#include "Scenes/LevelUp.cpp"
-#include "Scenes/GameOver.cpp"
-#include "Scenes/Leaderboard.cpp"
+#include "Scenes/Menu.hpp"
+#include "Scenes/Info.hpp"
+#include "Scenes/Game.hpp"
+#include "Scenes/Paused.hpp"
+#include "Scenes/LevelUp.hpp"
+#include "Scenes/GameOver.hpp"
+#include "Scenes/Leaderboard.hpp"
 
 int main() {
     // instance THE singleton instance of texture holder

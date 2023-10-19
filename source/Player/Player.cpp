@@ -1,11 +1,9 @@
-#pragma once
-
 #include <cmath>
 #include <SFML/Graphics.hpp>
 
 #include "Player.hpp"
 #include "../CommonEnum.hpp"
-#include "../Holders/TextureHolder.cpp"
+#include "../Holders/TextureHolder.hpp"
 
 Player::Player(float spriteScaling) {
     m_SpriteScaling = spriteScaling;

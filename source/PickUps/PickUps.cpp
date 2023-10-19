@@ -1,5 +1,3 @@
-#pragma once
-
 #include <utility>
 #include "PickUps.hpp"
 #include "../CommonEnum.hpp"

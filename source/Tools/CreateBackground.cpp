@@ -1,5 +1,4 @@
-#include "../Scenes/Game.hpp"
-
+#include "CreateBackground.hpp"
 
 int createBackground (VertexArray& rVA, IntRect playArea, int scale) {
     // anything we did to rVA is really doing to background in the main function

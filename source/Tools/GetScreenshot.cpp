@@ -1,4 +1,4 @@
-#include <SFML/Graphics.hpp>
+#include "GetScreenshot.hpp"
 
 using namespace sf;
 

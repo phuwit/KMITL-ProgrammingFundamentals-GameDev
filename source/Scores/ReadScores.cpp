@@ -1,10 +1,4 @@
-#pragma once
-
-#include <vector>
-#include <fstream>
-#include <iostream>
-
-#include "Score.cpp"
+#include "ReadScores.hpp"
 
 std::vector<Score> readScore() {
     std::vector<Score> scores;

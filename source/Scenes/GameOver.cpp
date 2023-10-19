@@ -1,20 +1,4 @@
-#include <SFML/Graphics.hpp>
-
-#include "Scenes.hpp"
-#include "Game.hpp"
-#include "../CommonEnum.hpp"
-#include "../Holders/FontHolder.cpp"
-#include "../Scores/Score.hpp"
-#include "../Scores/ReadScores.cpp"
-#include "../Scores/SaveScores.cpp"
-#include "../Scores/SortScores.cpp"
-#include "../Tools/SetOriginCenter.cpp"
-#include "../Tools/SetRectangleShapeOnMouseHover.cpp"
-
-class GameOver : public Scenes {
-    public:
-        virtual SceneChange run(RenderWindow &window);
-};
+#include "GameOver.hpp"
 
 SceneChange GameOver::run(RenderWindow &window) {
     Font fontBebas = FontHolder::GetFont("assets/fonts/BebasNeue-Regular.otf");

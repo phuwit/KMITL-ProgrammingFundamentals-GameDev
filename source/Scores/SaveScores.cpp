@@ -1,10 +1,4 @@
-#pragma once
-
-#include <vector>
-#include <fstream>
-#include <iostream>
-
-#include "Score.cpp"
+#include "SaveScores.hpp"
 
 void saveScore(std::vector<Score>& scores) {
     std::ofstream file;

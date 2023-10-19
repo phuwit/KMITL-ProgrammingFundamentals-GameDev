@@ -1,8 +1,4 @@
-#pragma once
-
-#include <SFML/Graphics.hpp>
-
-using namespace sf;
+#include "SetOriginCenter.hpp"
 
 Vector2f getFloatRectCenter (FloatRect floatrect) {
     return Vector2f(floatrect.width / 2, floatrect.height / 2);

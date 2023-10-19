@@ -1,12 +1,27 @@
 #pragma once
+
 #include <vector>
+#include <sstream>
+#include <array>
+#include <iostream>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #include "Scenes.hpp"
+#include "../CommonEnum.hpp"
+#include "../Holders/TextureHolder.hpp"
+#include "../Holders/FontHolder.hpp"
+#include "../Holders/SoundHolder.hpp"
+#include "../Holders/MusicHolder.hpp"
+#include "../Tools/CreateBackground.hpp"
+#include "../Tools/GetScreenshot.hpp"
+#include "../Tools/SetOriginCenter.hpp"
 #include "../Zombie/Zombie.hpp"
-#include "../Player/Player.cpp"
-#include "../Bullet/Bullet.cpp"
-#include "../PickUps/PickUps.cpp"
+#include "../Zombie/ZombieHorde.hpp"
+#include "../PickUps/PickUps.hpp"
+#include "../Player/Player.hpp"
+#include "../Bullet/Bullet.hpp"
+#include "../Collision/Collision.hpp"
 
 using namespace sf;
 
@@ -96,9 +111,3 @@ class Game : public Scenes {
         void setPerks(int perks);
         unsigned int getScore();
 };
-
-// prototype createBackground function, with a vertex array reference parameter and intrect parameter
-int createBackground (VertexArray& rVA, IntRect playArea);
-
-// prototype createHorde function, returns a zombie pointer
-Zombie* createHorde(int numZombies, float spriteScaling, IntRect arena);

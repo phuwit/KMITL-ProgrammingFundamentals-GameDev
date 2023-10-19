@@ -1,20 +1,4 @@
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
-
-#include "Scenes.hpp"
-#include "Game.hpp"
-#include "../CommonEnum.hpp"
-#include "../Holders/TextureHolder.hpp"
-#include "../Holders/FontHolder.hpp"
-#include "../Holders/SoundHolder.hpp"
-#include "../Holders/MusicHolder.cpp"
-#include "../Tools/SetOriginCenter.cpp"
-#include "../Tools/SetRectangleShapeOnMouseHover.cpp"
-
-class Menu : public Scenes {
-    public:
-        virtual SceneChange run(RenderWindow &window);
-};
+#include "Menu.hpp"
 
 SceneChange Menu::run(RenderWindow &window) {
     Sprite logo(TextureHolder::GetTexture("assets/sprites/brand/logo.png"));

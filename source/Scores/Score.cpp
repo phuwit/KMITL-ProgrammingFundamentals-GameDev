@@ -1,5 +1,3 @@
-#pragma once
-
 #include "Score.hpp"
 
 Score::Score() {

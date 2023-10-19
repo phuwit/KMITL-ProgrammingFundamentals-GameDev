@@ -1,6 +1,4 @@
-#pragma once
-
-#include "../CommonEnum.hpp"
+#include "GetOS.hpp"
 
 OS getOS() {
     #ifdef _WIN32

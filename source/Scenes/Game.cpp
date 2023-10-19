@@ -1,22 +1,4 @@
-#include <sstream>
-#include <array>
-#include <iostream>
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
-
 #include "Game.hpp"
-#include "../CommonEnum.hpp"
-#include "../Holders/TextureHolder.cpp"
-#include "../Holders/FontHolder.cpp"
-#include "../Holders/SoundHolder.cpp"
-#include "../Zombie/Zombie.cpp"
-#include "../Zombie/ZombieHorde.cpp"
-#include "../Tools/CreateBackground.cpp"
-#include "../Tools/GetScreenshot.cpp"
-#include "../Tools/SetOriginCenter.cpp"
-#include "../Collision/Collision.hpp"
-
-using namespace sf;
 
 Game::Game(Vector2f screenResolution, Vector2f levelSize) {
     m_ScreenResolution = screenResolution;

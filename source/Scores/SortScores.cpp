@@ -1,9 +1,4 @@
-#pragma once
-
-#include <vector>
-#include <algorithm>
-
-#include "Score.cpp"
+#include "SortScores.hpp"
 
 bool scoreGreater(Score& score1, Score& score2) {
     return score1.getScore() > score2.getScore();

@@ -1,5 +1,5 @@
 /* 
- * File:   collision.cpp
+ * File:   collision.hpp
  * Author: Nick (original version), ahnonay (SFML2 compatibility), Paweł Syska (C++17 refactor + naming convention)
  */
 

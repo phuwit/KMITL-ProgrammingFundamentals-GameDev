@@ -1,16 +1,4 @@
-#include <SFML/Graphics.hpp>
-
-#include "Scenes.hpp"
-#include "../CommonEnum.hpp"
-#include "../Holders/FontHolder.hpp"
-#include "../Holders/TextureHolder.hpp"
-#include "../Tools/SetOriginCenter.cpp"
-#include "../Tools/SetRectangleShapeOnMouseHover.cpp"
-
-class Paused : public Scenes {
-    public:
-        SceneChange run(RenderWindow &window) override;
-};
+#include "Paused.hpp"
 
 SceneChange Paused::run(RenderWindow &window) {
     const int TEXT_BOX_PADDING = 50;

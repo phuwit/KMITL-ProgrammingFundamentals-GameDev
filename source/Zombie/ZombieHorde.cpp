@@ -1,6 +1,4 @@
-#include "../CommonEnum.hpp"
-#include "../Scenes/Game.hpp"
-#include "Zombie.hpp"
+#include "ZombieHorde.hpp"
 
 Zombie* createHorde(int numZombies, float spriteScaling, IntRect playArea) {
     Zombie* zombies = new Zombie[numZombies];

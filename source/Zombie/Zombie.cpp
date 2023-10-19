@@ -6,7 +6,7 @@
 #include "Zombie.hpp"
 #include "../CommonEnum.hpp"
 #include "../Holders/TextureHolder.hpp"
-#include "../Tools/SetOriginCenter.cpp"
+#include "../Tools/SetOriginCenter.hpp"
 
 using namespace std;
 

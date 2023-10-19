@@ -1,5 +1,3 @@
-#pragma once
-
 #include <cmath>
 #include <SFML/Graphics.hpp>
 #include "Bullet.hpp"

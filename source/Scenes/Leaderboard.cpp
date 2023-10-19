@@ -1,21 +1,4 @@
-#include <fstream>
-#include <SFML/Graphics.hpp>
-
-#include "Scenes.hpp"
-#include "../CommonEnum.hpp"
-#include "../Holders/FontHolder.cpp"
-#include "../Tools/SetOriginCenter.cpp"
-#include "../Tools/SetRectangleShapeOnMouseHover.cpp"
-#include "../Scores/Score.hpp"
-#include "../Scores/ReadScores.cpp"
-#include "../Scores/SaveScores.cpp"
-#include "../Scores/SortScores.cpp"
-
-
-class Leaderboard : public Scenes {
-    public:
-        virtual SceneChange run(RenderWindow &window);
-};
+#include "Leaderboard.hpp"
 
 SceneChange Leaderboard::run(RenderWindow &window) {
     const int SCORES_COUNT = 5;

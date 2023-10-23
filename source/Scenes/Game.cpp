@@ -180,7 +180,8 @@ SceneChange Game::run(RenderWindow &window) {
             m_MovementKeyPressed[MovementKey::MOVEMENT_RIGHT] = Keyboard::isKeyPressed(Keyboard::D);
 
             m_MouseKeyPressed[MouseButton::MOUSE_LEFT] = Mouse::isButtonPressed(Mouse::Left);
-            
+            m_MouseKeyPressed[MouseButton::MOUSE_RIGHT] = Mouse::isButtonPressed(Mouse::Right);
+
             if(Keyboard::isKeyPressed(Keyboard::F2)) {
                 std::stringstream screenshotFilename;
                 screenshotFilename << "screenshot_" << time(0) << ".png";
@@ -323,7 +324,7 @@ SceneChange Game::run(RenderWindow &window) {
                 m_CurrentAmmoText.setString(to_string(m_BulletsInClip));
             }
 
-            if (Keyboard::isKeyPressed(Keyboard::R) && (m_BulletsInClip < m_ClipSize)) {
+            if ((Keyboard::isKeyPressed(Keyboard::R) || m_MouseKeyPressed[MouseButton::MOUSE_RIGHT]) && (m_BulletsInClip < m_ClipSize)) {
                 // can reload to max clip size
                 int bulletsDelta = m_ClipSize - m_BulletsInClip;
                 if (bulletsDelta > m_SpareAmmo) {

@@ -16,7 +16,7 @@ SceneChange Menu::run(RenderWindow &window) {
     playButton.setFillColor(Color(0x4DB6ACFF));
     textSetOriginCenter(playText);
     shapeSetOriginCenter(playButton);
-    playText.setPosition(logo.getPosition() + Vector2f(0, 400));
+    playText.setPosition(logo.getPosition() + Vector2f(0, 300));
     playButton.setPosition(playText.getPosition() + Vector2f(0, BUTTON_PADDING / 2));
 
     Text leaderboardText("Leaderboard", fontBebas);
@@ -28,13 +28,22 @@ SceneChange Menu::run(RenderWindow &window) {
     leaderboardText.setPosition(playText.getPosition() + Vector2f(0, 100));
     leaderboardButton.setPosition(leaderboardText.getPosition() + Vector2f(0, BUTTON_PADDING / 2));
 
+    Text howText("How", fontBebas);
+    howText.setFillColor(Color::Black);
+    howText.setCharacterSize(60);
+    RectangleShape howButton(Vector2f(howText.getLocalBounds().width + BUTTON_PADDING, howText.getLocalBounds().height + BUTTON_PADDING));
+    textSetOriginCenter(howText);
+    shapeSetOriginCenter(howButton);
+    howText.setPosition(leaderboardText.getPosition() + Vector2f(0, 100));
+    howButton.setPosition(howText.getPosition() + Vector2f(0, BUTTON_PADDING / 2));
+
     Text infoText("Info", fontBebas);
     infoText.setFillColor(Color::Black);
     infoText.setCharacterSize(60);
     RectangleShape infoButton(Vector2f(infoText.getLocalBounds().width + BUTTON_PADDING, infoText.getLocalBounds().height + BUTTON_PADDING));
     textSetOriginCenter(infoText);
     shapeSetOriginCenter(infoButton);
-    infoText.setPosition(leaderboardText.getPosition() + Vector2f(0, 100));
+    infoText.setPosition(howText.getPosition() + Vector2f(0, 100));
     infoButton.setPosition(infoText.getPosition() + Vector2f(0, BUTTON_PADDING / 2));
 
     Text exitText("Exit", fontBebas);
@@ -64,6 +73,7 @@ SceneChange Menu::run(RenderWindow &window) {
 
                 setRectangleShapeColorOnMouseHover(playButton, mouseScreenPosition, Color(0x26A69AFF), Color(0x4DB6ACFF));
                 setRectangleShapeColorOnMouseHover(infoButton, mouseScreenPosition, Color(189, 189, 189), Color::White);
+                setRectangleShapeColorOnMouseHover(howButton, mouseScreenPosition, Color(189, 189, 189), Color::White);
                 setRectangleShapeColorOnMouseHover(leaderboardButton, mouseScreenPosition, Color(189, 189, 189), Color::White);
                 setRectangleShapeColorOnMouseHover(exitButton, mouseScreenPosition, Color(0xEF5350FF), Color(0xE57373FF));
             }
@@ -74,10 +84,12 @@ SceneChange Menu::run(RenderWindow &window) {
                 if (playButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
                     dynamic_cast<Game *>(getGamePtr())->newGame();
                     return {ScenesList::SCENE_GAME};
-                } else if (infoButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
-                    return {ScenesList::SCENE_INFO};
                 } else if (leaderboardButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
                     return {ScenesList::SCENE_LEADERBOARD};
+                } else if (howButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
+                    return {ScenesList::SCENE_HOW};
+                } else if (infoButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
+                    return {ScenesList::SCENE_INFO};
                 } else if (exitButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
                     return {ScenesList::EXIT};
                 }
@@ -95,10 +107,12 @@ SceneChange Menu::run(RenderWindow &window) {
 
             window.draw(playButton);
             window.draw(playText);
-            window.draw(infoButton);
-            window.draw(infoText);
             window.draw(leaderboardButton);
             window.draw(leaderboardText);
+            window.draw(howButton);
+            window.draw(howText);
+            window.draw(infoButton);
+            window.draw(infoText);
             window.draw(exitButton);
             window.draw(exitText);
 

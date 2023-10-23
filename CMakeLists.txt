@@ -45,7 +45,9 @@ add_executable(BrainBlast
     source/Tools/SetRectangleShapeOnMouseHover.cpp
     source/Tools/CreateBackground.cpp
     source/Zombie/Zombie.cpp
-    source/Zombie/ZombieHorde.cpp)
+    source/Zombie/ZombieHorde.cpp
+        source/Scenes/How.cpp
+        source/Scenes/How.hpp)
 
 target_link_libraries(BrainBlast PRIVATE sfml-graphics)
 target_link_libraries(BrainBlast PRIVATE sfml-audio)

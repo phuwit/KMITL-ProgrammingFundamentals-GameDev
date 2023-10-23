@@ -12,6 +12,7 @@
 #include "Scenes/LevelUp.hpp"
 #include "Scenes/GameOver.hpp"
 #include "Scenes/Leaderboard.hpp"
+#include "Scenes/How.hpp"
 
 int main() {
     // instance THE singleton instance of texture holder
@@ -49,6 +50,8 @@ int main() {
     Scenes.push_back(&gameOver);
     Leaderboard leaderboard;
     Scenes.push_back(&leaderboard);
+    How how;
+    Scenes.push_back(&how);
 
     for (auto & Scene : Scenes) {
         Scene->setGamePtr(gamePtr);

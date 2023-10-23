@@ -86,15 +86,22 @@ Game::Game(Vector2f screenResolution, Vector2f levelSize) {
     m_SoundHit.setBuffer(SoundHolder::GetSound("assets/sfx/hit.ogg"));
     m_SoundKilled.setBuffer(SoundHolder::GetSound("assets/sfx/killed.ogg"));
     m_SoundShoot.setBuffer(SoundHolder::GetSound("assets/sfx/shoot.ogg"));
-    m_SoundPickupLow.setBuffer(SoundHolder::GetSound("assets/sfx/pickup1.ogg"));
     m_SoundPickupHigh.setBuffer(SoundHolder::GetSound("assets/sfx/pickup2.ogg"));
+    m_SoundReload.setBuffer(SoundHolder::GetSound("assets/sfx/reload.ogg"));
+    m_SoundError.setBuffer(SoundHolder::GetSound("assets/sfx/error.ogg"));
+    m_SoundPickupHealth.setBuffer(SoundHolder::GetSound("assets/sfx/medkit.ogg"));
+    m_SoundPickupAmmo.setBuffer(SoundHolder::GetSound("assets/sfx/ammopickup.ogg"));
+
 
     m_SoundLoaded.setVolume(50);
     m_SoundHit.setVolume(50);
     m_SoundKilled.setVolume(50);
     m_SoundShoot.setVolume(50);
-    m_SoundPickupLow.setVolume(50);
     m_SoundPickupHigh.setVolume(50);
+    m_SoundReload.setVolume(20);
+    m_SoundError.setVolume(50);
+    m_SoundPickupHealth.setVolume(50);
+    m_SoundPickupAmmo.setVolume(50);
 
     regenerate();
 }
@@ -107,12 +114,15 @@ void Game::regenerate() {
     }
     m_CurrentBulletIndex = 0;
     m_BulletsInClip = m_ClipSize;
-    m_SpareAmmo = 24;
+    m_SpareAmmo = 32;
 
     m_NumZombies = 2 + (3 * currentLevel);
     m_NumZombiesAlive = m_NumZombies;
     delete[] m_Zombies;
     m_Zombies = createHorde(m_NumZombies, (M_SPRITE_SCALING - 1), m_PlayArea);
+
+    removeBuff_(m_BuffType);
+    m_BuffTimer = seconds(0);
 }
 
 void Game::newGame() {
@@ -151,6 +161,8 @@ SceneChange Game::run(RenderWindow &window) {
     musicPtr->setLoop(true);
     musicPtr->setVolume(5);
     musicPtr->play();
+
+    m_FrameTimeClock.restart();
 
     while (!paused) {
         // HANDLE INPUTS
@@ -317,8 +329,14 @@ SceneChange Game::run(RenderWindow &window) {
                 if (bulletsDelta > m_SpareAmmo) {
                     bulletsDelta = m_SpareAmmo;
                 }
-                m_BulletsInClip += bulletsDelta;
-                m_SpareAmmo -= bulletsDelta;
+
+                if (bulletsDelta > 0) {
+                    m_BulletsInClip += bulletsDelta;
+                    m_SpareAmmo -= bulletsDelta;
+                    m_SoundReload.play();
+                } else {
+                    m_SoundError.play();
+                }
 
                 m_CurrentAmmoText.setString(to_string(m_BulletsInClip));
                 m_SpareAmmoText.setString(to_string(m_SpareAmmo));
@@ -432,11 +450,11 @@ void Game::handlePickUps_(PickupsType pickUpsType, int pickupValue, Time buffDur
             m_PlayerHealth = m_PlayerMaxHealth;
         }
         m_HealthBar.setSize(Vector2f(m_HealthBarSegmentSize * m_PlayerHealth, m_HealthBar.getSize().y));
-        m_SoundPickupLow.play();
+        m_SoundPickupHealth.play();
     } else if (pickUpsType == PickupsType::PICKUPS_AMMO) {
         m_SpareAmmo += pickupValue;
         m_SpareAmmoText.setString(to_string(m_SpareAmmo));
-        m_SoundPickupLow.play();
+        m_SoundPickupAmmo.play();
     } else if (pickUpsType == PickupsType::PICKUPS_SPEED) {
         m_Player.setSpeedWithMultiplier(pickupValue);
         m_BuffTimer = buffDuration;

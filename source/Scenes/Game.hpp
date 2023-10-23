@@ -57,8 +57,10 @@ class Game : public Scenes {
         Sound           m_SoundKilled;
         Sound           m_SoundShoot;
         Sound           m_SoundReload;
-        Sound           m_SoundPickupLow;
+        Sound           m_SoundError;
         Sound           m_SoundPickupHigh;
+        Sound           m_SoundPickupHealth;
+        Sound           m_SoundPickupAmmo;
 
         Player          m_Player = Player(M_SPRITE_SCALING);
         const Time      M_LAST_HIT_COOLDOWN = milliseconds(300);

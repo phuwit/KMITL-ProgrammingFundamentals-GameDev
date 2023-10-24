@@ -76,6 +76,11 @@ SceneChange Paused::run(RenderWindow &window) {
                 }
             }
         }
+
+        if ((Keyboard::isKeyPressed(Keyboard::LControl) || Keyboard::isKeyPressed(Keyboard::RControl)) && Keyboard::isKeyPressed(Keyboard::Escape)) {
+            return {ScenesList::EXIT};
+        }
+
         // Draw frame
         window.clear(COLOR_BACKGROUND);
 

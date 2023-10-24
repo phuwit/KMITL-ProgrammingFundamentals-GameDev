@@ -60,6 +60,10 @@ SceneChange GameOver::run(RenderWindow &window) {
                 return SceneChange(ScenesList::SCENE_MENU);
             }
 
+            if ((Keyboard::isKeyPressed(Keyboard::LControl) || Keyboard::isKeyPressed(Keyboard::RControl)) && Keyboard::isKeyPressed(Keyboard::Escape)) {
+                return {ScenesList::EXIT};
+            }
+
             if (event.type == Event::MouseMoved) {
                 Vector2f mouseScreenPosition = Vector2f(Mouse::getPosition(window));
 

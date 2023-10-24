@@ -14,16 +14,6 @@ SceneChange How::run(RenderWindow &window) {
     exitText.setPosition(Vector2f(100, 100));
     exitButton.setPosition(exitText.getPosition() + Vector2f(0, PADDING));
 
-    Text paragraphText;
-    paragraphText.setFont(fontBebas);
-    paragraphText.setCharacterSize(48);
-    paragraphText.setPosition(Vector2f(600, 250));
-    paragraphText.setString("\
-    Kill zombies to get points! \n\
-    Kill zombies faster to get more points! \n\
-    \n\
-    ");
-
     struct HowStruct {
         Sprite sprite;
         Text overlay;
@@ -38,7 +28,7 @@ SceneChange How::run(RenderWindow &window) {
             {Sprite(TextureHolder::GetTexture("assets/sprites/ui/mouse_left.png")), Text("", fontBebas), Text("Shoot", fontBebas)}
     };
 
-    for (unsigned int i = 0; i < sizeof(howStruct) / sizeof(howStruct[0]); i++) {
+    for (unsigned int i = 0; i < sizeof(howStruct) / sizeof(HowStruct); i++) {
         howStruct[i].sprite.setScale(0.8, 0.8);
         howStruct[i].sprite.setPosition(Vector2f(200, 300 + (i * 100)));
         spriteSetOriginCenter(howStruct[i].sprite);
@@ -54,13 +44,36 @@ SceneChange How::run(RenderWindow &window) {
         howStruct[i].description.setCharacterSize(60);
     }
 
+    Text paragraphText;
+    paragraphText.setFont(fontBebas);
+    paragraphText.setCharacterSize(48);
+    paragraphText.setPosition(Vector2f(600, 250));
+    paragraphText.setString("\
+    Kill zombies to get points! \n\
+    Kill zombies faster to get more points! \n\
+    \n\
+    ");
+
     struct PickupStruct {
         Sprite sprite;
-        Text overlay;
         Text description;
     } pickupStruct[] = {
-
+            {Sprite(TextureHolder::GetTexture("assets/sprites/pickups/ammo.png")), Text("Get ammo", fontBebas)},
+            {Sprite(TextureHolder::GetTexture("assets/sprites/pickups/health.png")), Text("Heal yourself", fontBebas)},
+            {Sprite(TextureHolder::GetTexture("assets/sprites/pickups/score.png")), Text("Score multiplier", fontBebas)},
+            {Sprite(TextureHolder::GetTexture("assets/sprites/pickups/speed.png")), Text("Speed boost", fontBebas)}
     };
+
+    for (unsigned int i = 0; i < sizeof(pickupStruct) / sizeof(PickupStruct); i++) {
+        pickupStruct[i].sprite.setScale(0.8, 0.8);
+        pickupStruct[i].sprite.setPosition(Vector2f(paragraphText.getPosition().x + pickupStruct[i].sprite.getGlobalBounds().width, paragraphText.getPosition().y + paragraphText.getLocalBounds().height + 100 + (i * 100)));
+        spriteSetOriginCenter(pickupStruct[i].sprite);
+
+        pickupStruct[i].description.setOrigin(0, pickupStruct[i].description.getLocalBounds().height / 2);
+        pickupStruct[i].description.setPosition(pickupStruct[i].sprite.getPosition() + Vector2f(100, -(pickupStruct[i].sprite.getLocalBounds().height / 4)));
+        pickupStruct[i].description.setFillColor(Color::White);
+        pickupStruct[i].description.setCharacterSize(60);
+    }
 
     Music* musicPtr = &MusicHolder::GetMusic("assets/music/Spow.ogg");
     musicPtr->play();
@@ -85,6 +98,11 @@ SceneChange How::run(RenderWindow &window) {
                 }
             }
         }
+
+        if ((Keyboard::isKeyPressed(Keyboard::LControl) || Keyboard::isKeyPressed(Keyboard::RControl)) && Keyboard::isKeyPressed(Keyboard::Escape)) {
+            return {ScenesList::EXIT};
+        }
+
         // Draw frame
         window.clear(COLOR_BACKGROUND);
         window.draw(exitButton);
@@ -96,6 +114,12 @@ SceneChange How::run(RenderWindow &window) {
             window.draw(i.overlay);
             window.draw(i.description);
         }
+
+        for (auto & i : pickupStruct) {
+            window.draw(i.sprite);
+            window.draw(i.description);
+        }
+
         window.display();
     }
 

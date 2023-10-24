@@ -4,6 +4,12 @@
 no further information provided.
 incompetence is my greatest superpower.
 
+## license
+licensed under AGPL-3.0-or-later.
+see [LICENSE](LICENSE) for more info.
+
+or see [choosealicense.com](https://choosealicense.com/licenses/agpl-3.0/) for a tl;dr.
+
 ## ci status
 [![CI](https://github.com/phuwit/KMITL-ProgrammingFundamentals-GameDev/actions/workflows/ci.yml/badge.svg)](https://github.com/phuwit/KMITL-ProgrammingFundamentals-GameDev/actions/workflows/ci.yml)
 

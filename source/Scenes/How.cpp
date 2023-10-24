@@ -14,6 +14,16 @@ SceneChange How::run(RenderWindow &window) {
     exitText.setPosition(Vector2f(100, 100));
     exitButton.setPosition(exitText.getPosition() + Vector2f(0, PADDING));
 
+    Text paragraphText;
+    paragraphText.setFont(fontBebas);
+    paragraphText.setCharacterSize(48);
+    paragraphText.setPosition(Vector2f(600, 250));
+    paragraphText.setString("\
+    Kill zombies to get points! \n\
+    Kill zombies faster to get more points! \n\
+    \n\
+    ");
+
     struct HowStruct {
         Sprite sprite;
         Text overlay;
@@ -44,6 +54,14 @@ SceneChange How::run(RenderWindow &window) {
         howStruct[i].description.setCharacterSize(60);
     }
 
+    struct PickupStruct {
+        Sprite sprite;
+        Text overlay;
+        Text description;
+    } pickupStruct[] = {
+
+    };
+
     Music* musicPtr = &MusicHolder::GetMusic("assets/music/Spow.ogg");
     musicPtr->play();
 
@@ -71,6 +89,8 @@ SceneChange How::run(RenderWindow &window) {
         window.clear(COLOR_BACKGROUND);
         window.draw(exitButton);
         window.draw(exitText);
+        window.draw(paragraphText);
+
         for (auto & i : howStruct) {
             window.draw(i.sprite);
             window.draw(i.overlay);

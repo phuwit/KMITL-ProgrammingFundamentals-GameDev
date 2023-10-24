@@ -1,7 +1,7 @@
 #include "Menu.hpp"
 
 SceneChange Menu::run(RenderWindow &window) {
-    Sprite logo(TextureHolder::GetTexture("assets/sprites/brand/logo.png"));
+    Sprite logo(TextureHolder::GetTexture("assets/sprites/ui/logo.png"));
     spriteSetOriginCenter(logo);
     logo.setPosition(Vector2f(window.getSize().x / 2, window.getSize().y * 0.25));
 

@@ -34,6 +34,7 @@ int main() {
      RenderWindow window(videoMode, "Brain Blast!", Style::Fullscreen, ContextSettings(0, 0, 8));
 
     // window.setMouseCursorVisible(false);
+    window.setVerticalSyncEnabled(true);
 
     // Screens preparations
     Menu menu;

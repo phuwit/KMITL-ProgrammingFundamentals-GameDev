@@ -2,6 +2,12 @@
 no further information provided.
 incompetence is my greatest superpower.
 
+## ci status
+[![CI](https://github.com/phuwit/KMITL-ProgrammingFundamentals-GameDev/actions/workflows/ci.yml/badge.svg)](https://github.com/phuwit/KMITL-ProgrammingFundamentals-GameDev/actions/workflows/ci.yml)
+
+download build [here!](https://github.com/phuwit/KMITL-ProgrammingFundamentals-GameDev/actions/workflows/ci.yml?query=is%3Asuccess) for bestest build.
+to run executables from CI artifacts, download the artifact, extract it, and run the executable from bin/.
+
 ## compiling instruction
 use cmake! if you are unsure, checkout github actions workflow [ci.yml](.github/workflows/ci.yml) for more info.
 cmake template from [CMake SFML Project Template](https://github.com/SFML/cmake-sfml-project) by [SFML Contributors](https://github.com/SFML/cmake-sfml-project/graphs/contributors) under [Public Domain or MIT](https://github.com/SFML/cmake-sfml-project/blob/master/LICENSE.md)
@@ -24,16 +30,10 @@ replace `Debug` from `-DCMAKE_BUILD_TYPE=Debug` with following options
 - `RelWithDebInfo` for release build with debug info
 - `MinSizeRel` for release build optimized for minimal size
 
-## ci status
-[![CI](https://github.com/phuwit/KMITL-ProgrammingFundamentals-GameDev/actions/workflows/ci.yml/badge.svg)](https://github.com/phuwit/KMITL-ProgrammingFundamentals-GameDev/actions/workflows/ci.yml)
-
-download build [here!](https://github.com/phuwit/KMITL-ProgrammingFundamentals-GameDev/actions/workflows/ci.yml?query=is%3Asuccess) for bestest build.
-to run executables from CI artifacts, download the artifact, extract it, and run the executable from bin/.
-
-## Attributions
+## attributions
 many projects/ assets are used in this one. please see [attribution.md](attribution.md) for more info.
 
-## Todo
+## todo
 
 - [x] player sprite
 - [x] import movement code
@@ -58,7 +58,7 @@ many projects/ assets are used in this one. please see [attribution.md](attribut
 - [ ] zombie dead animation?
 
 
-## Master Plan as a Garnt chart
+## master Plan as a Garnt chart
 
 | Task                                     |            |            |            |            |            |            |    Week    |                |            |                |            |            |            |
 |:-----------------------------------------|:----------:|:----------:|:----------:|:----------:|:----------:|:----------:|:----------:|:--------------:|:----------:|:--------------:|:----------:|:----------:|:----------:|

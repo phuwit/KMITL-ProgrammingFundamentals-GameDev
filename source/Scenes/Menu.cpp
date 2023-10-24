@@ -64,6 +64,8 @@ SceneChange Menu::run(RenderWindow &window) {
     musicPtr->setVolume(10);
     musicPtr->play();
 
+    dynamic_cast<Game *>(getGamePtr())->newGame();
+
     while (window.isOpen()) {
         // Update frame
         Event event;
@@ -82,7 +84,6 @@ SceneChange Menu::run(RenderWindow &window) {
                 Vector2f mouseScreenPosition = Vector2f(Mouse::getPosition(window));
 
                 if (playButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
-                    dynamic_cast<Game *>(getGamePtr())->newGame();
                     return {ScenesList::SCENE_GAME};
                 } else if (leaderboardButton.getGlobalBounds().contains(Vector2f(mouseScreenPosition))) {
                     return {ScenesList::SCENE_LEADERBOARD};

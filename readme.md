@@ -1,4 +1,6 @@
-# Brain Blast : A 2D top-down arcade zombie shooter
+# Brain Blast
+**_A 2D top-down arcade zombie shooter_**
+
 no further information provided.
 incompetence is my greatest superpower.
 

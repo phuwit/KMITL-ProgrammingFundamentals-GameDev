@@ -126,7 +126,14 @@ void Player::update(Vector2f mousePosition, Time frameTime) {
     else {
         m_Flip();
     }
-    
+
+//    if (m_MovementKeyPressed[MovementKey::MOVEMENT_LEFT]) {
+//        m_Flip();
+//    }
+//    else {
+//        m_UnFlip();
+//    }
+
     m_SetSpritesPosition();
 }
 

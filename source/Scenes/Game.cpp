@@ -448,7 +448,7 @@ unsigned int Game::getScore() {
     return m_Score;
 }
 
-void Game::handlePickUps_(PickupsType pickUpsType, int pickupValue, Time buffDuration) {
+void Game::handlePickUps_(PickupsType pickUpsType, float pickupValue, Time buffDuration) {
     if (pickUpsType == PickupsType::PICKUPS_HEALTH) {
         m_PlayerHealth += pickupValue;
         if (m_PlayerHealth > m_PlayerMaxHealth) {

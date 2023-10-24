@@ -102,7 +102,7 @@ class Game : public Scenes {
         const Time      M_TIME_BETWEEN_ANIMATION = milliseconds(100);
         Time            m_AnimationTimer;
 
-        void handlePickUps_(PickupsType pickUpsType, int pickupValue, Time buffDuration);
+        void handlePickUps_(PickupsType pickUpsType, float pickupValue, Time buffDuration);
         void removeBuff_(PickupsType pickUpsType);
     public:
         SceneChange run(RenderWindow &window) override;

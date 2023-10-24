@@ -1,12 +1,34 @@
 # Brain Blast : A 2D top-down arcade zombie shooter
-## there are no documentation
-### i am figuring it out
-
 no further information provided.
 incompetence is my greatest superpower.
 
-## i beg please work on windows someday
+## compiling instruction
+use cmake! if you are unsure, checkout github actions workflow [ci.yml](.github/workflows/ci.yml) for more info.
+cmake template from [CMake SFML Project Template](https://github.com/SFML/cmake-sfml-project) by [SFML Contributors](https://github.com/SFML/cmake-sfml-project/graphs/contributors) under [Public Domain or MIT](https://github.com/SFML/cmake-sfml-project/blob/master/LICENSE.md)
+
+this commands works on my machine(tm)
+
+```bash
+cd KMITL-ProgrammingFundamentals-GameDev
+cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=ninja -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -G Ninja -S KMITL-ProgrammingFundamentals-GameDev/ -B KMITL-ProgrammingFundamentals-GameDev/build
+cmake --build build/ --target all -- -j 4
+```
+
+then, for distribution, run `cmake --install build --config Release` to copy libraries.
+
+replace `Debug` from `-DCMAKE_BUILD_TYPE=Debug` with following options
+- `Release` for release build
+  - also append 
+    - `-DBUILD_SHARED_LIBS=FALSE` to build static executable
+    - `-DBUILD_SHARED_LIBS=TRUE` to build dynamic executable
+- `RelWithDebInfo` for release build with debug info
+- `MinSizeRel` for release build optimized for minimal size
+
+## ci status
 [![CI](https://github.com/phuwit/KMITL-ProgrammingFundamentals-GameDev/actions/workflows/ci.yml/badge.svg)](https://github.com/phuwit/KMITL-ProgrammingFundamentals-GameDev/actions/workflows/ci.yml)
+
+download build [here!](https://github.com/phuwit/KMITL-ProgrammingFundamentals-GameDev/actions/workflows/ci.yml?query=is%3Asuccess) for bestest build.
+to run executables from CI artifacts, download the artifact, extract it, and run the executable from bin/.
 
 ## Attributions
 many projects/ assets are used in this one. please see [attribution.md](attribution.md) for more info.
@@ -31,9 +53,9 @@ many projects/ assets are used in this one. please see [attribution.md](attribut
 - [x] handle levelup screen
 - [x] handle leaderboard
 - [x] implement pickups
+- [x] animation
 - [ ] rework spawn timing
 - [ ] zombie dead animation?
-- [ ] animation
 
 
 ## Master Plan as a Garnt chart

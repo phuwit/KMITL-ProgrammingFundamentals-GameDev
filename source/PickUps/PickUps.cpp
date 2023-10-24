@@ -54,19 +54,21 @@ void PickUps::spawnNearPlayer(Vector2f playerLocation) {
         }
     }
 
-    if (x > m_PlayArea.width) {
-        x = m_PlayArea.width - 100;
-    } else if (x < 0) {
-        x = 100;
+    Vector2f position = playerLocation + Vector2f(x, y);
+
+    if (position.x > m_PlayArea.width) {
+        position.x = m_PlayArea.width - 100;
+    } else if (position.x < 0) {
+        position.x = 100;
     }
 
-    if (y > m_PlayArea.height) {
-        y = m_PlayArea.height - 100;
-    } else if (y < 0) {
-        y = 100;
+    if (position.y > m_PlayArea.height) {
+        position.y = m_PlayArea.height - 100;
+    } else if (position.y < 0) {
+        position.y = 100;
     }
 
-    m_Sprite.setPosition(playerLocation + Vector2f(x, y));
+    m_Sprite.setPosition(position);
 
     m_SecondsSinceSpawned = 0;
     m_Spawned = true;

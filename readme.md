@@ -1,4 +1,4 @@
-# Brain Blast
+# Brain Blast!
 **_A 2D top-down arcade zombie shooter_**
 
 no further information provided.

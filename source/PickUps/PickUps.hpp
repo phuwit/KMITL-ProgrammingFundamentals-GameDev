@@ -14,6 +14,8 @@ class PickUps {
         const String TEXTURE_NAME[sizeof(PickupsType)] = {"assets/sprites/pickups/health.png", "assets/sprites/pickups/ammo.png", "assets/sprites/pickups/speed.png", "assets/sprites/pickups/score.png"};
         const int BASE_SECONDS_TO_WAIT = 10;
         const int BASE_SECONDS_TO_LIVE = 5;
+        const int MAX_DISTANCE_FROM_PLAYER = 400;
+        const int MIN_DISTANCE_FROM_PLAYER = 100;
 
         Sprite m_Sprite;
         IntRect m_PlayArea;
@@ -35,6 +37,7 @@ class PickUps {
         PickUps(PickupsType type, bool isSpawnRandom, IntRect playArea);
         void spawnRandom();
         void spawnAt(Vector2f location);
+        void spawnNearPlayer(Vector2f playerLocation);
 
         // pick up the... pickups and return the pickup value
         float take();
@@ -46,5 +49,5 @@ class PickUps {
         Time getBuffDuration();
         bool isSpawned();
 
-        void update(Time frameTime);
+        void update(Time frameTime, Vector2f playerLocation);
 };

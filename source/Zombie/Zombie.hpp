@@ -7,8 +7,8 @@ using namespace sf;
 
 class Zombie {
     private:
-        const float M_SPEED_BASE[sizeof(ZombieType)] = {50, 35, 65};
-        const float M_HEALTH_BASE[sizeof(ZombieType)] = {5, 8, 3};
+        const float M_SPEED_BASE[sizeof(ZombieType)] = {120, 80, 150};
+        const float M_HEALTH_BASE[sizeof(ZombieType)] = {6, 8, 4};
         const Color M_COLOR_BASE[sizeof(ZombieType)] = {Color(255, 255, 0, 255), Color(0, 255, 255, 255), Color(255, 0, 255, 255)};
         const String M_SPRITE_RUN_FILENAME[sizeof(ZombieType)] = {"assets/sprites/zombies/wild/Run.png", "assets/sprites/zombies/male/Run.png", "assets/sprites/zombies/female/Run.png"};
         const String M_SPRITE_DEATH_FILENAME[sizeof(ZombieType)] = {"assets/sprites/zombies/wild/Dead.png", "assets/sprites/zombies/male/Dead.png","assets/sprites/zombies/female/Dead.png"};
@@ -28,7 +28,7 @@ class Zombie {
         Vector2f m_CenterOffset;
         Vector2f m_Speed;
         Vector2i m_SpeedInverse = Vector2i(1, 1);
-        Vector2i M_BASE_INVERSE_CHANCE = Vector2i(20000, 20000);
+        Vector2i M_BASE_INVERSE_CHANCE = Vector2i(30000, 30000);
         ZombieMoveStyle m_MoveStyle;
         float m_Health;
         bool m_Alive;

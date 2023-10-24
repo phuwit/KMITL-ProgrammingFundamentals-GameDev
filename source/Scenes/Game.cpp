@@ -299,7 +299,7 @@ SceneChange Game::run(RenderWindow &window) {
                     }
                 }
 
-                m_PickUpsList[i].update(frameTime);
+                m_PickUpsList[i].update(frameTime, m_Player.getPosition());
             }
 
             if (m_BuffTimer > seconds(0)) {

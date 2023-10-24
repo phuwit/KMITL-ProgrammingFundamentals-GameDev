@@ -28,6 +28,50 @@ void PickUps::spawnRandom() {
     m_Spawned = true;
 }
 
+void PickUps::spawnNearPlayer(Vector2f playerLocation) {
+    // spawn at random location
+    int x = (rand() % (2 * MAX_DISTANCE_FROM_PLAYER)) - MAX_DISTANCE_FROM_PLAYER;
+    int y = (rand() % (2 * MAX_DISTANCE_FROM_PLAYER)) - MAX_DISTANCE_FROM_PLAYER;
+
+    int x_delta = abs(x - playerLocation.x);
+    int y_delta = abs(y - playerLocation.y);
+
+    if (x_delta < MIN_DISTANCE_FROM_PLAYER) {
+        bool negative = (rand() % 2);
+        if (negative) {
+            x = -MIN_DISTANCE_FROM_PLAYER;
+        } else {
+            x = MIN_DISTANCE_FROM_PLAYER;
+        }
+    }
+
+    if (y_delta < MIN_DISTANCE_FROM_PLAYER) {
+        bool negative = (rand() % 2);
+        if (negative) {
+            y = -MIN_DISTANCE_FROM_PLAYER;
+        } else {
+            y = MIN_DISTANCE_FROM_PLAYER;
+        }
+    }
+
+    if (x > m_PlayArea.width) {
+        x = m_PlayArea.width - 100;
+    } else if (x < 0) {
+        x = 100;
+    }
+
+    if (y > m_PlayArea.height) {
+        y = m_PlayArea.height - 100;
+    } else if (y < 0) {
+        y = 100;
+    }
+
+    m_Sprite.setPosition(playerLocation + Vector2f(x, y));
+
+    m_SecondsSinceSpawned = 0;
+    m_Spawned = true;
+}
+
 void PickUps::spawnAt(Vector2f location) {
     m_Sprite.setPosition(location);
 
@@ -70,7 +114,7 @@ bool PickUps::isSpawned() {
     return m_Spawned;
 }
 
-void PickUps::update(Time frameTime) {
+void PickUps::update(Time frameTime, Vector2f playerLocation) {
     // update timer
     if (m_Spawned)  m_SecondsSinceSpawned += frameTime.asSeconds();
     else            m_SecondsSinceDespawned += frameTime.asSeconds();
@@ -88,6 +132,6 @@ void PickUps::update(Time frameTime) {
     }
     // spawn new one if exceeded the despawn timer
     else if ((m_SecondsSinceDespawned > m_SecondsToWait) && !m_Spawned && m_SpawnRandom) {
-        spawnRandom();
+        spawnNearPlayer(playerLocation);
     }
 }

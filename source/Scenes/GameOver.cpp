@@ -35,6 +35,13 @@ SceneChange GameOver::run(RenderWindow &window) {
     textSetOriginCenter(nameText);
     nameText.setPosition(enterYourNameText.getPosition() + Vector2f(0, 100));
 
+    RectangleShape nameCursor = RectangleShape(Vector2f(5, nameText.getCharacterSize()));
+    nameCursor.setFillColor(Color::White);
+    shapeSetOriginCenter(nameCursor);
+    nameCursor.setPosition(nameText.getPosition() + Vector2f(nameText.getLocalBounds().width / 2 + 10, 14));
+
+    Clock nameCursorTimer;
+
     Text saveText("Save Score", fontBebas);
     saveText.setFillColor(Color::Black);
     saveText.setCharacterSize(60);
@@ -105,6 +112,16 @@ SceneChange GameOver::run(RenderWindow &window) {
                  }
                  nameText.setString(nameString);
                  textSetOriginCenter(nameText);
+                 nameCursor.setPosition(nameText.getPosition() + Vector2f(nameText.getLocalBounds().width / 2 + 10, 14));
+            }
+        }
+
+        if (nameCursorTimer.getElapsedTime() > milliseconds(500)) {
+            nameCursorTimer.restart();
+            if (nameCursor.getFillColor() == Color::White) {
+                nameCursor.setFillColor(Color::Transparent);
+            } else {
+                nameCursor.setFillColor(Color::White);
             }
         }
 
@@ -115,6 +132,7 @@ SceneChange GameOver::run(RenderWindow &window) {
         window.draw(exitText);
         window.draw(enterYourNameText);
         window.draw(nameText);
+        window.draw(nameCursor);
         window.draw(saveButton);
         window.draw(saveText);
         window.display();

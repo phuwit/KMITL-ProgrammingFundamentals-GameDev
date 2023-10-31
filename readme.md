@@ -16,6 +16,15 @@ or see [choosealicense.com](https://choosealicense.com/licenses/agpl-3.0/) for a
 download build [here!](https://github.com/phuwit/KMITL-ProgrammingFundamentals-GameDev/actions/workflows/ci.yml?query=is%3Asuccess) for bestest build.
 to run executables from CI artifacts, download the artifact, extract it, and run the executable from bin/.
 
+## how do I run it
+download the right package for your OS. extract the zip and enter bin/ folder. then run the executable.
+
+> but, but, buuuuuut which one should i downloadddddd?~?!?!?!??!?!?
+
+any would be fine, static would be foolproof*, probably.
+on linux, gcc would be universal*, probably.
+
+
 ## compiling instruction
 use cmake! if you are unsure, checkout github actions workflow [ci.yml](.github/workflows/ci.yml) for more info.
 cmake template from [CMake SFML Project Template](https://github.com/SFML/cmake-sfml-project) by [SFML Contributors](https://github.com/SFML/cmake-sfml-project/graphs/contributors) under [Public Domain or MIT](https://github.com/SFML/cmake-sfml-project/blob/master/LICENSE.md)
